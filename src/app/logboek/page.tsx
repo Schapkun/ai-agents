@@ -97,14 +97,14 @@ export default function LogboekPage() {
                 value={zoekterm}
                 onChange={(e) => setZoekterm(e.target.value)}
                 placeholder="Zoeken in logboek..."
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-[#383838] bg-[#2f2f2f] text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
+                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-[#383838] bg-[#212121] text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
               />
             </div>
             {categorieen.length > 0 && (
               <select
                 value={filterCategorie}
                 onChange={(e) => setFilterCategorie(e.target.value)}
-                className="px-3 py-2 text-sm rounded-lg border border-[#383838] bg-[#2f2f2f] text-[#ececec] focus:border-[#9b9b9b] focus:outline-none transition-colors appearance-none cursor-pointer"
+                className="px-3 py-2 text-sm rounded-lg border border-[#383838] bg-[#212121] text-[#ececec] focus:border-[#9b9b9b] focus:outline-none transition-colors appearance-none cursor-pointer"
               >
                 <option value="alle">Alle categorie{"ë"}n</option>
                 {categorieen.map((cat) => (
@@ -130,7 +130,7 @@ export default function LogboekPage() {
               </p>
             </div>
           ) : (
-            <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
+            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
               <div className="divide-y divide-[#383838]/50">
                 {gefilterdeEntries.map((entry) => {
                   const isOpen = openEntry === entry.datum;
@@ -152,7 +152,7 @@ export default function LogboekPage() {
                       </button>
                       {isOpen && (
                         <div className="px-5 pb-4">
-                          <div className="bg-[#212121] rounded-lg p-4 border border-[#383838]">
+                          <div className="bg-[#2f2f2f] rounded-lg p-4 border border-[#383838]">
                             <pre className="text-sm text-[#ececec] whitespace-pre-wrap font-sans leading-relaxed">{entry.inhoud}</pre>
                           </div>
                         </div>

@@ -16,7 +16,7 @@ type IdeeenData = {
   ideeen: Idee[];
 };
 
-function isUitgewerkt(status: string): boolean {
+function isUitgevoerd(status: string): boolean {
   const s = status.toLowerCase();
   return s.includes("uitgewerkt") || s.includes("in progress") || s.includes("afgerond");
 }
@@ -24,7 +24,7 @@ function isUitgewerkt(status: string): boolean {
 export default function IdeeenPage() {
   const [data, setData] = useState<IdeeenData | null>(null);
   const [laden, setLaden] = useState(true);
-  const [activeTab, setActiveTab] = useState<"nieuw" | "uitgewerkt">("nieuw");
+  const [activeTab, setActiveTab] = useState<"open" | "uitgevoerd">("open");
 
   useEffect(() => {
     fetch("/api/ideeen")
@@ -37,9 +37,9 @@ export default function IdeeenPage() {
   }, []);
 
   const ideeen = data?.ideeen ?? [];
-  const nieuweIdeeen = ideeen.filter((i) => !isUitgewerkt(i.status));
-  const uitgewerkteIdeeen = ideeen.filter((i) => isUitgewerkt(i.status));
-  const getoondeIdeeen = activeTab === "nieuw" ? nieuweIdeeen : uitgewerkteIdeeen;
+  const openIdeeen = ideeen.filter((i) => !isUitgevoerd(i.status));
+  const uitgevoerdeIdeeen = ideeen.filter((i) => isUitgevoerd(i.status));
+  const getoondeIdeeen = activeTab === "open" ? openIdeeen : uitgevoerdeIdeeen;
 
   return (
     <DashboardLayout>
@@ -53,24 +53,24 @@ export default function IdeeenPage() {
           {/* Tabs */}
           <div className="flex gap-1 mb-6 bg-[#171717] rounded-lg p-1 w-fit">
             <button
-              onClick={() => setActiveTab("nieuw")}
+              onClick={() => setActiveTab("open")}
               className={`px-4 py-2 text-sm rounded-md transition-all ${
-                activeTab === "nieuw"
-                  ? "bg-[#2f2f2f] text-white font-medium"
+                activeTab === "open"
+                  ? "bg-[#212121] text-white font-medium"
                   : "text-[#9b9b9b] hover:text-white"
               }`}
             >
-              Nieuw ({nieuweIdeeen.length})
+              Openstaand ({openIdeeen.length})
             </button>
             <button
-              onClick={() => setActiveTab("uitgewerkt")}
+              onClick={() => setActiveTab("uitgevoerd")}
               className={`px-4 py-2 text-sm rounded-md transition-all ${
-                activeTab === "uitgewerkt"
-                  ? "bg-[#2f2f2f] text-white font-medium"
+                activeTab === "uitgevoerd"
+                  ? "bg-[#212121] text-white font-medium"
                   : "text-[#9b9b9b] hover:text-white"
               }`}
             >
-              Uitgewerkt ({uitgewerkteIdeeen.length})
+              Uitgevoerd ({uitgevoerdeIdeeen.length})
             </button>
           </div>
 
@@ -84,11 +84,11 @@ export default function IdeeenPage() {
                 <Lightbulb className="h-5 w-5 text-[#9b9b9b]" />
               </div>
               <p className="text-sm text-[#9b9b9b]">
-                {activeTab === "nieuw" ? "Geen nieuwe idee\u00ebn" : "Geen uitgewerkte idee\u00ebn"}
+                {activeTab === "open" ? "Geen openstaande ideeën" : "Geen uitgevoerde ideeën"}
               </p>
             </div>
           ) : (
-            <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
+            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
               <div className="divide-y divide-[#383838]/50">
                 {getoondeIdeeen.map((idee, i) => (
                   <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-[#383838]/30 transition-colors">
@@ -115,7 +115,7 @@ export default function IdeeenPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0 ml-4">
-                      {activeTab === "nieuw" ? (
+                      {activeTab === "open" ? (
                         <>
                           <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
                             Uitwerken

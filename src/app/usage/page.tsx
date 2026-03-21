@@ -137,7 +137,7 @@ export default function UsagePage() {
                   return (
                     <div
                       key={stat.label}
-                      className="bg-[#2f2f2f] rounded-xl border border-[#383838] px-5 py-4"
+                      className="bg-[#212121] rounded-xl border border-[#383838] px-5 py-4"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/5">
@@ -157,7 +157,7 @@ export default function UsagePage() {
 
               {/* Per model breakdown */}
               {Object.keys(perModel).length > 0 && (
-                <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden mb-8">
+                <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden mb-8">
                   <div className="px-5 py-4 border-b border-[#383838]">
                     <h2 className="text-sm font-medium text-white">Per model</h2>
                   </div>
@@ -188,7 +188,7 @@ export default function UsagePage() {
 
               {/* Dagelijks overzicht */}
               {dagLijst.length > 0 && (
-                <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
+                <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
                   <div className="px-5 py-4 border-b border-[#383838]">
                     <h2 className="text-sm font-medium text-white">Dagelijks overzicht</h2>
                   </div>

@@ -177,8 +177,8 @@ export default function ChatPage() {
                 onClick={() => setActiefGesprekId(gesprek.id)}
                 className={`flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-left transition-all ${
                   actiefGesprekId === gesprek.id
-                    ? "bg-[#2f2f2f] text-white"
-                    : "text-[#9b9b9b] hover:bg-[#2f2f2f] hover:text-white"
+                    ? "bg-[#212121] text-white"
+                    : "text-[#9b9b9b] hover:bg-[#212121] hover:text-white"
                 }`}
               >
                 <MessageSquare className="h-3 w-3 shrink-0" />
@@ -205,14 +205,14 @@ export default function ChatPage() {
         {berichten.length > 0 && (
           <button
             onClick={wisGesprek}
-            className="flex items-center justify-center rounded-lg p-2 text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f] transition-colors"
+            className="flex items-center justify-center rounded-lg p-2 text-[#9b9b9b] hover:text-white hover:bg-[#212121] transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5" />
           </button>
         )}
         <button
           onClick={nieuwGesprek}
-          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f] transition-colors"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-[#9b9b9b] hover:text-white hover:bg-[#212121] transition-colors"
         >
           <Plus className="h-3.5 w-3.5" />
           Nieuw
@@ -252,7 +252,7 @@ export default function ChatPage() {
                 <div
                   className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                     bericht.rol === "user"
-                      ? "bg-[#2f2f2f] text-[#ececec] rounded-br-md"
+                      ? "bg-[#212121] text-[#ececec] rounded-br-md"
                       : "text-[#ececec] rounded-bl-md"
                   }`}
                 >
@@ -343,7 +343,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="border-t border-[#383838] px-6 py-3 bg-[#212121] shrink-0">
+      <div className="border-t border-[#383838] px-6 py-3 bg-[#2f2f2f] shrink-0">
         <form
           onSubmit={(e) => { e.preventDefault(); verstuur(); }}
           className="mx-auto flex max-w-2xl items-center gap-3"
@@ -354,7 +354,7 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={CHAT_PLACEHOLDER}
-            className="flex-1 rounded-xl border border-[#383838] bg-[#2f2f2f] px-5 py-2.5 text-sm text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
+            className="flex-1 rounded-xl border border-[#383838] bg-[#212121] px-5 py-2.5 text-sm text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
           />
           <button
             type="submit"

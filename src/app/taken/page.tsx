@@ -65,7 +65,7 @@ export default function TakenPage() {
               onClick={() => setActiveTab("open")}
               className={`px-4 py-2 text-sm rounded-md transition-all ${
                 activeTab === "open"
-                  ? "bg-[#2f2f2f] text-white font-medium"
+                  ? "bg-[#212121] text-white font-medium"
                   : "text-[#9b9b9b] hover:text-white"
               }`}
             >
@@ -75,7 +75,7 @@ export default function TakenPage() {
               onClick={() => setActiveTab("klaar")}
               className={`px-4 py-2 text-sm rounded-md transition-all ${
                 activeTab === "klaar"
-                  ? "bg-[#2f2f2f] text-white font-medium"
+                  ? "bg-[#212121] text-white font-medium"
                   : "text-[#9b9b9b] hover:text-white"
               }`}
             >
@@ -104,7 +104,7 @@ export default function TakenPage() {
               </p>
             </div>
           ) : (
-            <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
+            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
               <div className="divide-y divide-[#383838]/50">
                 {getoondeTaken.map((taak, i) => (
                   <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-[#383838]/30 transition-colors">

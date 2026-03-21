@@ -42,7 +42,7 @@ const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/mattie", label: "Chat met Mattie", icon: MessageSquare },
   { href: "/taken", label: "Taken", icon: CheckSquare },
-  { href: "/ideeen", label: "Idee\u00ebn", icon: Lightbulb },
+  { href: "/ideeen", label: "Ideeën", icon: Lightbulb },
   { href: "/logboek", label: "Logboek", icon: BookOpen },
   { href: "/projecten", label: "Projecten", icon: FolderOpen },
 ];
@@ -77,8 +77,8 @@ function UsageWidget() {
       href="/usage"
       className={`flex items-center gap-2.5 mx-3 px-3 py-2 rounded-lg text-sm transition-all ${
         active
-          ? "bg-[#2f2f2f] text-white"
-          : "text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f]"
+          ? "bg-[#212121] text-white"
+          : "text-[#9b9b9b] hover:text-white hover:bg-[#212121]"
       }`}
     >
       <CreditCard className="h-4 w-4 shrink-0" />
@@ -108,7 +108,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#212121] text-[#ececec]">
+    <div className="flex h-screen overflow-hidden bg-[#2f2f2f] text-[#ececec]">
       {/* Sidebar */}
       <aside className="flex w-64 flex-col bg-[#171717] shrink-0">
         {/* Logo */}
@@ -133,8 +133,8 @@ export default function DashboardLayout({
                 href={item.href}
                 className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-all ${
                   active
-                    ? "font-medium text-white bg-[#2f2f2f]"
-                    : "text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f]"
+                    ? "font-medium text-white bg-[#212121]"
+                    : "text-[#9b9b9b] hover:text-white hover:bg-[#212121]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -159,7 +159,7 @@ export default function DashboardLayout({
       {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
         {header && (
-          <div className="flex items-center gap-3 border-b border-[#383838] px-6 h-14 shrink-0 bg-[#212121]">
+          <div className="flex items-center gap-3 border-b border-[#383838] px-6 h-14 shrink-0 bg-[#2f2f2f]">
             {header}
           </div>
         )}

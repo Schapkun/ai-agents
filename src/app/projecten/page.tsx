@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FolderOpen, Loader2 } from "lucide-react";
+import { FolderOpen, Loader2, ExternalLink, Globe, Monitor } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type ProjectInfo = {
   naam: string;
   beschrijving: string;
-  status: string;
+  devServer: string | null;
+  liveUrl: string | null;
+  pad: string | null;
+  github: string | null;
 };
 
 type Taak = {
@@ -19,14 +22,6 @@ type TakenProject = {
   naam: string;
   taken: Taak[];
 };
-
-function statusKleur(status: string): string {
-  const s = status.toLowerCase();
-  if (s.includes("actief") || s.includes("in progress")) return "bg-green-500";
-  if (s.includes("geparkeerd") || s.includes("pauze")) return "bg-yellow-500";
-  if (s.includes("afgerond") || s.includes("klaar")) return "bg-[#9b9b9b]";
-  return "bg-green-500";
-}
 
 export default function ProjectenPage() {
   const [projecten, setProjecten] = useState<ProjectInfo[]>([]);
@@ -59,7 +54,6 @@ export default function ProjectenPage() {
   }, []);
 
   function getOpenTaken(projectNaam: string): number {
-    // Fuzzy match project naam met taken project naam
     const exact = takenPerProject[projectNaam];
     if (exact !== undefined) return exact;
     const key = Object.keys(takenPerProject).find(
@@ -91,14 +85,14 @@ export default function ProjectenPage() {
               <p className="text-sm text-[#9b9b9b]">Geen projecten gevonden</p>
             </div>
           ) : (
-            <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
+            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-[#383838]">
                     <th className="text-left px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Project</th>
                     <th className="text-left px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Beschrijving</th>
                     <th className="text-center px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Open taken</th>
-                    <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Status</th>
+                    <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Links</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,19 +104,52 @@ export default function ProjectenPage() {
                           <span className="text-sm font-medium text-white">{project.naam}</span>
                         </td>
                         <td className="px-5 py-3">
-                          <span className="text-sm text-[#9b9b9b] line-clamp-1">{project.beschrijving || "\u2014"}</span>
+                          <span className="text-sm text-[#9b9b9b] line-clamp-1">{project.beschrijving || "-"}</span>
                         </td>
                         <td className="px-5 py-3 text-center">
-                          {openCount > 0 ? (
-                            <span className="text-sm text-[#ececec] font-mono">{openCount}</span>
-                          ) : (
-                            <span className="text-sm text-[#9b9b9b]">\u2014</span>
-                          )}
+                          <span className="text-sm text-[#ececec] font-mono">{openCount}</span>
                         </td>
                         <td className="px-5 py-3">
                           <div className="flex items-center justify-end gap-2">
-                            <span className={`h-2 w-2 rounded-full ${statusKleur(project.status)}`} />
-                            <span className="text-xs text-[#9b9b9b]">{project.status}</span>
+                            {project.devServer && (
+                              <a
+                                href={project.devServer}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#9b9b9b] hover:text-white rounded-md hover:bg-[#383838] transition-colors"
+                                title="Dev server"
+                              >
+                                <Monitor className="h-3 w-3" />
+                                Dev
+                              </a>
+                            )}
+                            {project.liveUrl && (
+                              <a
+                                href={project.liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#9b9b9b] hover:text-white rounded-md hover:bg-[#383838] transition-colors"
+                                title="Live site"
+                              >
+                                <Globe className="h-3 w-3" />
+                                Live
+                              </a>
+                            )}
+                            {project.github && (
+                              <a
+                                href={project.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#9b9b9b] hover:text-white rounded-md hover:bg-[#383838] transition-colors"
+                                title="GitHub"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                                GitHub
+                              </a>
+                            )}
+                            {!project.devServer && !project.liveUrl && !project.github && (
+                              <span className="text-xs text-[#9b9b9b]">-</span>
+                            )}
                           </div>
                         </td>
                       </tr>
