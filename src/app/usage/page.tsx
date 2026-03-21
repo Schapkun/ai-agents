@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CreditCard, Coins, ArrowUpRight, ArrowDownRight, Hash } from "lucide-react";
+import { CreditCard, Coins, ArrowUpRight, ArrowDownRight, Hash, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type UsageEntry = {
@@ -16,7 +16,6 @@ type UsageData = {
   entries: UsageEntry[];
 };
 
-// Prijzen per miljoen tokens (USD) — bron: Anthropic pricing
 const PRIJZEN: Record<string, { input: number; output: number }> = {
   "claude-sonnet-4-6": { input: 3, output: 15 },
   "claude-sonnet-4-20250514": { input: 3, output: 15 },
@@ -25,9 +24,8 @@ const PRIJZEN: Record<string, { input: number; output: number }> = {
 };
 
 function berekenKosten(model: string, inputTokens: number, outputTokens: number): number {
-  // Zoek prijs op basis van model naam (partial match)
   const key = Object.keys(PRIJZEN).find((k) => model.includes(k) || k.includes(model));
-  const prijs = key ? PRIJZEN[key] : { input: 3, output: 15 }; // fallback naar sonnet
+  const prijs = key ? PRIJZEN[key] : { input: 3, output: 15 };
   return (inputTokens / 1_000_000) * prijs.input + (outputTokens / 1_000_000) * prijs.output;
 }
 
@@ -53,8 +51,8 @@ function formatDatum(datum: string): string {
 
 const usageHeader = (
   <div>
-    <h1 className="text-lg font-semibold tracking-tight">Usage</h1>
-    <p className="text-[10px] text-zinc-500">API gebruik &amp; geschatte kosten</p>
+    <h1 className="text-base font-semibold tracking-tight">Usage</h1>
+    <p className="text-[10px] text-[#acacbe]">API gebruik &amp; geschatte kosten</p>
   </div>
 );
 
@@ -74,12 +72,10 @@ export default function UsagePage() {
 
   const entries = data?.entries ?? [];
 
-  // Huidige maand filteren
   const nu = new Date();
   const huidigeMaand = `${nu.getFullYear()}-${String(nu.getMonth() + 1).padStart(2, "0")}`;
   const maandEntries = entries.filter((e) => e.datum.startsWith(huidigeMaand));
 
-  // Totalen
   const totaalInput = maandEntries.reduce((s, e) => s + e.input_tokens, 0);
   const totaalOutput = maandEntries.reduce((s, e) => s + e.output_tokens, 0);
   const totaalRequests = maandEntries.reduce((s, e) => s + e.requests, 0);
@@ -88,7 +84,6 @@ export default function UsagePage() {
     0
   );
 
-  // Per model breakdown
   const perModel: Record<string, { input: number; output: number; requests: number; kosten: number }> = {};
   for (const e of maandEntries) {
     if (!perModel[e.model]) {
@@ -100,7 +95,6 @@ export default function UsagePage() {
     perModel[e.model].kosten += berekenKosten(e.model, e.input_tokens, e.output_tokens);
   }
 
-  // Dagelijks overzicht (laatste 14 dagen, gesorteerd op datum desc)
   const perDag: Record<string, { input: number; output: number; requests: number; kosten: number }> = {};
   for (const e of maandEntries) {
     if (!perDag[e.datum]) {
@@ -116,20 +110,20 @@ export default function UsagePage() {
     .slice(0, 14);
 
   return (
-    <DashboardLayout activePage={undefined} header={usageHeader}>
+    <DashboardLayout header={usageHeader}>
       <main className="flex-1">
         <div className="max-w-4xl mx-auto px-8 py-8">
           {laden ? (
             <div className="flex items-center justify-center py-20">
-              <p className="text-sm text-zinc-500">Laden...</p>
+              <Loader2 className="h-5 w-5 text-[#acacbe] animate-spin" />
             </div>
           ) : entries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-800/60 ring-1 ring-zinc-700/30 mb-3">
-                <CreditCard className="h-5 w-5 text-zinc-500" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 mb-3">
+                <CreditCard className="h-5 w-5 text-[#acacbe]" />
               </div>
-              <p className="text-sm text-zinc-500">Nog geen usage data</p>
-              <p className="text-[10px] text-zinc-600 mt-1">
+              <p className="text-sm text-[#acacbe]">Nog geen usage data</p>
+              <p className="text-xs text-[#acacbe]/60 mt-1">
                 Token gebruik wordt automatisch bijgehouden bij elk chatgesprek
               </p>
             </div>
@@ -138,50 +132,26 @@ export default function UsagePage() {
               {/* Statistieken kaarten */}
               <div className="grid grid-cols-4 gap-4 mb-8">
                 {[
-                  {
-                    label: "Geschatte kosten",
-                    waarde: formatKosten(totaalKosten),
-                    icon: Coins,
-                    kleur: "text-amber-400",
-                    bg: "bg-amber-500/10",
-                  },
-                  {
-                    label: "Input tokens",
-                    waarde: formatTokens(totaalInput),
-                    icon: ArrowUpRight,
-                    kleur: "text-blue-400",
-                    bg: "bg-blue-500/10",
-                  },
-                  {
-                    label: "Output tokens",
-                    waarde: formatTokens(totaalOutput),
-                    icon: ArrowDownRight,
-                    kleur: "text-violet-400",
-                    bg: "bg-violet-500/10",
-                  },
-                  {
-                    label: "Requests",
-                    waarde: totaalRequests.toString(),
-                    icon: Hash,
-                    kleur: "text-emerald-400",
-                    bg: "bg-emerald-500/10",
-                  },
+                  { label: "Geschatte kosten", waarde: formatKosten(totaalKosten), icon: Coins },
+                  { label: "Input tokens", waarde: formatTokens(totaalInput), icon: ArrowUpRight },
+                  { label: "Output tokens", waarde: formatTokens(totaalOutput), icon: ArrowDownRight },
+                  { label: "Requests", waarde: totaalRequests.toString(), icon: Hash },
                 ].map((stat) => {
                   const Icon = stat.icon;
                   return (
                     <div
                       key={stat.label}
-                      className="rounded-xl border border-zinc-800/40 bg-zinc-900/20 px-5 py-4"
+                      className="bg-[#40414f] rounded-2xl border border-[#4d4d4f] px-5 py-4"
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <div className={`flex h-6 w-6 items-center justify-center rounded-lg ${stat.bg}`}>
-                          <Icon className={`h-3.5 w-3.5 ${stat.kleur}`} />
+                        <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-white/5">
+                          <Icon className="h-3.5 w-3.5 text-[#acacbe]" />
                         </div>
-                        <span className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                        <span className="text-[10px] text-[#acacbe] uppercase tracking-wider">
                           {stat.label}
                         </span>
                       </div>
-                      <p className="text-xl font-semibold text-zinc-200 font-mono">
+                      <p className="text-xl font-semibold text-white font-mono">
                         {stat.waarde}
                       </p>
                     </div>
@@ -191,28 +161,28 @@ export default function UsagePage() {
 
               {/* Per model breakdown */}
               {Object.keys(perModel).length > 0 && (
-                <div className="rounded-xl border border-zinc-800/40 overflow-hidden mb-8">
-                  <div className="px-5 py-3 border-b border-zinc-800/40 bg-zinc-900/40">
-                    <h2 className="text-sm font-medium text-zinc-300">Per model</h2>
+                <div className="bg-[#40414f] rounded-2xl border border-[#4d4d4f] overflow-hidden mb-8">
+                  <div className="px-5 py-4 border-b border-[#4d4d4f]">
+                    <h2 className="text-sm font-medium text-white">Per model</h2>
                   </div>
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-zinc-800/40 bg-zinc-900/20">
-                        <th className="text-left px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Model</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Input</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Output</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Requests</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Kosten</th>
+                      <tr className="border-b border-[#4d4d4f]">
+                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Model</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Input</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Output</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Requests</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Kosten</th>
                       </tr>
                     </thead>
                     <tbody>
                       {Object.entries(perModel).map(([model, stats]) => (
-                        <tr key={model} className="border-b border-zinc-800/20 hover:bg-zinc-900/40 transition-colors">
-                          <td className="px-5 py-3 text-sm text-zinc-300 font-mono">{model}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-400 font-mono">{formatTokens(stats.input)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-400 font-mono">{formatTokens(stats.output)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-400 font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-200 font-mono">{formatKosten(stats.kosten)}</td>
+                        <tr key={model} className="border-b border-[#4d4d4f]/50 hover:bg-[#4d4d4f]/30 transition-colors">
+                          <td className="px-5 py-3 text-sm text-white font-mono">{model}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#acacbe] font-mono">{formatTokens(stats.input)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#acacbe] font-mono">{formatTokens(stats.output)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#acacbe] font-mono">{stats.requests}</td>
+                          <td className="px-5 py-3 text-right text-sm text-white font-mono">{formatKosten(stats.kosten)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -222,28 +192,28 @@ export default function UsagePage() {
 
               {/* Dagelijks overzicht */}
               {dagLijst.length > 0 && (
-                <div className="rounded-xl border border-zinc-800/40 overflow-hidden">
-                  <div className="px-5 py-3 border-b border-zinc-800/40 bg-zinc-900/40">
-                    <h2 className="text-sm font-medium text-zinc-300">Dagelijks overzicht</h2>
+                <div className="bg-[#40414f] rounded-2xl border border-[#4d4d4f] overflow-hidden">
+                  <div className="px-5 py-4 border-b border-[#4d4d4f]">
+                    <h2 className="text-sm font-medium text-white">Dagelijks overzicht</h2>
                   </div>
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-zinc-800/40 bg-zinc-900/20">
-                        <th className="text-left px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Datum</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Input</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Output</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Requests</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Kosten</th>
+                      <tr className="border-b border-[#4d4d4f]">
+                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Datum</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Input</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Output</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Requests</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#acacbe] uppercase tracking-wider">Kosten</th>
                       </tr>
                     </thead>
                     <tbody>
                       {dagLijst.map(([datum, stats]) => (
-                        <tr key={datum} className="border-b border-zinc-800/20 hover:bg-zinc-900/40 transition-colors">
-                          <td className="px-5 py-3 text-sm text-zinc-300">{formatDatum(datum)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-400 font-mono">{formatTokens(stats.input)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-400 font-mono">{formatTokens(stats.output)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-400 font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-zinc-200 font-mono">{formatKosten(stats.kosten)}</td>
+                        <tr key={datum} className="border-b border-[#4d4d4f]/50 hover:bg-[#4d4d4f]/30 transition-colors">
+                          <td className="px-5 py-3 text-sm text-white">{formatDatum(datum)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#acacbe] font-mono">{formatTokens(stats.input)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#acacbe] font-mono">{formatTokens(stats.output)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#acacbe] font-mono">{stats.requests}</td>
+                          <td className="px-5 py-3 text-right text-sm text-white font-mono">{formatKosten(stats.kosten)}</td>
                         </tr>
                       ))}
                     </tbody>
