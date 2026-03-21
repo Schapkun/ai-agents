@@ -19,15 +19,19 @@ const navItems: { href: string; label: string; icon: typeof Activity; page: Acti
   { href: "/logboek", label: "Logboek", icon: BookOpen, page: "logboek" },
 ];
 
+interface DashboardLayoutProps {
+  activePage: ActivePage;
+  children: ReactNode;
+  sidebarExtra?: ReactNode;
+  header?: ReactNode;
+}
+
 export default function DashboardLayout({
   activePage,
   children,
   sidebarExtra,
-}: {
-  activePage: ActivePage;
-  children: ReactNode;
-  sidebarExtra?: ReactNode;
-}) {
+  header,
+}: DashboardLayoutProps) {
   return (
     <div className="flex h-screen overflow-hidden bg-zinc-950 text-white">
       {/* Sidebar */}
@@ -87,7 +91,14 @@ export default function DashboardLayout({
 
       {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
-        {children}
+        {header && (
+          <div className="flex items-center gap-3 border-b border-zinc-800/60 px-6 h-14 shrink-0">
+            {header}
+          </div>
+        )}
+        <div className="flex-1 overflow-y-auto">
+          {children}
+        </div>
       </div>
     </div>
   );

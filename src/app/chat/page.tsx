@@ -191,36 +191,37 @@ export default function ChatPage() {
     </>
   );
 
-  return (
-    <DashboardLayout activePage="chat" sidebarExtra={sidebarExtra}>
-      {/* Header */}
-      <header className="flex items-center gap-3 border-b border-zinc-800/60 px-6 h-14 shrink-0 bg-zinc-950/80 backdrop-blur-sm">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-400/10 ring-1 border-blue-400/20">
-          <Bot className="h-4 w-4 text-blue-400" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-sm font-semibold">Mattie</h1>
-          <p className="text-[11px] text-zinc-500">Manager Agent</p>
-        </div>
-        <div className="flex items-center gap-1.5">
-          {berichten.length > 0 && (
-            <button
-              onClick={wisGesprek}
-              className="flex items-center justify-center rounded-lg p-2 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-            </button>
-          )}
+  const chatHeader = (
+    <>
+      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-400/10 ring-1 border-blue-400/20">
+        <Bot className="h-4 w-4 text-blue-400" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <h1 className="text-sm font-semibold">Mattie</h1>
+        <p className="text-[11px] text-zinc-500">Manager Agent</p>
+      </div>
+      <div className="flex items-center gap-1.5">
+        {berichten.length > 0 && (
           <button
-            onClick={nieuwGesprek}
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors"
+            onClick={wisGesprek}
+            className="flex items-center justify-center rounded-lg p-2 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors"
           >
-            <Plus className="h-3.5 w-3.5" />
-            Nieuw
+            <Trash2 className="h-3.5 w-3.5" />
           </button>
-        </div>
-      </header>
+        )}
+        <button
+          onClick={nieuwGesprek}
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Nieuw
+        </button>
+      </div>
+    </>
+  );
 
+  return (
+    <DashboardLayout activePage="chat" sidebarExtra={sidebarExtra} header={chatHeader}>
       {/* Messages */}
       <div className="flex-1 overflow-y-auto min-h-0">
         <div className="mx-auto max-w-2xl px-6 py-6 space-y-6">

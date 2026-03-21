@@ -76,19 +76,19 @@ export default function LogboekPage() {
     </div>
   );
 
-  return (
-    <DashboardLayout activePage="logboek" sidebarExtra={datumLijst}>
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-8 py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-xl font-semibold tracking-tight">Logboek</h1>
-              <p className="text-sm text-zinc-500 mt-1">
-                {entries.length} entries &middot; dagelijkse sessie logs
-              </p>
-            </div>
-          </div>
+  const logboekHeader = (
+    <div>
+      <h1 className="text-sm font-semibold tracking-tight">Logboek</h1>
+      <p className="text-[11px] text-zinc-500">
+        {entries.length} entries &middot; dagelijkse sessie logs
+      </p>
+    </div>
+  );
 
+  return (
+    <DashboardLayout activePage="logboek" sidebarExtra={datumLijst} header={logboekHeader}>
+      <main className="flex-1">
+        <div className="max-w-4xl mx-auto px-8 py-8">
           {laden ? (
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (

@@ -55,19 +55,20 @@ function ProgressBar({ gebruikt, geslaagd }: { gebruikt: number; geslaagd: numbe
   );
 }
 
+const agentsHeader = (
+  <div>
+    <h1 className="text-sm font-semibold tracking-tight">Agents</h1>
+    <p className="text-[11px] text-zinc-500">
+      {agentData.length} agents &middot; slagingspercentages
+    </p>
+  </div>
+);
+
 export default function AgentsPage() {
   return (
-    <DashboardLayout activePage="agents">
-      <main className="flex-1 overflow-y-auto">
+    <DashboardLayout activePage="agents" header={agentsHeader}>
+      <main className="flex-1">
         <div className="max-w-4xl mx-auto px-8 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-xl font-semibold tracking-tight">Agents</h1>
-            <p className="text-sm text-zinc-500 mt-1">
-              {agentData.length} agents &middot; slagingspercentages
-            </p>
-          </div>
-
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-8">
             <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">

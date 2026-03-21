@@ -42,17 +42,18 @@ const stats = [
 
 const recenteActiviteit: { tekst: string; tijd: string; type: string }[] = [];
 
+const overzichtHeader = (
+  <div>
+    <h1 className="text-sm font-semibold tracking-tight">Overzicht</h1>
+    <p className="text-[11px] text-zinc-500">Dashboard &middot; alle agents en projecten</p>
+  </div>
+);
+
 export default function OverzichtPage() {
   return (
-    <DashboardLayout activePage="overzicht">
-      <main className="flex-1 overflow-y-auto">
+    <DashboardLayout activePage="overzicht" header={overzichtHeader}>
+      <main className="flex-1">
         <div className="max-w-4xl mx-auto px-8 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-xl font-semibold tracking-tight">Overzicht</h1>
-            <p className="text-sm text-zinc-500 mt-1">Dashboard &middot; alle agents en projecten</p>
-          </div>
-
           {/* Stat kaarten */}
           <div className="grid grid-cols-4 gap-4 mb-8">
             {stats.map((stat) => {
