@@ -9,11 +9,11 @@ import {
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type ActivePage = "overzicht" | "chat" | "logboek";
+type ActivePage = "overzicht" | "mattie" | "logboek";
 
 const navItems: { href: string; label: string; icon: typeof Activity; page: ActivePage }[] = [
   { href: "/", label: "Overzicht", icon: Activity, page: "overzicht" },
-  { href: "/chat", label: "Chat", icon: MessageSquare, page: "chat" },
+  { href: "/mattie", label: "Mattie", icon: MessageSquare, page: "mattie" },
   { href: "/logboek", label: "Logboek", icon: BookOpen, page: "logboek" },
 ];
 
@@ -40,7 +40,7 @@ export default function DashboardLayout({
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
-            <span className="text-base font-semibold tracking-tight">Mattie</span>
+            <span className="text-base font-semibold tracking-tight">Agents</span>
             <p className="text-[10px] text-zinc-500">Dashboard</p>
           </div>
         </div>
