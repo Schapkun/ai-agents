@@ -42,7 +42,7 @@ const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/mattie", label: "Chat met Mattie", icon: MessageSquare },
   { href: "/taken", label: "Taken", icon: CheckSquare },
-  { href: "/ideeen", label: "Ideeën", icon: Lightbulb },
+  { href: "/ideeen", label: "Idee\u00EBn", icon: Lightbulb },
   { href: "/logboek", label: "Logboek", icon: BookOpen },
   { href: "/projecten", label: "Projecten", icon: FolderOpen },
 ];
@@ -77,13 +77,13 @@ function UsageWidget() {
       href="/usage"
       className={`flex items-center gap-2.5 mx-3 px-3 py-2 rounded-lg text-sm transition-colors ${
         active
-          ? "bg-white/[0.06] text-white"
-          : "text-[#666] hover:text-[#999] hover:bg-white/[0.03]"
+          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+          : "text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
       }`}
     >
       <CreditCard className="h-4 w-4 shrink-0" />
       <span className="text-xs font-mono">
-        ${usage.totaalKosten.toFixed(2)} · {formatTokensCompact(usage.totaalTokens)}
+        ${usage.totaalKosten.toFixed(2)} \u00B7 {formatTokensCompact(usage.totaalTokens)}
       </span>
     </Link>
   );
@@ -108,15 +108,15 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#212121] text-[#ececec]">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
       {/* Sidebar */}
-      <aside className="flex w-64 flex-col bg-[#171717] shrink-0 border-r border-white/[0.06]">
+      <aside className="flex w-64 flex-col bg-sidebar shrink-0 border-r border-sidebar-border">
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 h-16 shrink-0">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/[0.08]">
-            <LayoutDashboard className="h-4 w-4 text-white" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-sidebar-accent">
+            <LayoutDashboard className="h-4 w-4 text-sidebar-accent-foreground" />
           </div>
-          <span className="text-base font-semibold tracking-tight text-white">{APP_NAME}</span>
+          <span className="text-base font-semibold tracking-tight text-sidebar-accent-foreground">{APP_NAME}</span>
         </div>
 
         {/* Navigatie */}
@@ -130,8 +130,8 @@ export default function DashboardLayout({
                 href={item.href}
                 className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                   active
-                    ? "font-medium text-white bg-white/[0.06]"
-                    : "text-[#666] hover:text-[#999] hover:bg-white/[0.03]"
+                    ? "font-medium text-sidebar-accent-foreground bg-sidebar-accent"
+                    : "text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -156,7 +156,7 @@ export default function DashboardLayout({
       {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
         {header && (
-          <div className="flex items-center gap-3 border-b border-white/[0.06] px-6 h-14 shrink-0 bg-[#212121]">
+          <div className="flex items-center gap-3 border-b border-border px-6 h-14 shrink-0 bg-background">
             {header}
           </div>
         )}

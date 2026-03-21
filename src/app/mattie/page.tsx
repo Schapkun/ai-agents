@@ -16,6 +16,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import DashboardLayout from "@/components/dashboard-layout";
 import { AGENT_NAME, AGENT_ROLE, AGENT_DESCRIPTION, CHAT_PLACEHOLDER } from "@/lib/config";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Message = {
   rol: "user" | "agent";
@@ -160,12 +162,12 @@ export default function ChatPage() {
       {gesprekken.length > 0 && (
         <div className="px-3 pt-4 flex-1 overflow-y-auto">
           <div className="flex items-center justify-between px-3 pb-1.5">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-[#666]">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-sidebar-foreground">
               Gesprekken
             </p>
             <button
               onClick={nieuwGesprek}
-              className="flex items-center gap-0.5 text-[10px] text-[#666] hover:text-[#999] transition-colors"
+              className="flex items-center gap-0.5 text-[10px] text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
             >
               <Plus className="h-3 w-3" />
             </button>
@@ -177,8 +179,8 @@ export default function ChatPage() {
                 onClick={() => setActiefGesprekId(gesprek.id)}
                 className={`flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-left transition-colors ${
                   actiefGesprekId === gesprek.id
-                    ? "bg-white/[0.06] text-white"
-                    : "text-[#666] hover:bg-white/[0.03] hover:text-[#999]"
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
               >
                 <MessageSquare className="h-3 w-3 shrink-0" />
@@ -194,29 +196,27 @@ export default function ChatPage() {
 
   const chatHeader = (
     <>
-      <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/[0.08]">
-        <Bot className="h-4 w-4 text-white" />
+      <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-accent">
+        <Bot className="h-4 w-4 text-foreground" />
       </div>
       <div className="flex-1 min-w-0">
-        <h1 className="text-base font-semibold text-white">{AGENT_NAME}</h1>
-        <p className="text-[10px] text-[#666]">{AGENT_ROLE}</p>
+        <h1 className="text-base font-semibold text-foreground">{AGENT_NAME}</h1>
+        <p className="text-[10px] text-muted-foreground">{AGENT_ROLE}</p>
       </div>
       <div className="flex items-center gap-1.5">
         {berichten.length > 0 && (
-          <button
+          <Button
+            variant="ghost"
+            size="icon-sm"
             onClick={wisGesprek}
-            className="flex items-center justify-center rounded-lg p-2 text-[#666] hover:text-[#ececec] hover:bg-white/[0.03] transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5" />
-          </button>
+          </Button>
         )}
-        <button
-          onClick={nieuwGesprek}
-          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-[#171717] bg-white hover:bg-white/90 font-medium transition-colors"
-        >
+        <Button size="sm" onClick={nieuwGesprek}>
           <Plus className="h-3.5 w-3.5" />
           Nieuw
-        </button>
+        </Button>
       </div>
     </>
   );
@@ -228,11 +228,11 @@ export default function ChatPage() {
         <div className="mx-auto max-w-2xl px-6 py-6 space-y-6">
           {berichten.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.08] mb-4">
-                <Bot className="h-7 w-7 text-white" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent mb-4">
+                <Bot className="h-7 w-7 text-foreground" />
               </div>
-              <h2 className="text-base font-semibold text-white">{AGENT_NAME}</h2>
-              <p className="mt-1.5 text-sm text-[#666] max-w-sm leading-relaxed">
+              <h2 className="text-base font-semibold text-foreground">{AGENT_NAME}</h2>
+              <p className="mt-1.5 text-sm text-muted-foreground max-w-sm leading-relaxed">
                 {AGENT_DESCRIPTION}
               </p>
             </div>
@@ -244,16 +244,16 @@ export default function ChatPage() {
               className={`group/msg flex gap-3 ${bericht.rol === "user" ? "justify-end" : "justify-start"}`}
             >
               {bericht.rol === "agent" && (
-                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-white/[0.08]">
-                  <Bot className="h-3.5 w-3.5 text-white" />
+                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-accent">
+                  <Bot className="h-3.5 w-3.5 text-foreground" />
                 </div>
               )}
               <div className="relative max-w-lg">
                 <div
                   className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                     bericht.rol === "user"
-                      ? "bg-white/[0.06] text-[#ececec] rounded-br-md"
-                      : "text-[#ececec] rounded-bl-md"
+                      ? "bg-accent text-foreground rounded-br-md"
+                      : "text-foreground rounded-bl-md"
                   }`}
                 >
                   {bericht.rol === "user" ? (
@@ -268,12 +268,12 @@ export default function ChatPage() {
                             const codeString = String(children).replace(/\n$/, "");
                             if (match) {
                               return (
-                                <div className="relative my-2 rounded-xl overflow-hidden border border-white/[0.05]">
-                                  <div className="flex items-center justify-between px-3 py-1 bg-[#171717] border-b border-white/[0.06]">
-                                    <span className="text-[10px] text-[#666]">{match[1]}</span>
+                                <div className="relative my-2 rounded-xl overflow-hidden border border-border">
+                                  <div className="flex items-center justify-between px-3 py-1 bg-sidebar border-b border-sidebar-border">
+                                    <span className="text-[10px] text-muted-foreground">{match[1]}</span>
                                     <button
                                       onClick={() => kopieer(codeString, i * 1000 + 1)}
-                                      className="flex items-center gap-1 text-[10px] text-[#666] hover:text-[#ececec] transition-colors"
+                                      className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground transition-colors"
                                     >
                                       {gekopieerd === i * 1000 + 1 ? (
                                         <><Check className="h-3 w-3" /> Gekopieerd</>
@@ -286,7 +286,7 @@ export default function ChatPage() {
                                     style={oneDark}
                                     language={match[1]}
                                     PreTag="div"
-                                    customStyle={{ margin: 0, background: "#171717" }}
+                                    customStyle={{ margin: 0, background: "var(--sidebar)" }}
                                   >
                                     {codeString}
                                   </SyntaxHighlighter>
@@ -294,7 +294,7 @@ export default function ChatPage() {
                               );
                             }
                             return (
-                              <code className="rounded-lg bg-white/[0.04] px-1.5 py-0.5 text-xs text-[#9b9b9b]" {...props}>
+                              <code className="rounded-lg bg-accent px-1.5 py-0.5 text-xs text-muted-foreground" {...props}>
                                 {children}
                               </code>
                             );
@@ -306,7 +306,7 @@ export default function ChatPage() {
                 </div>
                 <button
                   onClick={() => kopieer(bericht.tekst, i)}
-                  className="absolute -bottom-5 right-1 flex items-center gap-1 text-[10px] text-[#666] hover:text-[#9b9b9b] opacity-0 group-hover/msg:opacity-100 transition-opacity"
+                  className="absolute -bottom-5 right-1 flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground opacity-0 group-hover/msg:opacity-100 transition-opacity"
                 >
                   {gekopieerd === i ? (
                     <><Check className="h-3 w-3" /> Gekopieerd</>
@@ -316,7 +316,7 @@ export default function ChatPage() {
                 </button>
               </div>
               {bericht.rol === "user" && (
-                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[#171717] text-[10px] font-bold">
+                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
                   M
                 </div>
               )}
@@ -325,14 +325,14 @@ export default function ChatPage() {
 
           {loading && (
             <div className="flex gap-3">
-              <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-white/[0.08]">
-                <Bot className="h-3.5 w-3.5 text-white" />
+              <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-accent">
+                <Bot className="h-3.5 w-3.5 text-foreground" />
               </div>
               <div className="rounded-2xl rounded-bl-md px-4 py-3">
                 <div className="flex items-center gap-1.5">
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#666] animate-bounce [animation-duration:0.6s]" />
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#666] animate-bounce [animation-delay:0.15s] [animation-duration:0.6s]" />
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#666] animate-bounce [animation-delay:0.3s] [animation-duration:0.6s]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce [animation-duration:0.6s]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:0.15s] [animation-duration:0.6s]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:0.3s] [animation-duration:0.6s]" />
                 </div>
               </div>
             </div>
@@ -343,26 +343,27 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="border-t border-white/[0.06] px-6 py-3 bg-[#212121] shrink-0">
+      <div className="border-t border-border px-6 py-3 bg-background shrink-0">
         <form
           onSubmit={(e) => { e.preventDefault(); verstuur(); }}
           className="mx-auto flex max-w-2xl items-center gap-3"
         >
-          <input
+          <Input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={CHAT_PLACEHOLDER}
-            className="flex-1 rounded-xl border border-white/[0.06] bg-white/[0.03] px-5 py-2.5 text-sm text-[#ececec] placeholder:text-[#666] focus:border-white/[0.12] focus:outline-none transition-colors"
+            className="flex-1 rounded-xl px-5 py-2.5"
           />
-          <button
+          <Button
             type="submit"
             disabled={!input.trim() || loading}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#171717] transition-all hover:bg-white/90 disabled:opacity-30 active:scale-95"
+            size="icon"
+            className="rounded-xl"
           >
             <Send className="h-4 w-4" />
-          </button>
+          </Button>
         </form>
       </div>
     </DashboardLayout>

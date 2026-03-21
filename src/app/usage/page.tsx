@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { CreditCard, Coins, ArrowUpRight, ArrowDownRight, Hash, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
-import { PageHeader, SectionCard, Th, Td, Tr, EmptyState, colors } from "@/components/ui/design";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 
 type UsageEntry = { datum: string; model: string; input_tokens: number; output_tokens: number; requests: number };
 
@@ -80,11 +81,20 @@ export default function UsagePage() {
     <DashboardLayout>
       <main className="flex-1">
         <div className="px-6 py-6">
-          <PageHeader title="Usage" subtitle="API gebruik & geschatte kosten" />
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Usage</h1>
+            <p className="text-sm text-muted-foreground mt-1">API gebruik & geschatte kosten</p>
+          </div>
           {laden ? (
-            <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 animate-spin text-[#9b9b9b]" /></div>
+            <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
           ) : entries.length === 0 ? (
-            <EmptyState icon={CreditCard} message="Nog geen usage data" sub="Token gebruik wordt automatisch bijgehouden" />
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent mb-3">
+                <CreditCard className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <p className="text-sm text-muted-foreground">Nog geen usage data</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Token gebruik wordt automatisch bijgehouden</p>
+            </div>
           ) : (
             <>
               {/* Stats */}
@@ -92,59 +102,83 @@ export default function UsagePage() {
                 {stats.map(s => {
                   const Icon = s.icon;
                   return (
-                    <SectionCard key={s.label} className="px-4 py-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Icon className={`h-3.5 w-3.5 ${colors.textMuted}`} />
-                        <span className={`text-[10px] ${colors.textMuted} uppercase tracking-wider`}>{s.label}</span>
-                      </div>
-                      <p className={`text-xl font-semibold ${colors.textTitle} font-mono`}>{s.value}</p>
-                    </SectionCard>
+                    <Card key={s.label}>
+                      <CardContent className="pt-3 pb-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</span>
+                        </div>
+                        <p className="text-xl font-semibold text-foreground font-mono">{s.value}</p>
+                      </CardContent>
+                    </Card>
                   );
                 })}
               </div>
 
               {/* Per model */}
               {Object.keys(perModel).length > 0 && (
-                <SectionCard className="mb-6">
-                  <div className={`px-4 py-2.5 border-b ${colors.borderSubtle}`}>
-                    <h2 className={`text-sm font-medium ${colors.textTitle}`}>Per model</h2>
-                  </div>
-                  <table className="w-full">
-                    <thead><tr className={`border-b ${colors.borderSubtle}`}>
-                      <Th>Model</Th><Th align="right">Input</Th><Th align="right">Output</Th><Th align="right">Requests</Th><Th align="right">Kosten</Th>
-                    </tr></thead>
-                    <tbody className={`${colors.divider}`}>
-                      {Object.entries(perModel).map(([model, s]) => (
-                        <Tr key={model}>
-                          <Td mono>{model}</Td><Td align="right" mono>{fmtTokens(s.input)}</Td><Td align="right" mono>{fmtTokens(s.output)}</Td>
-                          <Td align="right" mono>{s.requests}</Td><Td align="right" mono>{fmtKosten(s.kosten)}</Td>
-                        </Tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </SectionCard>
+                <Card className="mb-6">
+                  <CardHeader className="border-b border-border">
+                    <CardTitle className="text-sm">Per model</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 px-0">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Model</TableHead>
+                          <TableHead className="text-right">Input</TableHead>
+                          <TableHead className="text-right">Output</TableHead>
+                          <TableHead className="text-right">Requests</TableHead>
+                          <TableHead className="text-right">Kosten</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {Object.entries(perModel).map(([model, s]) => (
+                          <TableRow key={model}>
+                            <TableCell className="font-mono">{model}</TableCell>
+                            <TableCell className="text-right font-mono">{fmtTokens(s.input)}</TableCell>
+                            <TableCell className="text-right font-mono">{fmtTokens(s.output)}</TableCell>
+                            <TableCell className="text-right font-mono">{s.requests}</TableCell>
+                            <TableCell className="text-right font-mono">{fmtKosten(s.kosten)}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
               )}
 
               {/* Dagelijks */}
               {dagLijst.length > 0 && (
-                <SectionCard>
-                  <div className={`px-4 py-2.5 border-b ${colors.borderSubtle}`}>
-                    <h2 className={`text-sm font-medium ${colors.textTitle}`}>Dagelijks overzicht</h2>
-                  </div>
-                  <table className="w-full">
-                    <thead><tr className={`border-b ${colors.borderSubtle}`}>
-                      <Th>Datum</Th><Th align="right">Input</Th><Th align="right">Output</Th><Th align="right">Requests</Th><Th align="right">Kosten</Th>
-                    </tr></thead>
-                    <tbody className={`${colors.divider}`}>
-                      {dagLijst.map(([datum, s]) => (
-                        <Tr key={datum}>
-                          <Td>{fmtDatum(datum)}</Td><Td align="right" mono>{fmtTokens(s.input)}</Td><Td align="right" mono>{fmtTokens(s.output)}</Td>
-                          <Td align="right" mono>{s.requests}</Td><Td align="right" mono>{fmtKosten(s.kosten)}</Td>
-                        </Tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </SectionCard>
+                <Card>
+                  <CardHeader className="border-b border-border">
+                    <CardTitle className="text-sm">Dagelijks overzicht</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 px-0">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Datum</TableHead>
+                          <TableHead className="text-right">Input</TableHead>
+                          <TableHead className="text-right">Output</TableHead>
+                          <TableHead className="text-right">Requests</TableHead>
+                          <TableHead className="text-right">Kosten</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {dagLijst.map(([datum, s]) => (
+                          <TableRow key={datum}>
+                            <TableCell>{fmtDatum(datum)}</TableCell>
+                            <TableCell className="text-right font-mono">{fmtTokens(s.input)}</TableCell>
+                            <TableCell className="text-right font-mono">{fmtTokens(s.output)}</TableCell>
+                            <TableCell className="text-right font-mono">{s.requests}</TableCell>
+                            <TableCell className="text-right font-mono">{fmtKosten(s.kosten)}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
               )}
             </>
           )}

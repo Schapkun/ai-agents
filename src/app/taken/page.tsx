@@ -3,7 +3,10 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { CheckSquare, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
-import { PageHeader, SectionCard, Tabs, ActionButton, EmptyState, ListItem, colors } from "@/components/ui/design";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Taak = { tekst: string; klaar: boolean };
 type Project = { naam: string; taken: Taak[] };
@@ -12,11 +15,11 @@ type TaakItem = { tekst: string; project: string; klaar: boolean };
 export default function TakenPage() {
   const [data, setData] = useState<{ projects: Project[] } | null>(null);
   const [laden, setLaden] = useState(true);
-  const [activeTab, setActiveTab] = useState("open");
   const [bewerkIndex, setBewerkIndex] = useState<number | null>(null);
   const [bewerkTekst, setBewerkTekst] = useState("");
   const [bevestigIndex, setBevestigIndex] = useState<number | null>(null);
   const [bezig, setBezig] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState("open");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchTaken = useCallback(() => {
@@ -30,9 +33,13 @@ export default function TakenPage() {
   for (const p of data?.projects ?? []) for (const t of p.taken) alleTaken.push({ tekst: t.tekst, project: p.naam, klaar: t.klaar });
   const openTaken = alleTaken.filter(t => !t.klaar);
   const klaarTaken = alleTaken.filter(t => t.klaar);
-  const getoond = activeTab === "open" ? openTaken : klaarTaken;
+
+  function getGetoond() {
+    return activeTab === "open" ? openTaken : klaarTaken;
+  }
 
   async function actie(taak: TaakItem, a: string, nieuweTekst?: string) {
+    const getoond = getGetoond();
     setBezig(getoond.indexOf(taak));
     try {
       const r = await fetch("/api/taken", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ project: taak.project, taak: taak.tekst, actie: a, nieuweTekst }) });
@@ -45,67 +52,84 @@ export default function TakenPage() {
     else setBewerkIndex(null);
   }
 
+  function renderList(taken: TaakItem[], isOpen: boolean) {
+    if (laden) {
+      return <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>;
+    }
+    if (taken.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent mb-3">
+            <CheckSquare className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <p className="text-sm text-muted-foreground">{isOpen ? "Geen openstaande taken" : "Geen uitgevoerde taken"}</p>
+        </div>
+      );
+    }
+    return (
+      <Card>
+        <CardContent className="pt-0">
+          <div className="divide-y divide-border">
+            {taken.map((taak, i) => (
+              <div key={i} className="py-2.5 flex items-center justify-between">
+                <div className="flex-1 min-w-0">
+                  {bewerkIndex === i ? (
+                    <Input ref={inputRef} type="text" value={bewerkTekst} onChange={e => setBewerkTekst(e.target.value)}
+                      onKeyDown={e => { if (e.key === "Enter") submitBewerking(taak); if (e.key === "Escape") setBewerkIndex(null); }}
+                      onBlur={() => submitBewerking(taak)} />
+                  ) : (
+                    <>
+                      <p className={`text-sm ${taak.klaar ? "text-muted-foreground/60 line-through" : "text-muted-foreground"}`}>{taak.tekst}</p>
+                      <p className="text-[10px] text-muted-foreground/60 mt-0.5">{taak.project}</p>
+                    </>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 shrink-0 ml-4">
+                  {bezig === i ? <Loader2 className="h-4 w-4 text-muted-foreground animate-spin" />
+                  : bevestigIndex === i ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">Zeker weten?</span>
+                      <Button variant="destructive" size="sm" onClick={() => actie(taak, "annuleren")}>Ja</Button>
+                      <Button variant="secondary" size="sm" onClick={() => setBevestigIndex(null)}>Nee</Button>
+                    </div>
+                  ) : isOpen ? (
+                    <>
+                      <Button variant="secondary" size="sm" onClick={() => actie(taak, "uitvoeren")}>Uitvoeren</Button>
+                      <Button variant="secondary" size="sm" onClick={() => { setBewerkIndex(i); setBewerkTekst(taak.tekst); }}>Bewerken</Button>
+                      <Button variant="destructive" size="sm" onClick={() => setBevestigIndex(i)}>Annuleren</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button variant="secondary" size="sm" onClick={() => actie(taak, "heropenen")}>Heropenen</Button>
+                      <Button variant="secondary" size="sm" onClick={() => { setBewerkIndex(i); setBewerkTekst(taak.tekst); }}>Bewerken</Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <DashboardLayout>
       <main className="flex-1">
         <div className="px-6 py-6">
-          <PageHeader title="Taken" />
-          <Tabs
-            tabs={[
-              { id: "open", label: "Openstaand", count: openTaken.length },
-              { id: "klaar", label: "Uitgevoerd", count: klaarTaken.length },
-            ]}
-            active={activeTab}
-            onChange={setActiveTab}
-          />
-          {laden ? (
-            <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 animate-spin text-[#9b9b9b]" /></div>
-          ) : getoond.length === 0 ? (
-            <EmptyState icon={CheckSquare} message={activeTab === "open" ? "Geen openstaande taken" : "Geen uitgevoerde taken"} />
-          ) : (
-            <SectionCard>
-              <div className={`divide-y ${colors.divider}`}>
-                {getoond.map((taak, i) => (
-                  <ListItem key={i} className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      {bewerkIndex === i ? (
-                        <input ref={inputRef} type="text" value={bewerkTekst} onChange={e => setBewerkTekst(e.target.value)}
-                          onKeyDown={e => { if (e.key === "Enter") submitBewerking(taak); if (e.key === "Escape") setBewerkIndex(null); }}
-                          onBlur={() => submitBewerking(taak)}
-                          className={`w-full ${colors.btnBg} border border-white/[0.1] rounded-lg px-3 py-1.5 text-sm ${colors.textContent} outline-none focus:border-white/[0.2]`} />
-                      ) : (
-                        <>
-                          <p className={`text-sm ${taak.klaar ? `${colors.textMuted} line-through` : colors.textContent}`}>{taak.tekst}</p>
-                          <p className={`text-[10px] ${colors.textMuted} mt-0.5`}>{taak.project}</p>
-                        </>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-4">
-                      {bezig === i ? <Loader2 className={`h-4 w-4 ${colors.textMuted} animate-spin`} />
-                      : bevestigIndex === i ? (
-                        <div className="flex items-center gap-2">
-                          <span className={`text-xs ${colors.textContent}`}>Zeker weten?</span>
-                          <ActionButton variant="danger" onClick={() => actie(taak, "annuleren")}>Ja</ActionButton>
-                          <ActionButton onClick={() => setBevestigIndex(null)}>Nee</ActionButton>
-                        </div>
-                      ) : activeTab === "open" ? (
-                        <>
-                          <ActionButton onClick={() => actie(taak, "uitvoeren")}>Uitvoeren</ActionButton>
-                          <ActionButton onClick={() => { setBewerkIndex(i); setBewerkTekst(taak.tekst); }}>Bewerken</ActionButton>
-                          <ActionButton variant="danger" onClick={() => setBevestigIndex(i)}>Annuleren</ActionButton>
-                        </>
-                      ) : (
-                        <>
-                          <ActionButton onClick={() => actie(taak, "heropenen")}>Heropenen</ActionButton>
-                          <ActionButton onClick={() => { setBewerkIndex(i); setBewerkTekst(taak.tekst); }}>Bewerken</ActionButton>
-                        </>
-                      )}
-                    </div>
-                  </ListItem>
-                ))}
-              </div>
-            </SectionCard>
-          )}
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-6">Taken</h1>
+          <Tabs defaultValue="open" onValueChange={(v: string | number | null) => { if (typeof v === "string") setActiveTab(v); }}>
+            <TabsList className="mb-6">
+              <TabsTrigger value="open">Openstaand ({openTaken.length})</TabsTrigger>
+              <TabsTrigger value="klaar">Uitgevoerd ({klaarTaken.length})</TabsTrigger>
+            </TabsList>
+            <TabsContent value="open">
+              {renderList(openTaken, true)}
+            </TabsContent>
+            <TabsContent value="klaar">
+              {renderList(klaarTaken, false)}
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
     </DashboardLayout>

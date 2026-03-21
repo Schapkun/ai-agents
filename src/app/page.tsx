@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import DashboardLayout from "@/components/dashboard-layout";
-import { PageHeader, SectionCard, SectionHeader, ListItem, InlineStats } from "@/components/ui/design";
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
 
 type Taak = { tekst: string; klaar: boolean };
 type Project = { naam: string; taken: Taak[] };
@@ -30,6 +31,14 @@ function berekenKosten(model: string, it: number, ot: number): number {
   const key = Object.keys(PRIJZEN).find((k) => model.includes(k) || k.includes(model));
   const p = key ? PRIJZEN[key] : { input: 3, output: 15 };
   return (it / 1e6) * p.input + (ot / 1e6) * p.output;
+}
+
+function SectionLink({ href }: { href: string }) {
+  return (
+    <Link href={href} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+      Alles <ArrowRight className="h-3 w-3" />
+    </Link>
+  );
 }
 
 export default function DashboardPage() {
@@ -83,75 +92,98 @@ export default function DashboardPage() {
     <DashboardLayout>
       <main className="flex-1">
         <div className="px-6 py-6">
-          <PageHeader
-            title="Dashboard"
-            right={<InlineStats items={[
-              { label: "open", value: totaalOpen },
-              { label: "afgerond", value: totaalKlaar },
-              { label: "projecten", value: projecten.length },
-              { label: "", value: "$" + kostenMaand.toFixed(2) },
-            ]} />}
-          />
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
+            <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
+              <span>{totaalOpen} open</span>
+              <span className="text-muted-foreground/40">|</span>
+              <span>{totaalKlaar} afgerond</span>
+              <span className="text-muted-foreground/40">|</span>
+              <span>{projecten.length} projecten</span>
+              <span className="text-muted-foreground/40">|</span>
+              <span>${kostenMaand.toFixed(2)}</span>
+            </div>
+          </div>
           {laden ? (
-            <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" /></div>
+            <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 text-muted-foreground animate-spin" /></div>
           ) : (
             <div className="grid grid-cols-2 gap-4">
-              <SectionCard>
-                <SectionHeader title="Openstaande taken" href="/taken" />
-                <div className="divide-y divide-white/[0.05]">
-                  {openTaken.map((t, i) => (
-                    <ListItem key={i}>
-                      <p className="text-sm text-[#9b9b9b] leading-snug">{t.tekst}</p>
-                      <p className="text-[10px] text-[#666] mt-0.5">{t.project}</p>
-                    </ListItem>
-                  ))}
-                  {openTaken.length === 0 && <p className="px-4 py-3 text-sm text-[#666]">Geen taken</p>}
-                </div>
-              </SectionCard>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Openstaande taken</CardTitle>
+                  <CardAction><SectionLink href="/taken" /></CardAction>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="divide-y divide-border">
+                    {openTaken.map((t, i) => (
+                      <div key={i} className="py-2">
+                        <p className="text-sm text-muted-foreground leading-snug">{t.tekst}</p>
+                        <p className="text-[10px] text-muted-foreground/60 mt-0.5">{t.project}</p>
+                      </div>
+                    ))}
+                    {openTaken.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen taken</p>}
+                  </div>
+                </CardContent>
+              </Card>
 
-              <SectionCard>
-                <SectionHeader title={"Idee\u00EBn"} href="/ideeen" />
-                <div className="divide-y divide-white/[0.05]">
-                  {ideeen.map((idee, i) => (
-                    <ListItem key={i} className="flex items-center justify-between">
-                      <p className="text-sm text-[#9b9b9b]">{idee.titel}</p>
-                      <span className="text-[10px] text-[#666]">{idee.status}</span>
-                    </ListItem>
-                  ))}
-                  {ideeen.length === 0 && <p className="px-4 py-3 text-sm text-[#666]">Geen idee\u00EBn</p>}
-                </div>
-              </SectionCard>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Idee\u00EBn</CardTitle>
+                  <CardAction><SectionLink href="/ideeen" /></CardAction>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="divide-y divide-border">
+                    {ideeen.map((idee, i) => (
+                      <div key={i} className="py-2 flex items-center justify-between">
+                        <p className="text-sm text-muted-foreground">{idee.titel}</p>
+                        <span className="text-[10px] text-muted-foreground/60">{idee.status}</span>
+                      </div>
+                    ))}
+                    {ideeen.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen idee\u00EBn</p>}
+                  </div>
+                </CardContent>
+              </Card>
 
-              <SectionCard>
-                <SectionHeader title="Logboek" href="/logboek" />
-                <div className="divide-y divide-white/[0.05]">
-                  {logboek.map((entry, i) => {
-                    const r = entry.inhoud.split("\n").find((l: string) => l.trim() && !l.startsWith("#")) || entry.datum;
-                    return (
-                      <ListItem key={i} className="flex items-center justify-between">
-                        <p className="text-sm text-[#9b9b9b] truncate flex-1 min-w-0">{r.replace(/^[-*]\s*/, "").trim()}</p>
-                        <span className="text-[10px] text-[#666] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
-                      </ListItem>
-                    );
-                  })}
-                  {logboek.length === 0 && <p className="px-4 py-3 text-sm text-[#666]">Geen entries</p>}
-                </div>
-              </SectionCard>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Logboek</CardTitle>
+                  <CardAction><SectionLink href="/logboek" /></CardAction>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="divide-y divide-border">
+                    {logboek.map((entry, i) => {
+                      const r = entry.inhoud.split("\n").find((l: string) => l.trim() && !l.startsWith("#")) || entry.datum;
+                      return (
+                        <div key={i} className="py-2 flex items-center justify-between">
+                          <p className="text-sm text-muted-foreground truncate flex-1 min-w-0">{r.replace(/^[-*]\s*/, "").trim()}</p>
+                          <span className="text-[10px] text-muted-foreground/60 shrink-0 ml-3">{formatDatum(entry.datum)}</span>
+                        </div>
+                      );
+                    })}
+                    {logboek.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen entries</p>}
+                  </div>
+                </CardContent>
+              </Card>
 
-              <SectionCard>
-                <SectionHeader title="Projecten" href="/projecten" />
-                <div className="divide-y divide-white/[0.05]">
-                  {projecten.map((p, i) => (
-                    <Link key={i} href={`/projecten/${encodeURIComponent(p.naam)}`} className="block">
-                      <ListItem className="flex items-center justify-between">
-                        <p className="text-sm text-[#9b9b9b]">{p.naam}</p>
-                        <span className="text-[10px] text-[#666] font-mono">{getOpen(p.naam)} open</span>
-                      </ListItem>
-                    </Link>
-                  ))}
-                  {projecten.length === 0 && <p className="px-4 py-3 text-sm text-[#666]">Geen projecten</p>}
-                </div>
-              </SectionCard>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Projecten</CardTitle>
+                  <CardAction><SectionLink href="/projecten" /></CardAction>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="divide-y divide-border">
+                    {projecten.map((p, i) => (
+                      <Link key={i} href={`/projecten/${encodeURIComponent(p.naam)}`} className="block">
+                        <div className="py-2 flex items-center justify-between hover:bg-muted/50 transition-colors -mx-4 px-4">
+                          <p className="text-sm text-muted-foreground">{p.naam}</p>
+                          <span className="text-[10px] text-muted-foreground/60 font-mono">{getOpen(p.naam)} open</span>
+                        </div>
+                      </Link>
+                    ))}
+                    {projecten.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen projecten</p>}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>
