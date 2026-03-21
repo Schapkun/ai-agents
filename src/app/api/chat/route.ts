@@ -1,11 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { MODEL, MAX_TOKENS, SYSTEM_PROMPT } from "@/lib/config";
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
-
-const SYSTEM_PROMPT = `Je bent Mattie, de Manager Agent van Michael. Je delegeert taken aan agents, je codeert niet zelf. Antwoord in het Nederlands.`;
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -47,8 +46,8 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 2048,
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
       system: SYSTEM_PROMPT,
       messages,
     });

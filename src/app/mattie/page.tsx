@@ -15,6 +15,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import DashboardLayout from "@/components/dashboard-layout";
+import { AGENT_NAME, AGENT_ROLE, AGENT_DESCRIPTION, CHAT_PLACEHOLDER } from "@/lib/config";
 
 type Message = {
   rol: "user" | "agent";
@@ -197,8 +198,8 @@ export default function ChatPage() {
         <Bot className="h-4 w-4 text-blue-400" />
       </div>
       <div className="flex-1 min-w-0">
-        <h1 className="text-base font-semibold">Mattie</h1>
-        <p className="text-[10px] text-zinc-500">Manager Agent</p>
+        <h1 className="text-base font-semibold">{AGENT_NAME}</h1>
+        <p className="text-[10px] text-zinc-500">{AGENT_ROLE}</p>
       </div>
       <div className="flex items-center gap-1.5">
         {berichten.length > 0 && (
@@ -230,9 +231,9 @@ export default function ChatPage() {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-400/10 ring-1 border-blue-400/20 mb-4">
                 <Bot className="h-7 w-7 text-blue-400" />
               </div>
-              <h2 className="text-base font-semibold text-zinc-200">Mattie</h2>
+              <h2 className="text-base font-semibold text-zinc-200">{AGENT_NAME}</h2>
               <p className="mt-1.5 text-sm text-zinc-500 max-w-sm leading-relaxed">
-                Ik ben Mattie, je Manager Agent. Ik delegeer taken aan agents en houd het overzicht. Wat kan ik voor je doen?
+                {AGENT_DESCRIPTION}
               </p>
             </div>
           )}
@@ -352,7 +353,7 @@ export default function ChatPage() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Bericht aan Mattie..."
+            placeholder={CHAT_PLACEHOLDER}
             className="flex-1 rounded-xl border border-zinc-800 bg-zinc-900/80 px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:border-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-colors"
           />
           <button

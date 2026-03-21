@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { APP_NAME, APP_SUBTITLE } from "@/lib/config";
 
 type ActivePage = "overzicht" | "mattie" | "logboek";
 
@@ -40,8 +41,8 @@ export default function DashboardLayout({
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
-            <span className="text-base font-semibold tracking-tight">Agents</span>
-            <p className="text-[10px] text-zinc-500">Dashboard</p>
+            <span className="text-base font-semibold tracking-tight">{APP_NAME}</span>
+            <p className="text-[10px] text-zinc-500">{APP_SUBTITLE}</p>
           </div>
         </div>
 
@@ -70,7 +71,7 @@ export default function DashboardLayout({
         {/* Extra sidebar content */}
         {sidebarExtra}
 
-        {/* Spacer — laat navigatie bovenaan en sidebar ademen zonder onderste lijn (Apple-stijl) */}
+        {/* Spacer */}
         <div className="flex-1" />
 
       </aside>

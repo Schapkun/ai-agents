@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import { LOGBOEK_PATH } from "@/lib/config";
 
-const LOGBOEK_BASE = "/Users/doerak/.claude/logboek";
+const LOGBOEK_BASE = LOGBOEK_PATH;
 
 type LogboekEntry = {
   datum: string;
