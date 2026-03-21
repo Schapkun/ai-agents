@@ -125,7 +125,7 @@ export default function DashboardPage() {
               {/* Openstaande taken */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#9b9b9b]">Openstaande taken</h2>
+                  <h2 className="text-sm font-medium text-white">Openstaande taken</h2>
                   <Link href="/taken" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
@@ -133,7 +133,7 @@ export default function DashboardPage() {
                 <div className="divide-y divide-white/[0.05]">
                   {openTaken.map((t, i) => (
                     <div key={i} className="px-4 py-2 hover:bg-white/[0.02] transition-colors">
-                      <p className="text-sm text-[#ececec] leading-snug">{t.tekst}</p>
+                      <p className="text-sm text-[#9b9b9b] leading-snug">{t.tekst}</p>
                       <p className="text-[10px] text-[#666] mt-0.5">{t.project}</p>
                     </div>
                   ))}
@@ -144,7 +144,7 @@ export default function DashboardPage() {
               {/* Recente ideeën */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#9b9b9b]">Idee{"ë"}n</h2>
+                  <h2 className="text-sm font-medium text-white">Idee{"ë"}n</h2>
                   <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
                 <div className="divide-y divide-white/[0.05]">
                   {ideeen.map((idee, i) => (
                     <div key={i} className="flex items-center justify-between px-4 py-2 hover:bg-white/[0.02] transition-colors">
-                      <p className="text-sm text-[#ececec]">{idee.titel}</p>
+                      <p className="text-sm text-[#9b9b9b]">{idee.titel}</p>
                       <span className="text-[10px] text-[#666]">{idee.status}</span>
                     </div>
                   ))}
@@ -163,7 +163,7 @@ export default function DashboardPage() {
               {/* Logboek */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#9b9b9b]">Logboek</h2>
+                  <h2 className="text-sm font-medium text-white">Logboek</h2>
                   <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                     const regel = entry.inhoud.split("\n").find((r: string) => r.trim() && !r.startsWith("#")) || entry.datum;
                     return (
                       <div key={i} className="flex items-center justify-between px-4 py-2 hover:bg-white/[0.02] transition-colors">
-                        <p className="text-sm text-[#ececec] truncate flex-1 min-w-0">{regel.replace(/^[-*]\s*/, "").trim()}</p>
+                        <p className="text-sm text-[#9b9b9b] truncate flex-1 min-w-0">{regel.replace(/^[-*]\s*/, "").trim()}</p>
                         <span className="text-[10px] text-[#666] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
                       </div>
                     );
@@ -185,7 +185,7 @@ export default function DashboardPage() {
               {/* Projecten */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#9b9b9b]">Projecten</h2>
+                  <h2 className="text-sm font-medium text-white">Projecten</h2>
                   <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
                 <div className="divide-y divide-white/[0.05]">
                   {projecten.map((p, i) => (
                     <Link key={i} href={`/projecten/${encodeURIComponent(p.naam)}`} className="flex items-center justify-between px-4 py-2 hover:bg-white/[0.02] transition-colors block">
-                      <p className="text-sm text-[#ececec]">{p.naam}</p>
+                      <p className="text-sm text-[#9b9b9b]">{p.naam}</p>
                       <span className="text-[10px] text-[#666] font-mono">{getOpenTaken(p.naam)} open</span>
                     </Link>
                   ))}
