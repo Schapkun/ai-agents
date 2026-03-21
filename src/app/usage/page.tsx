@@ -116,7 +116,7 @@ export default function UsagePage() {
     .slice(0, 14);
 
   return (
-    <DashboardLayout activePage="usage" header={usageHeader}>
+    <DashboardLayout activePage={undefined} header={usageHeader}>
       <main className="flex-1">
         <div className="max-w-4xl mx-auto px-8 py-8">
           {laden ? (
