@@ -125,8 +125,8 @@ export default function DashboardPage() {
               {/* Openstaande taken */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Openstaande taken</h2>
-                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#9b9b9b] transition-colors">
+                  <h2 className="text-sm font-medium text-[#9b9b9b]">Openstaande taken</h2>
+                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -144,8 +144,8 @@ export default function DashboardPage() {
               {/* Recente ideeën */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Idee{"ë"}n</h2>
-                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#9b9b9b] transition-colors">
+                  <h2 className="text-sm font-medium text-[#9b9b9b]">Idee{"ë"}n</h2>
+                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -163,8 +163,8 @@ export default function DashboardPage() {
               {/* Logboek */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Logboek</h2>
-                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#9b9b9b] transition-colors">
+                  <h2 className="text-sm font-medium text-[#9b9b9b]">Logboek</h2>
+                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -185,8 +185,8 @@ export default function DashboardPage() {
               {/* Projecten */}
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Projecten</h2>
-                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#9b9b9b] transition-colors">
+                  <h2 className="text-sm font-medium text-[#9b9b9b]">Projecten</h2>
+                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
