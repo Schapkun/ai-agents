@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckSquare, Loader2, Check } from "lucide-react";
+import { CheckSquare, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type Taak = {
@@ -35,7 +35,6 @@ export default function TakenPage() {
 
   const projects = data?.projects ?? [];
 
-  // Flatten taken with project name
   const alleTaken: { tekst: string; project: string; klaar: boolean }[] = [];
   for (const p of projects) {
     for (const t of p.taken) {
@@ -47,10 +46,14 @@ export default function TakenPage() {
   const klaarTaken = alleTaken.filter((t) => t.klaar);
   const getoondeTaken = activeTab === "open" ? openTaken : klaarTaken;
 
+  // Tellers voor uitgevoerd tab
+  const goedgekeurd = 0; // Kan later dynamisch worden
+  const teBeoordelen = klaarTaken.length;
+
   return (
     <DashboardLayout>
       <main className="flex-1">
-        <div className="max-w-4xl mx-auto px-8 py-8">
+        <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Taken</h1>
@@ -58,16 +61,6 @@ export default function TakenPage() {
 
           {/* Tabs */}
           <div className="flex gap-1 mb-6 bg-[#171717] rounded-lg p-1 w-fit">
-            <button
-              onClick={() => setActiveTab("klaar")}
-              className={`px-4 py-2 text-sm rounded-md transition-all ${
-                activeTab === "klaar"
-                  ? "bg-[#2f2f2f] text-white font-medium"
-                  : "text-[#9b9b9b] hover:text-white"
-              }`}
-            >
-              Uitgevoerd ({klaarTaken.length})
-            </button>
             <button
               onClick={() => setActiveTab("open")}
               className={`px-4 py-2 text-sm rounded-md transition-all ${
@@ -78,7 +71,24 @@ export default function TakenPage() {
             >
               Openstaand ({openTaken.length})
             </button>
+            <button
+              onClick={() => setActiveTab("klaar")}
+              className={`px-4 py-2 text-sm rounded-md transition-all ${
+                activeTab === "klaar"
+                  ? "bg-[#2f2f2f] text-white font-medium"
+                  : "text-[#9b9b9b] hover:text-white"
+              }`}
+            >
+              Uitgevoerd ({klaarTaken.length})
+            </button>
           </div>
+
+          {/* Teller voor uitgevoerd tab */}
+          {activeTab === "klaar" && klaarTaken.length > 0 && (
+            <p className="text-xs text-[#9b9b9b] mb-4">
+              {goedgekeurd} goedgekeurd &middot; {teBeoordelen} te beoordelen
+            </p>
+          )}
 
           {laden ? (
             <div className="flex items-center justify-center py-20">
@@ -98,28 +108,17 @@ export default function TakenPage() {
               <div className="divide-y divide-[#383838]/50">
                 {getoondeTaken.map((taak, i) => (
                   <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-[#383838]/30 transition-colors">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
-                        taak.klaar
-                          ? "bg-white border-white"
-                          : "border-[#9b9b9b]/40"
-                      }`}>
-                        {taak.klaar && (
-                          <Check className="h-3 w-3 text-[#171717]" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm ${taak.klaar ? "text-[#9b9b9b] line-through" : "text-[#ececec]"}`}>
-                          {taak.tekst}
-                        </p>
-                        <p className="text-xs text-[#9b9b9b] mt-0.5">{taak.project}</p>
-                      </div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm ${taak.klaar ? "text-[#9b9b9b] line-through" : "text-[#ececec]"}`}>
+                        {taak.tekst}
+                      </p>
+                      <p className="text-xs text-[#9b9b9b] mt-0.5">{taak.project}</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0 ml-4">
                       {activeTab === "open" ? (
                         <>
-                          <button className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white text-black hover:bg-white/90 transition-colors">
-                            Voer uit
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                            Uitvoeren
                           </button>
                           <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
                             Bewerken
@@ -129,14 +128,9 @@ export default function TakenPage() {
                           </button>
                         </>
                       ) : (
-                        <>
-                          <button className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white text-black hover:bg-white/90 transition-colors">
-                            Goedkeuren
-                          </button>
-                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
-                            Wijziging aanvragen
-                          </button>
-                        </>
+                        <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                          Wijziging
+                        </button>
                       )}
                     </div>
                   </div>

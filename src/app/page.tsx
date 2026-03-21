@@ -96,7 +96,7 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
       <main className="flex-1">
-        <div className="max-w-5xl mx-auto px-8 py-8">
+        <div className="px-8 py-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
@@ -178,7 +178,7 @@ export default function DashboardPage() {
                       const eersteRegel = entry.inhoud.split("\n").find((r: string) => r.trim() && !r.startsWith("#")) || entry.datum;
                       return (
                         <div key={i} className="flex items-center justify-between px-5 py-3 hover:bg-[#383838]/30 transition-colors">
-                          <p className="text-sm text-[#ececec] truncate max-w-xs">{eersteRegel.replace(/^[-*]\s*/, "").trim()}</p>
+                          <p className="text-sm text-[#ececec] truncate flex-1 min-w-0">{eersteRegel.replace(/^[-*]\s*/, "").trim()}</p>
                           <span className="text-xs text-[#9b9b9b] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
                         </div>
                       );

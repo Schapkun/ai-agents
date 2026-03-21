@@ -102,7 +102,7 @@ export default function UsagePage() {
   return (
     <DashboardLayout>
       <main className="flex-1">
-        <div className="max-w-4xl mx-auto px-8 py-8">
+        <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Usage</h1>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { BookOpen, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { BookOpen, Loader2, ChevronDown, ChevronUp, Search } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type LogboekEntry = {
@@ -24,10 +24,23 @@ function getSamenvatting(inhoud: string): string {
   return "Geen samenvatting";
 }
 
+function extractCategorieen(entries: LogboekEntry[]): string[] {
+  const cats = new Set<string>();
+  for (const e of entries) {
+    if (e.categorie) cats.add(e.categorie);
+    // Probeer ook project/categorie uit de inhoud te halen
+    const match = e.inhoud.match(/^#\s+(.+)/m);
+    if (match) cats.add(match[1].trim());
+  }
+  return Array.from(cats).sort();
+}
+
 export default function LogboekPage() {
   const [entries, setEntries] = useState<LogboekEntry[]>([]);
   const [laden, setLaden] = useState(true);
   const [openEntry, setOpenEntry] = useState<string | null>(null);
+  const [zoekterm, setZoekterm] = useState("");
+  const [filterCategorie, setFilterCategorie] = useState<string>("alle");
 
   useEffect(() => {
     fetch("/api/logboek")
@@ -39,31 +52,87 @@ export default function LogboekPage() {
       .catch(() => setLaden(false));
   }, []);
 
+  const categorieen = useMemo(() => extractCategorieen(entries), [entries]);
+
+  const gefilterdeEntries = useMemo(() => {
+    let result = entries;
+
+    if (zoekterm.trim()) {
+      const term = zoekterm.toLowerCase();
+      result = result.filter(
+        (e) =>
+          e.inhoud.toLowerCase().includes(term) ||
+          e.datum.toLowerCase().includes(term) ||
+          e.categorie.toLowerCase().includes(term)
+      );
+    }
+
+    if (filterCategorie !== "alle") {
+      result = result.filter((e) => {
+        if (e.categorie === filterCategorie) return true;
+        const match = e.inhoud.match(/^#\s+(.+)/m);
+        return match && match[1].trim() === filterCategorie;
+      });
+    }
+
+    return result;
+  }, [entries, zoekterm, filterCategorie]);
+
   return (
     <DashboardLayout>
       <main className="flex-1">
-        <div className="max-w-4xl mx-auto px-8 py-8">
+        <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Logboek</h1>
             <p className="text-sm text-[#9b9b9b] mt-1">{entries.length} entries</p>
           </div>
 
+          {/* Zoek + Filter balk */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9b9b9b]" />
+              <input
+                type="text"
+                value={zoekterm}
+                onChange={(e) => setZoekterm(e.target.value)}
+                placeholder="Zoeken in logboek..."
+                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-[#383838] bg-[#2f2f2f] text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
+              />
+            </div>
+            {categorieen.length > 0 && (
+              <select
+                value={filterCategorie}
+                onChange={(e) => setFilterCategorie(e.target.value)}
+                className="px-3 py-2 text-sm rounded-lg border border-[#383838] bg-[#2f2f2f] text-[#ececec] focus:border-[#9b9b9b] focus:outline-none transition-colors appearance-none cursor-pointer"
+              >
+                <option value="alle">Alle categorie{"ë"}n</option>
+                {categorieen.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            )}
+          </div>
+
           {laden ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" />
             </div>
-          ) : entries.length === 0 ? (
+          ) : gefilterdeEntries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 mb-3">
                 <BookOpen className="h-5 w-5 text-[#9b9b9b]" />
               </div>
-              <p className="text-sm text-[#9b9b9b]">Geen logboek entries gevonden</p>
+              <p className="text-sm text-[#9b9b9b]">
+                {zoekterm || filterCategorie !== "alle"
+                  ? "Geen resultaten gevonden"
+                  : "Geen logboek entries gevonden"}
+              </p>
             </div>
           ) : (
             <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
               <div className="divide-y divide-[#383838]/50">
-                {entries.map((entry) => {
+                {gefilterdeEntries.map((entry) => {
                   const isOpen = openEntry === entry.datum;
                   return (
                     <div key={entry.datum}>

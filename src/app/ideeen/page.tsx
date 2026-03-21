@@ -44,24 +44,14 @@ export default function IdeeenPage() {
   return (
     <DashboardLayout>
       <main className="flex-1">
-        <div className="max-w-4xl mx-auto px-8 py-8">
+        <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Idee\u00ebn</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Idee{"ë"}n</h1>
           </div>
 
           {/* Tabs */}
           <div className="flex gap-1 mb-6 bg-[#171717] rounded-lg p-1 w-fit">
-            <button
-              onClick={() => setActiveTab("uitgewerkt")}
-              className={`px-4 py-2 text-sm rounded-md transition-all ${
-                activeTab === "uitgewerkt"
-                  ? "bg-[#2f2f2f] text-white font-medium"
-                  : "text-[#9b9b9b] hover:text-white"
-              }`}
-            >
-              Uitgewerkt ({uitgewerkteIdeeen.length})
-            </button>
             <button
               onClick={() => setActiveTab("nieuw")}
               className={`px-4 py-2 text-sm rounded-md transition-all ${
@@ -71,6 +61,16 @@ export default function IdeeenPage() {
               }`}
             >
               Nieuw ({nieuweIdeeen.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("uitgewerkt")}
+              className={`px-4 py-2 text-sm rounded-md transition-all ${
+                activeTab === "uitgewerkt"
+                  ? "bg-[#2f2f2f] text-white font-medium"
+                  : "text-[#9b9b9b] hover:text-white"
+              }`}
+            >
+              Uitgewerkt ({uitgewerkteIdeeen.length})
             </button>
           </div>
 
@@ -91,10 +91,10 @@ export default function IdeeenPage() {
             <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
               <div className="divide-y divide-[#383838]/50">
                 {getoondeIdeeen.map((idee, i) => (
-                  <div key={i} className="flex items-center justify-between px-5 py-4 hover:bg-[#383838]/30 transition-colors">
+                  <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-[#383838]/30 transition-colors">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-medium text-white">{idee.titel}</h3>
+                        <p className="text-sm text-[#ececec]">{idee.titel}</p>
                         {idee.url && idee.url !== "-" && (
                           <a
                             href={idee.url}
@@ -109,7 +109,7 @@ export default function IdeeenPage() {
                       {idee.beschrijving && (
                         <p className="text-xs text-[#9b9b9b] mt-1 leading-relaxed">{idee.beschrijving}</p>
                       )}
-                      <div className="flex items-center gap-3 mt-2">
+                      <div className="flex items-center gap-3 mt-1">
                         <span className="text-[10px] text-[#9b9b9b]/60">{idee.status}</span>
                         {idee.datum && <span className="text-[10px] text-[#9b9b9b]/60">{idee.datum}</span>}
                       </div>
@@ -117,7 +117,7 @@ export default function IdeeenPage() {
                     <div className="flex items-center gap-2 shrink-0 ml-4">
                       {activeTab === "nieuw" ? (
                         <>
-                          <button className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white text-black hover:bg-white/90 transition-colors">
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
                             Uitwerken
                           </button>
                           <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
@@ -125,14 +125,9 @@ export default function IdeeenPage() {
                           </button>
                         </>
                       ) : (
-                        <>
-                          <button className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white text-black hover:bg-white/90 transition-colors">
-                            Goedkeuren
-                          </button>
-                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
-                            Feedback
-                          </button>
-                        </>
+                        <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                          Feedback
+                        </button>
                       )}
                     </div>
                   </div>
