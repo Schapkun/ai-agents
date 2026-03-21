@@ -7,8 +7,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AI Agents — Dashboard",
-  description: "Michael's AI Agency Dashboard",
+  title: "Mattie — Dashboard",
+  description: "Mattie Manager Agent Dashboard",
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="nl" className="dark">
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         {children}
       </body>

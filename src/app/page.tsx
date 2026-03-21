@@ -2,174 +2,21 @@
 
 import { useState, useRef, useEffect } from "react";
 import {
-  User,
   Bot,
-  Code,
-  CheckCircle,
-  Palette,
-  Wrench,
-  Search,
-  Settings,
-  Database,
   Send,
   Trash2,
   Copy,
   Check,
   Plus,
   MessageSquare,
-  Users,
+  LayoutTemplate,
   BookOpen,
-  type LucideIcon,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Link from "next/link";
-
-type AgentConfig = {
-  id: string;
-  naam: string;
-  beschrijving: string;
-  uitleg: string;
-  icon: LucideIcon;
-  kleur: string;
-  bgKleur: string;
-  borderKleur: string;
-  level: number;
-  levelNaam: string;
-};
-
-const iconMap: Record<string, LucideIcon> = {
-  michael: User,
-  manager: Bot,
-  code: Code,
-  review: CheckCircle,
-  design: Palette,
-  fix: Wrench,
-  research: Search,
-  setup: Settings,
-  database: Database,
-};
-
-function levelNaam(level: number): string {
-  if (level <= 20) return "Beginner";
-  if (level <= 40) return "Junior";
-  if (level <= 60) return "Medior";
-  if (level <= 80) return "Senior";
-  return "Expert";
-}
-
-const agentConfigs: AgentConfig[] = [
-  {
-    id: "michael",
-    naam: "Michael Agent",
-    beschrijving: "Michaels perspectief",
-    uitleg: "Ik vertegenwoordig Michael. Ik controleer of alles klopt en of het team de juiste richting opgaat.",
-    icon: User,
-    kleur: "text-amber-400",
-    bgKleur: "bg-amber-400/10",
-    borderKleur: "border-amber-400/20",
-    level: 5,
-    levelNaam: levelNaam(5),
-  },
-  {
-    id: "manager",
-    naam: "Mattie",
-    beschrijving: "Manager & coordinator",
-    uitleg: "Ik ben Mattie, de manager. Ik coordineer het team, delegeer taken en controleer de kwaliteit.",
-    icon: Bot,
-    kleur: "text-blue-400",
-    bgKleur: "bg-blue-400/10",
-    borderKleur: "border-blue-400/20",
-    level: 33,
-    levelNaam: levelNaam(33),
-  },
-  {
-    id: "code",
-    naam: "Code Agent",
-    beschrijving: "Schrijft code",
-    uitleg: "Ik schrijf code. React, TypeScript, Tailwind, Next.js — beschrijf wat je wilt en ik bouw het.",
-    icon: Code,
-    kleur: "text-violet-400",
-    bgKleur: "bg-violet-400/10",
-    borderKleur: "border-violet-400/20",
-    level: 50,
-    levelNaam: levelNaam(50),
-  },
-  {
-    id: "review",
-    naam: "Review Agent",
-    beschrijving: "Code review",
-    uitleg: "Ik review code op kwaliteit, bugs en best practices.",
-    icon: CheckCircle,
-    kleur: "text-green-400",
-    bgKleur: "bg-green-400/10",
-    borderKleur: "border-green-400/20",
-    level: 40,
-    levelNaam: levelNaam(40),
-  },
-  {
-    id: "design",
-    naam: "Design Agent",
-    beschrijving: "UI/UX design",
-    uitleg: "Ik help met design. Layouts, kleuren, typografie en visuele verbeteringen.",
-    icon: Palette,
-    kleur: "text-pink-400",
-    bgKleur: "bg-pink-400/10",
-    borderKleur: "border-pink-400/20",
-    level: 15,
-    levelNaam: levelNaam(15),
-  },
-  {
-    id: "fix",
-    naam: "Fix Agent",
-    beschrijving: "Bugs oplossen",
-    uitleg: "Ik los bugs op. Stuur me een foutmelding en ik vind de oorzaak.",
-    icon: Wrench,
-    kleur: "text-orange-400",
-    bgKleur: "bg-orange-400/10",
-    borderKleur: "border-orange-400/20",
-    level: 45,
-    levelNaam: levelNaam(45),
-  },
-  {
-    id: "research",
-    naam: "Research Agent",
-    beschrijving: "Onderzoek & analyse",
-    uitleg: "Ik doe onderzoek. Geef me een onderwerp en ik lever een gestructureerde analyse.",
-    icon: Search,
-    kleur: "text-cyan-400",
-    bgKleur: "bg-cyan-400/10",
-    borderKleur: "border-cyan-400/20",
-    level: 55,
-    levelNaam: levelNaam(55),
-  },
-  {
-    id: "setup",
-    naam: "Setup Agent",
-    beschrijving: "Project configuratie",
-    uitleg: "Ik zet projecten op. Van Next.js tot databases — ik configureer alles.",
-    icon: Settings,
-    kleur: "text-teal-400",
-    bgKleur: "bg-teal-400/10",
-    borderKleur: "border-teal-400/20",
-    level: 50,
-    levelNaam: levelNaam(50),
-  },
-  {
-    id: "database",
-    naam: "Database Agent",
-    beschrijving: "Database & queries",
-    uitleg: "Ik help met databases. Schema ontwerp, queries, migraties — alles rondom data.",
-    icon: Database,
-    kleur: "text-indigo-400",
-    bgKleur: "bg-indigo-400/10",
-    borderKleur: "border-indigo-400/20",
-    level: 40,
-    levelNaam: levelNaam(40),
-  },
-];
 
 type Message = {
   rol: "user" | "agent";
@@ -178,13 +25,12 @@ type Message = {
 
 type Gesprek = {
   id: string;
-  agentId: string;
   titel: string;
   berichten: Message[];
   aangemaakt: number;
 };
 
-const STORAGE_KEY = "ai-agents-gesprekken-v2";
+const STORAGE_KEY = "mattie-gesprekken-v1";
 
 function laadGesprekken(): Gesprek[] {
   if (typeof window === "undefined") return [];
@@ -201,7 +47,6 @@ function slaOp(gesprekken: Gesprek[]) {
 }
 
 export default function Home() {
-  const [actieveAgent, setActieveAgent] = useState(agentConfigs[1]); // Default: Mattie
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [gesprekken, setGesprekken] = useState<Gesprek[]>([]);
@@ -229,9 +74,6 @@ export default function Home() {
 
   const actiefGesprek = gesprekken.find((g) => g.id === actiefGesprekId) || null;
   const berichten = actiefGesprek?.berichten || [];
-  const agentGesprekken = gesprekken
-    .filter((g) => g.agentId === actieveAgent.id)
-    .sort((a, b) => b.aangemaakt - a.aangemaakt);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -239,7 +81,7 @@ export default function Home() {
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [actieveAgent.id]);
+  }, [actiefGesprekId]);
 
   function nieuwGesprek() {
     setActiefGesprekId(null);
@@ -263,7 +105,6 @@ export default function Home() {
       gesprekId = crypto.randomUUID();
       const nieuw: Gesprek = {
         id: gesprekId,
-        agentId: actieveAgent.id,
         titel: vraag.slice(0, 50) + (vraag.length > 50 ? "..." : ""),
         berichten: [{ rol: "user", tekst: vraag }],
         aangemaakt: Date.now(),
@@ -289,7 +130,6 @@ export default function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          agent: actieveAgent.id,
           bericht: vraag,
           geschiedenis: huidigeBerichten,
         }),
@@ -316,8 +156,6 @@ export default function Home() {
     setLoading(false);
   }
 
-  const AgentIcon = actieveAgent.icon;
-
   return (
     <div className="flex h-screen overflow-hidden bg-zinc-950 text-white">
       {/* Sidebar */}
@@ -328,7 +166,7 @@ export default function Home() {
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
-            <span className="text-sm font-semibold tracking-tight">AI Agents</span>
+            <span className="text-sm font-semibold tracking-tight">Mattie</span>
             <p className="text-[10px] text-zinc-500">Dashboard</p>
           </div>
         </div>
@@ -346,7 +184,7 @@ export default function Home() {
             href="/agents"
             className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors"
           >
-            <Users className="h-4 w-4" />
+            <LayoutTemplate className="h-4 w-4" />
             Agents
           </Link>
           <Link
@@ -358,65 +196,22 @@ export default function Home() {
           </Link>
         </nav>
 
-        <div className="px-3 pt-3">
-          <p className="px-3 pb-1.5 text-[10px] font-medium uppercase tracking-wider text-zinc-600">
-            Agents
-          </p>
-        </div>
-
-        {/* Agent lijst */}
-        <div className="flex-1 overflow-y-auto px-3 pb-2 space-y-0.5">
-          {agentConfigs.map((agent) => {
-            const isActief = actieveAgent.id === agent.id;
-            const Icon = agent.icon;
-            const aantalGesprekken = gesprekken.filter((g) => g.agentId === agent.id).length;
-            return (
+        {/* Gesprekken lijst */}
+        {gesprekken.length > 0 && (
+          <div className="px-3 pt-4 flex-1 overflow-y-auto">
+            <div className="flex items-center justify-between px-3 pb-1.5">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-600">
+                Gesprekken
+              </p>
               <button
-                key={agent.id}
-                onClick={() => {
-                  setActieveAgent(agent);
-                  setActiefGesprekId(null);
-                }}
-                className={`group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left transition-all duration-150 ${
-                  isActief
-                    ? "bg-zinc-800/70 text-white"
-                    : "text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200"
-                }`}
+                onClick={nieuwGesprek}
+                className="flex items-center gap-0.5 text-[10px] text-zinc-600 hover:text-zinc-400 transition-colors"
               >
-                <div
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${agent.bgKleur}`}
-                >
-                  <Icon className={`h-3.5 w-3.5 ${agent.kleur}`} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs font-medium truncate">{agent.naam}</p>
-                  <p className="text-[10px] text-zinc-500 truncate">{agent.beschrijving}</p>
-                </div>
-                <div className="flex items-center gap-1.5 shrink-0">
-                  {aantalGesprekken > 0 && (
-                    <span className="text-[10px] text-zinc-600">{aantalGesprekken}</span>
-                  )}
-                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400/80" />
-                </div>
+                <Plus className="h-3 w-3" />
               </button>
-            );
-          })}
-
-          {/* Gesprekken voor actieve agent */}
-          {agentGesprekken.length > 0 && (
-            <div className="pt-2">
-              <div className="flex items-center justify-between px-3 pb-1.5">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-600">
-                  Gesprekken
-                </p>
-                <button
-                  onClick={nieuwGesprek}
-                  className="flex items-center gap-0.5 text-[10px] text-zinc-600 hover:text-zinc-400 transition-colors"
-                >
-                  <Plus className="h-3 w-3" />
-                </button>
-              </div>
-              {agentGesprekken.slice(0, 5).map((gesprek) => (
+            </div>
+            <div className="space-y-0.5">
+              {gesprekken.slice(0, 10).map((gesprek) => (
                 <button
                   key={gesprek.id}
                   onClick={() => setActiefGesprekId(gesprek.id)}
@@ -431,16 +226,10 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          )}
-        </div>
-
-        {/* Stats */}
-        <div className="border-t border-zinc-800/60 px-4 py-3">
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="text-zinc-500">Online</span>
-            <span className="text-emerald-400 font-medium">9/9</span>
           </div>
-        </div>
+        )}
+
+        {gesprekken.length === 0 && <div className="flex-1" />}
 
         {/* User */}
         <div className="border-t border-zinc-800/60 px-4 py-3">
@@ -460,17 +249,12 @@ export default function Home() {
       <div className="flex flex-1 flex-col min-w-0">
         {/* Header */}
         <header className="flex items-center gap-3 border-b border-zinc-800/60 px-6 py-3 bg-zinc-950/80 backdrop-blur-sm shrink-0">
-          <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${actieveAgent.bgKleur} ring-1 ${actieveAgent.borderKleur}`}>
-            <AgentIcon className={`h-4 w-4 ${actieveAgent.kleur}`} />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-400/10 ring-1 border-blue-400/20">
+            <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm font-semibold">{actieveAgent.naam}</h1>
-              <span className="text-[10px] text-zinc-500 bg-zinc-800/60 px-1.5 py-0.5 rounded">
-                Lv.{actieveAgent.level} {actieveAgent.levelNaam}
-              </span>
-            </div>
-            <p className="text-[11px] text-zinc-500">{actieveAgent.beschrijving}</p>
+            <h1 className="text-sm font-semibold">Mattie</h1>
+            <p className="text-[11px] text-zinc-500">Manager Agent</p>
           </div>
           <div className="flex items-center gap-1.5">
             {berichten.length > 0 && (
@@ -496,11 +280,13 @@ export default function Home() {
           <div className="mx-auto max-w-2xl px-6 py-6 space-y-6">
             {berichten.length === 0 && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${actieveAgent.bgKleur} ring-1 ${actieveAgent.borderKleur} mb-4`}>
-                  <AgentIcon className={`h-7 w-7 ${actieveAgent.kleur}`} />
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-400/10 ring-1 border-blue-400/20 mb-4">
+                  <Bot className="h-7 w-7 text-blue-400" />
                 </div>
-                <h2 className="text-base font-semibold text-zinc-200">{actieveAgent.naam}</h2>
-                <p className="mt-1.5 text-sm text-zinc-500 max-w-sm leading-relaxed">{actieveAgent.uitleg}</p>
+                <h2 className="text-base font-semibold text-zinc-200">Mattie</h2>
+                <p className="mt-1.5 text-sm text-zinc-500 max-w-sm leading-relaxed">
+                  Ik ben Mattie, je Manager Agent. Ik delegeer taken aan agents en houd het overzicht. Wat kan ik voor je doen?
+                </p>
               </div>
             )}
 
@@ -510,8 +296,8 @@ export default function Home() {
                 className={`group/msg flex gap-3 ${bericht.rol === "user" ? "justify-end" : "justify-start"}`}
               >
                 {bericht.rol === "agent" && (
-                  <div className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${actieveAgent.bgKleur}`}>
-                    <AgentIcon className={`h-3.5 w-3.5 ${actieveAgent.kleur}`} />
+                  <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-400/10">
+                    <Bot className="h-3.5 w-3.5 text-blue-400" />
                   </div>
                 )}
                 <div className="relative max-w-lg">
@@ -591,8 +377,8 @@ export default function Home() {
 
             {loading && (
               <div className="flex gap-3">
-                <div className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${actieveAgent.bgKleur}`}>
-                  <AgentIcon className={`h-3.5 w-3.5 ${actieveAgent.kleur}`} />
+                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-400/10">
+                  <Bot className="h-3.5 w-3.5 text-blue-400" />
                 </div>
                 <div className="rounded-2xl rounded-bl-md bg-zinc-800/70 ring-1 ring-zinc-700/40 px-4 py-3">
                   <div className="flex items-center gap-1.5">
@@ -619,7 +405,7 @@ export default function Home() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Bericht aan ${actieveAgent.naam}...`}
+              placeholder="Bericht aan Mattie..."
               className="flex-1 rounded-xl border border-zinc-800 bg-zinc-900/80 px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:border-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-colors"
             />
             <button

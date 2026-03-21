@@ -1,21 +1,18 @@
 "use client";
 
 import {
-  User,
   Bot,
-  Code,
-  CheckCircle,
-  Palette,
-  Wrench,
-  Search,
-  Settings,
-  Database,
   MessageSquare,
-  Users,
+  LayoutTemplate,
   BookOpen,
   TrendingUp,
   TrendingDown,
   Minus,
+  Code,
+  Wrench,
+  Palette,
+  RefreshCw,
+  FolderPlus,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -27,45 +24,18 @@ type AgentInfo = {
   icon: LucideIcon;
   kleur: string;
   bgKleur: string;
-  level: number;
-  levelNaam: string;
-  status: "online" | "offline";
+  gebruikt: number;
+  geslaagd: number;
   trend: "up" | "down" | "stable";
 };
 
-function levelNaam(level: number): string {
-  if (level <= 20) return "Beginner";
-  if (level <= 40) return "Junior";
-  if (level <= 60) return "Medior";
-  if (level <= 80) return "Senior";
-  return "Expert";
-}
-
 const agentData: AgentInfo[] = [
-  { id: "michael", naam: "Michael Agent", beschrijving: "Michaels perspectief, controleert Manager", icon: User, kleur: "text-amber-400", bgKleur: "bg-amber-400/10", level: 5, levelNaam: levelNaam(5), status: "online", trend: "stable" },
-  { id: "manager", naam: "Manager (Mattie)", beschrijving: "Technisch leider, delegeert en controleert", icon: Bot, kleur: "text-blue-400", bgKleur: "bg-blue-400/10", level: 33, levelNaam: levelNaam(33), status: "online", trend: "up" },
-  { id: "code", naam: "Code Agent", beschrijving: "Schrijft en genereert code", icon: Code, kleur: "text-violet-400", bgKleur: "bg-violet-400/10", level: 50, levelNaam: levelNaam(50), status: "online", trend: "stable" },
-  { id: "review", naam: "Review Agent", beschrijving: "Controleert code kwaliteit", icon: CheckCircle, kleur: "text-green-400", bgKleur: "bg-green-400/10", level: 40, levelNaam: levelNaam(40), status: "online", trend: "stable" },
-  { id: "design", naam: "Design Agent", beschrijving: "UI/UX design en visuele output", icon: Palette, kleur: "text-pink-400", bgKleur: "bg-pink-400/10", level: 15, levelNaam: levelNaam(15), status: "online", trend: "down" },
-  { id: "fix", naam: "Fix Agent", beschrijving: "Lost bugs en problemen op", icon: Wrench, kleur: "text-orange-400", bgKleur: "bg-orange-400/10", level: 45, levelNaam: levelNaam(45), status: "online", trend: "up" },
-  { id: "research", naam: "Research Agent", beschrijving: "Onderzoek, samenvattingen en analyses", icon: Search, kleur: "text-cyan-400", bgKleur: "bg-cyan-400/10", level: 55, levelNaam: levelNaam(55), status: "online", trend: "up" },
-  { id: "setup", naam: "Setup Agent", beschrijving: "Project setup en configuratie", icon: Settings, kleur: "text-teal-400", bgKleur: "bg-teal-400/10", level: 50, levelNaam: levelNaam(50), status: "online", trend: "stable" },
-  { id: "database", naam: "Database Agent", beschrijving: "Database ontwerp en queries", icon: Database, kleur: "text-indigo-400", bgKleur: "bg-indigo-400/10", level: 40, levelNaam: levelNaam(40), status: "online", trend: "stable" },
+  { id: "feature-agent", naam: "Feature Agent", beschrijving: "Bouw een volledig nieuwe functionaliteit van ontwerp tot oplevering", icon: Code, kleur: "text-violet-400", bgKleur: "bg-violet-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
+  { id: "fix-agent", naam: "Fix Agent", beschrijving: "Diagnose en oplossing van bugs, fouten en onverwacht gedrag", icon: Wrench, kleur: "text-orange-400", bgKleur: "bg-orange-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
+  { id: "design-agent", naam: "Design Agent", beschrijving: "UI/UX aanpassingen, visuele verbeteringen en layout wijzigingen", icon: Palette, kleur: "text-pink-400", bgKleur: "bg-pink-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
+  { id: "refactor-agent", naam: "Refactor Agent", beschrijving: "Code herstructureren voor betere leesbaarheid en onderhoudbaarheid", icon: RefreshCw, kleur: "text-cyan-400", bgKleur: "bg-cyan-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
+  { id: "setup-agent", naam: "Setup Agent", beschrijving: "Nieuw project initialiseren met tooling, configuratie en structuur", icon: FolderPlus, kleur: "text-teal-400", bgKleur: "bg-teal-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
 ];
-
-function LevelBar({ level }: { level: number }) {
-  return (
-    <div className="flex items-center gap-2.5">
-      <div className="h-1.5 w-24 rounded-full bg-zinc-800">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all"
-          style={{ width: `${level}%` }}
-        />
-      </div>
-      <span className="text-xs text-zinc-400 font-mono w-6 text-right">{level}</span>
-    </div>
-  );
-}
 
 function TrendIcon({ trend }: { trend: "up" | "down" | "stable" }) {
   if (trend === "up") return <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />;
@@ -73,9 +43,22 @@ function TrendIcon({ trend }: { trend: "up" | "down" | "stable" }) {
   return <Minus className="h-3.5 w-3.5 text-zinc-500" />;
 }
 
-export default function AgentsPage() {
-  const gemiddeldLevel = Math.round(agentData.reduce((sum, a) => sum + a.level, 0) / agentData.length);
+function ProgressBar({ gebruikt, geslaagd }: { gebruikt: number; geslaagd: number }) {
+  const pct = gebruikt === 0 ? 0 : Math.round((geslaagd / gebruikt) * 100);
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="h-1.5 w-24 rounded-full bg-zinc-800">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <span className="text-xs text-zinc-400 font-mono w-8 text-right">{gebruikt === 0 ? "-" : pct + "%"}</span>
+    </div>
+  );
+}
 
+export default function AgentsPage() {
   return (
     <div className="flex h-screen overflow-hidden bg-zinc-950 text-white">
       {/* Sidebar */}
@@ -85,7 +68,7 @@ export default function AgentsPage() {
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
-            <span className="text-sm font-semibold tracking-tight">AI Agents</span>
+            <span className="text-sm font-semibold tracking-tight">Mattie</span>
             <p className="text-[10px] text-zinc-500">Dashboard</p>
           </div>
         </div>
@@ -96,7 +79,7 @@ export default function AgentsPage() {
             Chat
           </Link>
           <Link href="/agents" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white bg-zinc-800/60">
-            <Users className="h-4 w-4 text-zinc-400" />
+            <LayoutTemplate className="h-4 w-4 text-zinc-400" />
             Agents
           </Link>
           <Link href="/logboek" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
@@ -125,23 +108,23 @@ export default function AgentsPage() {
           <div className="mb-8">
             <h1 className="text-xl font-semibold tracking-tight">Agents</h1>
             <p className="text-sm text-zinc-500 mt-1">
-              {agentData.length} agents &middot; gemiddeld level {gemiddeldLevel}
+              {agentData.length} agents &middot; slagingspercentages
             </p>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-8">
             <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Totaal agents</p>
+              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Agents</p>
               <p className="text-2xl font-semibold mt-1">{agentData.length}</p>
             </div>
             <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Online</p>
-              <p className="text-2xl font-semibold mt-1 text-emerald-400">{agentData.filter((a) => a.status === "online").length}</p>
+              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Totaal gebruikt</p>
+              <p className="text-2xl font-semibold mt-1">{agentData.reduce((s, a) => s + a.gebruikt, 0)}</p>
             </div>
             <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Gem. level</p>
-              <p className="text-2xl font-semibold mt-1">{gemiddeldLevel}</p>
+              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Totaal geslaagd</p>
+              <p className="text-2xl font-semibold mt-1 text-emerald-400">{agentData.reduce((s, a) => s + a.geslaagd, 0)}</p>
             </div>
           </div>
 
@@ -151,9 +134,9 @@ export default function AgentsPage() {
               <thead>
                 <tr className="border-b border-zinc-800/40 bg-zinc-900/40">
                   <th className="text-left px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Agent</th>
-                  <th className="text-left px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Level</th>
-                  <th className="text-left px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Rang</th>
-                  <th className="text-center px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Status</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Gebruikt</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Geslaagd</th>
+                  <th className="text-left px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Percentage</th>
                   <th className="text-center px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Trend</th>
                 </tr>
               </thead>
@@ -173,21 +156,14 @@ export default function AgentsPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-3">
-                        <LevelBar level={agent.level} />
+                      <td className="px-5 py-3 text-right">
+                        <span className="text-sm text-zinc-300 font-mono">{agent.gebruikt}</span>
+                      </td>
+                      <td className="px-5 py-3 text-right">
+                        <span className="text-sm text-zinc-300 font-mono">{agent.geslaagd}</span>
                       </td>
                       <td className="px-5 py-3">
-                        <span className="text-xs text-zinc-400">{agent.levelNaam}</span>
-                      </td>
-                      <td className="px-5 py-3 text-center">
-                        <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-md ${
-                          agent.status === "online"
-                            ? "text-emerald-400 bg-emerald-400/10"
-                            : "text-zinc-500 bg-zinc-800"
-                        }`}>
-                          <span className={`h-1.5 w-1.5 rounded-full ${agent.status === "online" ? "bg-emerald-400" : "bg-zinc-500"}`} />
-                          {agent.status}
-                        </span>
+                        <ProgressBar gebruikt={agent.gebruikt} geslaagd={agent.geslaagd} />
                       </td>
                       <td className="px-5 py-3 text-center">
                         <div className="flex justify-center">

@@ -3,7 +3,7 @@
 import {
   Bot,
   MessageSquare,
-  Users,
+  LayoutTemplate,
   BookOpen,
 } from "lucide-react";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export default function LogboekPage() {
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
-            <span className="text-sm font-semibold tracking-tight">AI Agents</span>
+            <span className="text-sm font-semibold tracking-tight">Mattie</span>
             <p className="text-[10px] text-zinc-500">Dashboard</p>
           </div>
         </div>
@@ -29,7 +29,7 @@ export default function LogboekPage() {
             Chat
           </Link>
           <Link href="/agents" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
-            <Users className="h-4 w-4" />
+            <LayoutTemplate className="h-4 w-4" />
             Agents
           </Link>
           <Link href="/logboek" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white bg-zinc-800/60">
