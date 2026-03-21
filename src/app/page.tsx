@@ -42,7 +42,7 @@ const totaalGeslaagd = agents.reduce((s, a) => s + a.geslaagd, 0);
 
 const overzichtHeader = (
   <div>
-    <h1 className="text-sm font-semibold tracking-tight">Overzicht</h1>
+    <h1 className="text-lg font-semibold tracking-tight">Overzicht</h1>
     <p className="text-[10px] text-zinc-500">
       {agents.length} agents &middot; {totaalGebruikt} gebruikt &middot; {totaalGeslaagd} geslaagd
     </p>

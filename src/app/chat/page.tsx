@@ -197,7 +197,7 @@ export default function ChatPage() {
         <Bot className="h-4 w-4 text-blue-400" />
       </div>
       <div className="flex-1 min-w-0">
-        <h1 className="text-sm font-semibold">Mattie</h1>
+        <h1 className="text-base font-semibold">Mattie</h1>
         <p className="text-[10px] text-zinc-500">Manager Agent</p>
       </div>
       <div className="flex items-center gap-1.5">

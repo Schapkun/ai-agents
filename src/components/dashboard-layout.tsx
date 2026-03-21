@@ -40,7 +40,7 @@ export default function DashboardLayout({
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
-            <span className="text-sm font-semibold tracking-tight">Mattie</span>
+            <span className="text-base font-semibold tracking-tight">Mattie</span>
             <p className="text-[10px] text-zinc-500">Dashboard</p>
           </div>
         </div>

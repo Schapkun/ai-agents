@@ -78,7 +78,7 @@ export default function LogboekPage() {
 
   const logboekHeader = (
     <div>
-      <h1 className="text-sm font-semibold tracking-tight">Logboek</h1>
+      <h1 className="text-lg font-semibold tracking-tight">Logboek</h1>
       <p className="text-[10px] text-zinc-500">
         {entries.length} entries &middot; dagelijkse sessie logs
       </p>
