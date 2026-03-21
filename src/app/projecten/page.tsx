@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FolderOpen, Loader2, ExternalLink, Globe, Monitor } from "lucide-react";
+import { FolderOpen, Loader2, ArrowUpRight } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type ProjectInfo = {
@@ -63,6 +63,26 @@ export default function ProjectenPage() {
     return key ? takenPerProject[key] : 0;
   }
 
+  function LinkCell({ url }: { url: string | null }) {
+    if (!url) {
+      return <span className="text-[#555]">-</span>;
+    }
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 text-[#9b9b9b] hover:text-white transition-colors"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/30 animate-ping" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+        </span>
+        <ArrowUpRight className="h-3.5 w-3.5" />
+      </a>
+    );
+  }
+
   return (
     <DashboardLayout>
       <main className="flex-1">
@@ -85,72 +105,40 @@ export default function ProjectenPage() {
               <p className="text-sm text-[#9b9b9b]">Geen projecten gevonden</p>
             </div>
           ) : (
-            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
+            <div className="bg-white/[0.03] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-lg shadow-black/20 overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[#383838]">
+                  <tr className="border-b border-white/[0.06]">
                     <th className="text-left px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Project</th>
                     <th className="text-left px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Beschrijving</th>
-                    <th className="text-center px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Open taken</th>
-                    <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Links</th>
+                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Open taken</th>
+                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider w-16">Dev</th>
+                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider w-16">Live</th>
+                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider w-16">GitHub</th>
                   </tr>
                 </thead>
                 <tbody>
                   {projecten.map((project, i) => {
                     const openCount = getOpenTaken(project.naam);
                     return (
-                      <tr key={i} className="border-b border-[#383838]/50 hover:bg-[#383838]/30 transition-colors">
+                      <tr key={i} className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors">
                         <td className="px-5 py-3">
                           <span className="text-sm font-medium text-white">{project.naam}</span>
                         </td>
                         <td className="px-5 py-3">
                           <span className="text-sm text-[#9b9b9b] line-clamp-1">{project.beschrijving || "-"}</span>
                         </td>
-                        <td className="px-5 py-3 text-center">
+                        <td className="px-3 py-3 text-center">
                           <span className="text-sm text-[#ececec] font-mono">{openCount}</span>
                         </td>
-                        <td className="px-5 py-3">
-                          <div className="flex items-center justify-end gap-2">
-                            {project.devServer && (
-                              <a
-                                href={project.devServer}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#9b9b9b] hover:text-white rounded-md hover:bg-[#383838] transition-colors"
-                                title="Dev server"
-                              >
-                                <Monitor className="h-3 w-3" />
-                                Dev
-                              </a>
-                            )}
-                            {project.liveUrl && (
-                              <a
-                                href={project.liveUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#9b9b9b] hover:text-white rounded-md hover:bg-[#383838] transition-colors"
-                                title="Live site"
-                              >
-                                <Globe className="h-3 w-3" />
-                                Live
-                              </a>
-                            )}
-                            {project.github && (
-                              <a
-                                href={project.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1 px-2 py-1 text-[10px] text-[#9b9b9b] hover:text-white rounded-md hover:bg-[#383838] transition-colors"
-                                title="GitHub"
-                              >
-                                <ExternalLink className="h-3 w-3" />
-                                GitHub
-                              </a>
-                            )}
-                            {!project.devServer && !project.liveUrl && !project.github && (
-                              <span className="text-xs text-[#9b9b9b]">-</span>
-                            )}
-                          </div>
+                        <td className="px-3 py-3 text-center">
+                          <LinkCell url={project.devServer} />
+                        </td>
+                        <td className="px-3 py-3 text-center">
+                          <LinkCell url={project.liveUrl} />
+                        </td>
+                        <td className="px-3 py-3 text-center">
+                          <LinkCell url={project.github} />
                         </td>
                       </tr>
                     );
