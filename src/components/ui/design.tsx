@@ -77,7 +77,7 @@ export function Th({ children, align = "left", className = "" }: {
   className?: string;
 }) {
   return (
-    <th className={`text-${align} px-4 py-2.5 text-[10px] font-medium ${colors.textMuted} uppercase tracking-wider ${className}`}>
+    <th className={`text-${align} px-4 py-2.5 text-[10px] font-medium ${colors.textTitle} uppercase tracking-wider ${className}`}>
       {children}
     </th>
   );
