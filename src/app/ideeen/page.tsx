@@ -173,7 +173,7 @@ export default function IdeeenPage() {
                               onKeyDown={(e) => {
                                 if (e.key === "Escape") setBewerkIndex(null);
                               }}
-                              className="w-full bg-white/[0.06] border border-white/[0.1] rounded-lg px-3 py-1.5 text-sm text-[#ececec] outline-none focus:border-white/[0.2]"
+                              className="w-full bg-white/[0.06] border border-white/[0.1] rounded-lg px-3 py-1.5 text-sm text-[#9b9b9b] outline-none focus:border-white/[0.2]"
                               placeholder="Titel"
                             />
                             <input
@@ -205,7 +205,7 @@ export default function IdeeenPage() {
                         ) : (
                           <>
                             <div className="flex items-center gap-2">
-                              <p className="text-sm text-[#ececec]">{idee.titel}</p>
+                              <p className="text-sm text-[#9b9b9b]">{idee.titel}</p>
                               {idee.url && idee.url !== "-" && (
                                 <a
                                   href={idee.url}
@@ -238,7 +238,7 @@ export default function IdeeenPage() {
                                 if (e.key === "Escape") { setFeedbackIndex(null); setFeedbackTekst(""); }
                               }}
                               rows={3}
-                              className="w-full bg-white/[0.06] border border-white/[0.1] rounded-lg px-3 py-2 text-sm text-[#ececec] outline-none focus:border-white/[0.2] resize-none"
+                              className="w-full bg-white/[0.06] border border-white/[0.1] rounded-lg px-3 py-2 text-sm text-[#9b9b9b] outline-none focus:border-white/[0.2] resize-none"
                               placeholder="Schrijf je feedback..."
                             />
                             <div className="flex gap-2">

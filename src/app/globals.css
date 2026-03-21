@@ -127,3 +127,17 @@
     @apply font-sans;
   }
 }
+/* Dashboard kleur systeem */
+:root {
+  --dash-bg: #212121;
+  --dash-sidebar: #171717;
+  --dash-surface: rgba(255, 255, 255, 0.04);
+  --dash-surface-hover: rgba(255, 255, 255, 0.06);
+  --dash-border: rgba(255, 255, 255, 0.08);
+  --dash-border-subtle: rgba(255, 255, 255, 0.05);
+  --dash-text-primary: #ffffff;
+  --dash-text-content: #9b9b9b;
+  --dash-text-muted: #666666;
+  --dash-btn-bg: rgba(255, 255, 255, 0.04);
+  --dash-btn-bg-hover: rgba(255, 255, 255, 0.08);
+}

@@ -94,13 +94,13 @@ export default function ProjectenPage() {
                       <td className="px-5 py-2.5">
                         <Link
                           href={`/projecten/${encodeURIComponent(project.naam)}`}
-                          className="text-sm font-medium text-[#ececec] hover:text-white hover:underline transition-colors"
+                          className="text-sm font-medium text-white hover:text-white hover:underline transition-colors"
                         >
                           {project.naam}
                         </Link>
                       </td>
                       <td className="px-5 py-2.5">
-                        <span className="text-sm text-[#9b9b9b]">{project.liveDomein || "-"}</span>
+                        <span className="text-sm text-[#666]">{project.liveDomein || "-"}</span>
                       </td>
                       <td className="px-3 py-2.5 text-center">
                         <StatusCell url={project.devServer} />
@@ -112,7 +112,7 @@ export default function ProjectenPage() {
                         <StatusCell url={project.github} showDot={false} />
                       </td>
                       <td className="px-3 py-2.5 text-center">
-                        <span className="text-sm text-[#ececec] font-mono">{project.openTaken}</span>
+                        <span className="text-sm text-[#9b9b9b] font-mono">{project.openTaken}</span>
                       </td>
                       <td className="px-3 py-2.5 text-center">
                         <span className="text-sm text-[#666] font-mono">{project.afgerondeTaken}</span>

@@ -140,7 +140,7 @@ export default function LogboekPage() {
                         className="flex items-center justify-between w-full px-5 py-4 hover:bg-white/[0.03] transition-colors text-left"
                       >
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-[#ececec] truncate">{getSamenvatting(entry.inhoud)}</p>
+                          <p className="text-sm text-[#9b9b9b] truncate">{getSamenvatting(entry.inhoud)}</p>
                           <p className="text-xs text-[#666] mt-0.5">{formatDatum(entry.datum)}</p>
                         </div>
                         {isOpen ? (
@@ -152,7 +152,7 @@ export default function LogboekPage() {
                       {isOpen && (
                         <div className="px-5 pb-4">
                           <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.05]">
-                            <pre className="text-sm text-[#ececec] whitespace-pre-wrap font-sans leading-relaxed">{entry.inhoud}</pre>
+                            <pre className="text-sm text-[#9b9b9b] whitespace-pre-wrap font-sans leading-relaxed">{entry.inhoud}</pre>
                           </div>
                         </div>
                       )}

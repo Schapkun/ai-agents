@@ -159,7 +159,7 @@ export default function TakenPage() {
                             if (e.key === "Escape") setBewerkIndex(null);
                           }}
                           onBlur={() => submitBewerking(taak)}
-                          className="w-full bg-white/[0.06] border border-white/[0.1] rounded-lg px-3 py-1.5 text-sm text-[#ececec] outline-none focus:border-white/[0.2]"
+                          className="w-full bg-white/[0.06] border border-white/[0.1] rounded-lg px-3 py-1.5 text-sm text-[#9b9b9b] outline-none focus:border-white/[0.2]"
                         />
                       ) : (
                         <>

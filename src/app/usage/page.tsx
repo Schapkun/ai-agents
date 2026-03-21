@@ -159,7 +159,7 @@ export default function UsagePage() {
               {Object.keys(perModel).length > 0 && (
                 <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden mb-8">
                   <div className="px-5 py-4 border-b border-white/[0.06]">
-                    <h2 className="text-sm font-medium text-[#ececec]">Per model</h2>
+                    <h2 className="text-sm font-medium text-white">Per model</h2>
                   </div>
                   <table className="w-full">
                     <thead>
@@ -174,11 +174,11 @@ export default function UsagePage() {
                     <tbody className="divide-y divide-white/[0.05]">
                       {Object.entries(perModel).map(([model, stats]) => (
                         <tr key={model} className="hover:bg-white/[0.03] transition-colors">
-                          <td className="px-5 py-3 text-sm text-[#ececec] font-mono">{model}</td>
+                          <td className="px-5 py-3 text-sm text-[#9b9b9b] font-mono">{model}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.input)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.output)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#ececec] font-mono">{formatKosten(stats.kosten)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatKosten(stats.kosten)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -190,7 +190,7 @@ export default function UsagePage() {
               {dagLijst.length > 0 && (
                 <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                   <div className="px-5 py-4 border-b border-white/[0.06]">
-                    <h2 className="text-sm font-medium text-[#ececec]">Dagelijks overzicht</h2>
+                    <h2 className="text-sm font-medium text-white">Dagelijks overzicht</h2>
                   </div>
                   <table className="w-full">
                     <thead>
@@ -205,11 +205,11 @@ export default function UsagePage() {
                     <tbody className="divide-y divide-white/[0.05]">
                       {dagLijst.map(([datum, stats]) => (
                         <tr key={datum} className="hover:bg-white/[0.03] transition-colors">
-                          <td className="px-5 py-3 text-sm text-[#ececec]">{formatDatum(datum)}</td>
+                          <td className="px-5 py-3 text-sm text-[#9b9b9b]">{formatDatum(datum)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.input)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.output)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#ececec] font-mono">{formatKosten(stats.kosten)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatKosten(stats.kosten)}</td>
                         </tr>
                       ))}
                     </tbody>
