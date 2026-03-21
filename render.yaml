@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: ai-agents
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    repo: https://github.com/Schapkun/ai-agents.git
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
