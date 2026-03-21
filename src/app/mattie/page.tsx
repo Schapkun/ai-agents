@@ -269,7 +269,7 @@ export default function ChatPage() {
                             if (match) {
                               return (
                                 <div className="relative my-2 rounded-xl overflow-hidden border border-white/[0.05]">
-                                  <div className="flex items-center justify-between px-3 py-1 bg-[#171717] border-b border-white/[0.05]">
+                                  <div className="flex items-center justify-between px-3 py-1 bg-[#171717] border-b border-white/[0.06]">
                                     <span className="text-[10px] text-[#666]">{match[1]}</span>
                                     <button
                                       onClick={() => kopieer(codeString, i * 1000 + 1)}

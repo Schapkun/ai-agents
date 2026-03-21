@@ -146,7 +146,7 @@ export default function TakenPage() {
             <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
               <div className="divide-y divide-white/[0.05]">
                 {getoondeTaken.map((taak, i) => (
-                  <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
+                  <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.03] transition-colors">
                     <div className="flex-1 min-w-0">
                       {bewerkIndex === i ? (
                         <input

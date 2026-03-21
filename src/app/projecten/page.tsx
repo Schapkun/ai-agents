@@ -90,7 +90,7 @@ export default function ProjectenPage() {
                 </thead>
                 <tbody className="divide-y divide-white/[0.05]">
                   {projecten.map((project, i) => (
-                    <tr key={i} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={i} className="hover:bg-white/[0.03] transition-colors">
                       <td className="px-5 py-2.5">
                         <Link
                           href={`/projecten/${encodeURIComponent(project.naam)}`}

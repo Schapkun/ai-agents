@@ -129,15 +129,15 @@ export default function LogboekPage() {
               </p>
             </div>
           ) : (
-            <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
-              <div className="divide-y divide-white/[0.04]">
+            <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+              <div className="divide-y divide-white/[0.05]">
                 {gefilterdeEntries.map((entry) => {
                   const isOpen = openEntry === entry.datum;
                   return (
                     <div key={entry.datum}>
                       <button
                         onClick={() => setOpenEntry(isOpen ? null : entry.datum)}
-                        className="flex items-center justify-between w-full px-5 py-4 hover:bg-white/[0.02] transition-colors text-left"
+                        className="flex items-center justify-between w-full px-5 py-4 hover:bg-white/[0.03] transition-colors text-left"
                       >
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-[#ececec] truncate">{getSamenvatting(entry.inhoud)}</p>
