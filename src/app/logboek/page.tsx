@@ -5,6 +5,7 @@ import {
   MessageSquare,
   LayoutTemplate,
   BookOpen,
+  Activity,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -25,6 +26,10 @@ export default function LogboekPage() {
 
         <nav className="px-3 pt-3 pb-1 space-y-0.5">
           <Link href="/" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
+            <Activity className="h-4 w-4" />
+            Overzicht
+          </Link>
+          <Link href="/chat" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
             <MessageSquare className="h-4 w-4" />
             Chat
           </Link>

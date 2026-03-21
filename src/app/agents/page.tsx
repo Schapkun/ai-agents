@@ -5,6 +5,7 @@ import {
   MessageSquare,
   LayoutTemplate,
   BookOpen,
+  Activity,
   TrendingUp,
   TrendingDown,
   Minus,
@@ -27,14 +28,15 @@ type AgentInfo = {
   gebruikt: number;
   geslaagd: number;
   trend: "up" | "down" | "stable";
+  laatsteActiviteit: string;
 };
 
 const agentData: AgentInfo[] = [
-  { id: "feature-agent", naam: "Feature Agent", beschrijving: "Bouw een volledig nieuwe functionaliteit van ontwerp tot oplevering", icon: Code, kleur: "text-violet-400", bgKleur: "bg-violet-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
-  { id: "fix-agent", naam: "Fix Agent", beschrijving: "Diagnose en oplossing van bugs, fouten en onverwacht gedrag", icon: Wrench, kleur: "text-orange-400", bgKleur: "bg-orange-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
-  { id: "design-agent", naam: "Design Agent", beschrijving: "UI/UX aanpassingen, visuele verbeteringen en layout wijzigingen", icon: Palette, kleur: "text-pink-400", bgKleur: "bg-pink-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
-  { id: "refactor-agent", naam: "Refactor Agent", beschrijving: "Code herstructureren voor betere leesbaarheid en onderhoudbaarheid", icon: RefreshCw, kleur: "text-cyan-400", bgKleur: "bg-cyan-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
-  { id: "setup-agent", naam: "Setup Agent", beschrijving: "Nieuw project initialiseren met tooling, configuratie en structuur", icon: FolderPlus, kleur: "text-teal-400", bgKleur: "bg-teal-400/10", gebruikt: 0, geslaagd: 0, trend: "stable" },
+  { id: "feature-agent", naam: "Feature Agent", beschrijving: "Bouw een volledig nieuwe functionaliteit van ontwerp tot oplevering", icon: Code, kleur: "text-violet-400", bgKleur: "bg-violet-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
+  { id: "fix-agent", naam: "Fix Agent", beschrijving: "Diagnose en oplossing van bugs, fouten en onverwacht gedrag", icon: Wrench, kleur: "text-orange-400", bgKleur: "bg-orange-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
+  { id: "design-agent", naam: "Design Agent", beschrijving: "UI/UX aanpassingen, visuele verbeteringen en layout wijzigingen", icon: Palette, kleur: "text-pink-400", bgKleur: "bg-pink-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
+  { id: "refactor-agent", naam: "Refactor Agent", beschrijving: "Code herstructureren voor betere leesbaarheid en onderhoudbaarheid", icon: RefreshCw, kleur: "text-cyan-400", bgKleur: "bg-cyan-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
+  { id: "setup-agent", naam: "Setup Agent", beschrijving: "Nieuw project initialiseren met tooling, configuratie en structuur", icon: FolderPlus, kleur: "text-teal-400", bgKleur: "bg-teal-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
 ];
 
 function TrendIcon({ trend }: { trend: "up" | "down" | "stable" }) {
@@ -75,6 +77,10 @@ export default function AgentsPage() {
 
         <nav className="px-3 pt-3 pb-1 space-y-0.5">
           <Link href="/" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
+            <Activity className="h-4 w-4" />
+            Overzicht
+          </Link>
+          <Link href="/chat" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
             <MessageSquare className="h-4 w-4" />
             Chat
           </Link>
@@ -138,6 +144,7 @@ export default function AgentsPage() {
                   <th className="text-right px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Geslaagd</th>
                   <th className="text-left px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Percentage</th>
                   <th className="text-center px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Trend</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Laatste activiteit</th>
                 </tr>
               </thead>
               <tbody>
@@ -169,6 +176,9 @@ export default function AgentsPage() {
                         <div className="flex justify-center">
                           <TrendIcon trend={agent.trend} />
                         </div>
+                      </td>
+                      <td className="px-5 py-3 text-right">
+                        <span className="text-[11px] text-zinc-500">{agent.laatsteActiviteit}</span>
                       </td>
                     </tr>
                   );
