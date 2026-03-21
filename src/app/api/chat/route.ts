@@ -13,7 +13,24 @@ type ChatMessage = {
 };
 
 export async function POST(request: NextRequest) {
-  const { bericht, geschiedenis } = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { antwoord: "Ongeldig verzoek." },
+      { status: 400 }
+    );
+  }
+
+  const { bericht, geschiedenis } = body as Record<string, unknown>;
+
+  if (typeof bericht !== "string" || bericht.trim().length === 0) {
+    return NextResponse.json(
+      { antwoord: "Bericht mag niet leeg zijn." },
+      { status: 400 }
+    );
+  }
 
   const messages: ChatMessage[] = [];
 
@@ -26,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  messages.push({ role: "user", content: bericht });
+  messages.push({ role: "user", content: bericht.trim() });
 
   try {
     const response = await client.messages.create({

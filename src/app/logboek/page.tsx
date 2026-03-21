@@ -67,7 +67,7 @@ export default function LogboekPage() {
             {formatDatum(entry.datum)}
           </span>
           {isVandaag(entry.datum) && (
-            <span className="ml-auto text-[9px] font-medium bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-full">
+            <span className="ml-auto text-[10px] font-medium bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-full">
               vandaag
             </span>
           )}
@@ -79,7 +79,7 @@ export default function LogboekPage() {
   const logboekHeader = (
     <div>
       <h1 className="text-sm font-semibold tracking-tight">Logboek</h1>
-      <p className="text-[11px] text-zinc-500">
+      <p className="text-[10px] text-zinc-500">
         {entries.length} entries &middot; dagelijkse sessie logs
       </p>
     </div>
@@ -120,7 +120,7 @@ export default function LogboekPage() {
                   <h2 className="text-sm font-semibold text-zinc-200">
                     {formatDatum(actieveEntry.datum)}
                   </h2>
-                  <p className="text-[11px] text-zinc-500">{actieveEntry.datum}</p>
+                  <p className="text-[10px] text-zinc-500">{actieveEntry.datum}</p>
                 </div>
                 {isVandaag(actieveEntry.datum) && (
                   <span className="ml-auto text-[10px] font-medium bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
@@ -134,7 +134,7 @@ export default function LogboekPage() {
                   remarkPlugins={[remarkGfm]}
                   components={{
                     h1: ({ children }) => (
-                      <h1 className="text-lg font-semibold text-zinc-100 mb-4 mt-2 first:mt-0">
+                      <h1 className="text-base font-semibold text-zinc-100 mb-4 mt-2 first:mt-0">
                         {children}
                       </h1>
                     ),
@@ -174,7 +174,7 @@ export default function LogboekPage() {
                       <em className="text-zinc-300">{children}</em>
                     ),
                     code: ({ children }) => (
-                      <code className="text-[13px] bg-zinc-800 px-1.5 py-0.5 rounded text-blue-300 font-mono">
+                      <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded text-blue-300 font-mono">
                         {children}
                       </code>
                     ),

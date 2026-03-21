@@ -3,19 +3,17 @@
 import {
   Bot,
   MessageSquare,
-  LayoutTemplate,
   BookOpen,
   Activity,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type ActivePage = "overzicht" | "chat" | "agents" | "logboek";
+type ActivePage = "overzicht" | "chat" | "logboek";
 
 const navItems: { href: string; label: string; icon: typeof Activity; page: ActivePage }[] = [
   { href: "/", label: "Overzicht", icon: Activity, page: "overzicht" },
   { href: "/chat", label: "Chat", icon: MessageSquare, page: "chat" },
-  { href: "/agents", label: "Agents", icon: LayoutTemplate, page: "agents" },
   { href: "/logboek", label: "Logboek", icon: BookOpen, page: "logboek" },
 ];
 
@@ -36,14 +34,14 @@ export default function DashboardLayout({
     <div className="flex h-screen overflow-hidden bg-zinc-950 text-white">
       {/* Sidebar */}
       <aside className="flex w-64 flex-col border-r border-zinc-800/60 bg-zinc-900/40">
-        {/* Logo — hoogte matcht de header-rij in content area */}
+        {/* Logo */}
         <div className="flex items-center gap-3 px-4 h-14 shrink-0 border-b border-zinc-800/60">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-violet-500/20 ring-1 ring-white/10">
             <Bot className="h-4 w-4 text-blue-400" />
           </div>
           <div>
             <span className="text-sm font-semibold tracking-tight">Mattie</span>
-            <p className="text-[11px] text-zinc-500">Dashboard</p>
+            <p className="text-[10px] text-zinc-500">Dashboard</p>
           </div>
         </div>
 
@@ -69,7 +67,7 @@ export default function DashboardLayout({
           })}
         </nav>
 
-        {/* Extra sidebar content (bijv. gesprekken lijst in chat) */}
+        {/* Extra sidebar content */}
         {sidebarExtra}
 
         {/* Spacer als er geen extra content is */}

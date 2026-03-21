@@ -181,7 +181,7 @@ export default function ChatPage() {
                 }`}
               >
                 <MessageSquare className="h-3 w-3 shrink-0" />
-                <span className="text-[11px] truncate">{gesprek.titel}</span>
+                <span className="text-[10px] truncate">{gesprek.titel}</span>
               </button>
             ))}
           </div>
@@ -198,7 +198,7 @@ export default function ChatPage() {
       </div>
       <div className="flex-1 min-w-0">
         <h1 className="text-sm font-semibold">Mattie</h1>
-        <p className="text-[11px] text-zinc-500">Manager Agent</p>
+        <p className="text-[10px] text-zinc-500">Manager Agent</p>
       </div>
       <div className="flex items-center gap-1.5">
         {berichten.length > 0 && (
@@ -211,7 +211,7 @@ export default function ChatPage() {
         )}
         <button
           onClick={nieuwGesprek}
-          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors"
         >
           <Plus className="h-3.5 w-3.5" />
           Nieuw
@@ -285,7 +285,7 @@ export default function ChatPage() {
                                     style={oneDark}
                                     language={match[1]}
                                     PreTag="div"
-                                    customStyle={{ margin: 0, background: "rgb(39 39 42 / 0.7)", fontSize: "12px" }}
+                                    customStyle={{ margin: 0, background: "rgb(39 39 42 / 0.7)" }}
                                   >
                                     {codeString}
                                   </SyntaxHighlighter>
