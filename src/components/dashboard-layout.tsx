@@ -73,18 +73,6 @@ export default function DashboardLayout({
         {/* Spacer als er geen extra content is */}
         {!sidebarExtra && <div className="flex-1" />}
 
-        {/* User info */}
-        <div className="border-t border-zinc-800/60 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-[10px] font-bold">
-              M
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-300">Michael</p>
-              <p className="text-[10px] text-zinc-500">Eigenaar</p>
-            </div>
-          </div>
-        </div>
       </aside>
 
       {/* Content area */}
@@ -94,7 +82,7 @@ export default function DashboardLayout({
             {header}
           </div>
         )}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-1 flex-col min-h-0">
           {children}
         </div>
       </div>
