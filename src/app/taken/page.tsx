@@ -163,7 +163,7 @@ export default function TakenPage() {
                         />
                       ) : (
                         <>
-                          <p className={`text-sm ${taak.klaar ? "text-[#666] line-through" : "text-[#ececec]"}`}>
+                          <p className={`text-sm ${taak.klaar ? "text-[#666] line-through" : "text-[#9b9b9b]"}`}>
                             {taak.tekst}
                           </p>
                           <p className="text-[10px] text-[#666] mt-0.5">{taak.project}</p>
@@ -184,7 +184,7 @@ export default function TakenPage() {
                           </button>
                           <button
                             onClick={() => setBevestigIndex(null)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Nee
                           </button>
@@ -193,13 +193,13 @@ export default function TakenPage() {
                         <>
                           <button
                             onClick={() => handleActie(taak, "uitvoeren")}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Uitvoeren
                           </button>
                           <button
                             onClick={() => startBewerken(i, taak.tekst)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Bewerken
                           </button>
@@ -214,13 +214,13 @@ export default function TakenPage() {
                         <>
                           <button
                             onClick={() => handleActie(taak, "heropenen")}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Heropenen
                           </button>
                           <button
                             onClick={() => startBewerken(i, taak.tekst)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Bewerken
                           </button>

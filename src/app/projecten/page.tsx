@@ -94,7 +94,7 @@ export default function ProjectenPage() {
                       <td className="px-5 py-2.5">
                         <Link
                           href={`/projecten/${encodeURIComponent(project.naam)}`}
-                          className="text-sm font-medium text-white hover:text-white hover:underline transition-colors"
+                          className="text-sm font-medium text-[#9b9b9b] hover:text-white hover:underline transition-colors"
                         >
                           {project.naam}
                         </Link>
@@ -112,7 +112,7 @@ export default function ProjectenPage() {
                         <StatusCell url={project.github} showDot={false} />
                       </td>
                       <td className="px-3 py-2.5 text-center">
-                        <span className="text-sm text-[#9b9b9b] font-mono">{project.openTaken}</span>
+                        <span className="text-sm text-[#666] font-mono">{project.openTaken}</span>
                       </td>
                       <td className="px-3 py-2.5 text-center">
                         <span className="text-sm text-[#666] font-mono">{project.afgerondeTaken}</span>
