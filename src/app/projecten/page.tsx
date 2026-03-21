@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FolderOpen, Loader2, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type ProjectInfo = {
@@ -74,41 +75,46 @@ export default function ProjectenPage() {
               <p className="text-sm text-[#666]">Geen projecten gevonden</p>
             </div>
           ) : (
-            <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+            <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/[0.05]">
-                    <th className="text-left px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Project</th>
-                    <th className="text-left px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Live domein</th>
-                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider w-16">Dev</th>
-                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider w-16">Live</th>
-                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider w-16">GitHub</th>
-                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Open taken</th>
-                    <th className="text-center px-3 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Afgerond</th>
+                  <tr className="border-b border-white/[0.06]">
+                    <th className="text-left px-5 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider">Project</th>
+                    <th className="text-left px-5 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider">Live domein</th>
+                    <th className="text-center px-3 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider w-16">Dev</th>
+                    <th className="text-center px-3 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider w-16">Live</th>
+                    <th className="text-center px-3 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider w-16">GitHub</th>
+                    <th className="text-center px-3 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider">Open</th>
+                    <th className="text-center px-3 py-2.5 text-[10px] font-medium text-[#666] uppercase tracking-wider">Afgerond</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.04]">
+                <tbody className="divide-y divide-white/[0.05]">
                   {projecten.map((project, i) => (
                     <tr key={i} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="px-5 py-3">
-                        <span className="text-sm font-medium text-[#ececec]">{project.naam}</span>
+                      <td className="px-5 py-2.5">
+                        <Link
+                          href={`/projecten/${encodeURIComponent(project.naam)}`}
+                          className="text-sm font-medium text-[#ececec] hover:text-white hover:underline transition-colors"
+                        >
+                          {project.naam}
+                        </Link>
                       </td>
-                      <td className="px-5 py-3">
+                      <td className="px-5 py-2.5">
                         <span className="text-sm text-[#9b9b9b]">{project.liveDomein || "-"}</span>
                       </td>
-                      <td className="px-3 py-3 text-center">
+                      <td className="px-3 py-2.5 text-center">
                         <StatusCell url={project.devServer} />
                       </td>
-                      <td className="px-3 py-3 text-center">
+                      <td className="px-3 py-2.5 text-center">
                         <StatusCell url={project.liveUrl} />
                       </td>
-                      <td className="px-3 py-3 text-center">
+                      <td className="px-3 py-2.5 text-center">
                         <StatusCell url={project.github} showDot={false} />
                       </td>
-                      <td className="px-3 py-3 text-center">
+                      <td className="px-3 py-2.5 text-center">
                         <span className="text-sm text-[#ececec] font-mono">{project.openTaken}</span>
                       </td>
-                      <td className="px-3 py-3 text-center">
+                      <td className="px-3 py-2.5 text-center">
                         <span className="text-sm text-[#666] font-mono">{project.afgerondeTaken}</span>
                       </td>
                     </tr>

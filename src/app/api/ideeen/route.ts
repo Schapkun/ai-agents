@@ -43,7 +43,6 @@ function parseIdeeen(inhoud: string): Idee[] {
       }
     }
 
-    // Als er een ### Concept sectie is, gebruik die als beschrijving
     const conceptMatch = sectie.match(/### Concept\n([\s\S]*?)(?=\n###|$)/);
     if (conceptMatch) {
       beschrijving = conceptMatch[1].trim().split("\n")[0] || beschrijving;
@@ -66,4 +65,89 @@ export async function GET() {
     console.error("Ideeen leesfout:", error);
     return NextResponse.json({ ideeen: [] });
   }
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { titel, actie, nieuweTitel, nieuweBeschrijving, tekst } = body as {
+      titel: string;
+      actie: "uitwerken" | "bewerken" | "feedback";
+      nieuweTitel?: string;
+      nieuweBeschrijving?: string;
+      tekst?: string;
+    };
+
+    if (!titel || !actie) {
+      return NextResponse.json({ error: "titel en actie zijn verplicht" }, { status: 400 });
+    }
+
+    let inhoud = await fs.readFile(IDEEEN_PATH, "utf-8");
+
+    // Zoek de sectie met deze titel
+    const sectieRegex = new RegExp(`(## \\d+\\.\\s+${escapeRegex(titel)}[\\s\\S]*?)(?=\\n## \\d+\\.|\$)`, "m");
+    const match = inhoud.match(sectieRegex);
+
+    if (!match) {
+      return NextResponse.json({ error: `Idee niet gevonden: ${titel}` }, { status: 404 });
+    }
+
+    const oudeSecite = match[1];
+    let nieuweSecite = oudeSecite;
+
+    switch (actie) {
+      case "uitwerken":
+        // Verander status van "nieuw" naar "uitgewerkt concept"
+        nieuweSecite = nieuweSecite.replace(
+          /\*\*Status:\*\*\s*.+/,
+          "**Status:** uitgewerkt concept"
+        );
+        break;
+
+      case "bewerken":
+        if (nieuweTitel) {
+          // Vervang de titel in de header
+          nieuweSecite = nieuweSecite.replace(
+            /^(## \d+\.\s+).+/m,
+            `$1${nieuweTitel}`
+          );
+        }
+        if (nieuweBeschrijving) {
+          if (nieuweSecite.includes("**Notities:**")) {
+            nieuweSecite = nieuweSecite.replace(
+              /\*\*Notities:\*\*\s*.+/,
+              `**Notities:** ${nieuweBeschrijving}`
+            );
+          } else {
+            // Voeg notities toe na de datum regel
+            nieuweSecite = nieuweSecite.replace(
+              /(\*\*Datum:\*\*\s*.+)/,
+              `$1\n- **Notities:** ${nieuweBeschrijving}`
+            );
+          }
+        }
+        break;
+
+      case "feedback":
+        if (!tekst) {
+          return NextResponse.json({ error: "tekst is verplicht bij feedback" }, { status: 400 });
+        }
+        // Voeg feedback sectie toe
+        const feedbackDatum = new Date().toISOString().split("T")[0];
+        nieuweSecite = nieuweSecite.trimEnd() + `\n\n### Feedback (${feedbackDatum})\n${tekst}\n`;
+        break;
+    }
+
+    inhoud = inhoud.replace(oudeSecite, nieuweSecite);
+    await fs.writeFile(IDEEEN_PATH, inhoud, "utf-8");
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Ideeen schrijffout:", error);
+    return NextResponse.json({ error: "Interne fout bij verwerken idee" }, { status: 500 });
+  }
+}
+
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\\$&");
 }

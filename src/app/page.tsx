@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, CheckSquare, CheckCircle2, FolderOpen, CreditCard } from "lucide-react";
 import Link from "next/link";
 import DashboardLayout from "@/components/dashboard-layout";
 
@@ -33,6 +33,8 @@ function berekenKosten(model: string, inputTokens: number, outputTokens: number)
 
 export default function DashboardPage() {
   const [openTaken, setOpenTaken] = useState<{ tekst: string; project: string }[]>([]);
+  const [totaalOpen, setTotaalOpen] = useState(0);
+  const [totaalKlaar, setTotaalKlaar] = useState(0);
   const [ideeen, setIdeeen] = useState<Idee[]>([]);
   const [logboek, setLogboek] = useState<LogboekEntry[]>([]);
   const [projecten, setProjecten] = useState<ProjectInfo[]>([]);
@@ -49,28 +51,36 @@ export default function DashboardPage() {
       .then((data: { projects: Project[] }) => {
         const alle: { tekst: string; project: string }[] = [];
         const counts: Record<string, number> = {};
+        let open = 0;
+        let klaar = 0;
         for (const p of data.projects ?? []) {
-          counts[p.naam] = p.taken.filter((t) => !t.klaar).length;
+          const openCount = p.taken.filter((t) => !t.klaar).length;
+          const klaarCount = p.taken.filter((t) => t.klaar).length;
+          counts[p.naam] = openCount;
+          open += openCount;
+          klaar += klaarCount;
           for (const t of p.taken.filter((t) => !t.klaar)) {
             alle.push({ tekst: t.tekst, project: p.naam });
           }
         }
-        setOpenTaken(alle.slice(0, 3));
+        setOpenTaken(alle.slice(0, 5));
         setTakenPerProject(counts);
+        setTotaalOpen(open);
+        setTotaalKlaar(klaar);
       })
       .catch(() => {})
       .finally(check);
 
     fetch("/api/ideeen")
       .then((r) => r.json())
-      .then((data: { ideeen: Idee[] }) => setIdeeen((data.ideeen ?? []).slice(0, 2)))
+      .then((data: { ideeen: Idee[] }) => setIdeeen((data.ideeen ?? []).slice(0, 3)))
       .catch(() => {})
       .finally(check);
 
     fetch("/api/logboek")
       .then((r) => r.json())
       .then((data: LogboekEntry[]) => {
-        if (Array.isArray(data)) setLogboek(data.slice(0, 3));
+        if (Array.isArray(data)) setLogboek(data.slice(0, 4));
       })
       .catch(() => {})
       .finally(check);
@@ -112,11 +122,8 @@ export default function DashboardPage() {
       <main className="flex-1">
         <div className="px-8 py-8">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
-            <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-mono text-[#9b9b9b] bg-white/[0.04] border border-white/[0.08]">
-              ${kostenMaand.toFixed(2)} deze maand
-            </span>
           </div>
 
           {laden ? (
@@ -124,102 +131,149 @@ export default function DashboardPage() {
               <Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" />
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-5">
-              {/* Openstaande taken */}
-              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Openstaande taken</h2>
-                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
-                    Bekijk alles <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-                {openTaken.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#666]">Geen openstaande taken</p>
-                ) : (
-                  <div className="divide-y divide-white/[0.04]">
-                    {openTaken.map((t, i) => (
-                      <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                        <p className="text-sm text-[#ececec]">{t.tekst}</p>
-                      </div>
-                    ))}
+            <>
+              {/* Metric Cards */}
+              <div className="grid grid-cols-4 gap-4 mb-8">
+                <div className="bg-white/[0.05] backdrop-blur-sm rounded-xl border border-white/[0.08] px-5 py-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06]">
+                      <CheckSquare className="h-4 w-4 text-[#9b9b9b]" />
+                    </div>
+                    <span className="text-xs text-[#666] uppercase tracking-wider">Openstaand</span>
                   </div>
-                )}
+                  <p className="text-3xl font-semibold text-white font-mono">{totaalOpen}</p>
+                </div>
+
+                <div className="bg-white/[0.05] backdrop-blur-sm rounded-xl border border-white/[0.08] px-5 py-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06]">
+                      <CheckCircle2 className="h-4 w-4 text-[#9b9b9b]" />
+                    </div>
+                    <span className="text-xs text-[#666] uppercase tracking-wider">Afgerond</span>
+                  </div>
+                  <p className="text-3xl font-semibold text-white font-mono">{totaalKlaar}</p>
+                </div>
+
+                <div className="bg-white/[0.05] backdrop-blur-sm rounded-xl border border-white/[0.08] px-5 py-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06]">
+                      <FolderOpen className="h-4 w-4 text-[#9b9b9b]" />
+                    </div>
+                    <span className="text-xs text-[#666] uppercase tracking-wider">Projecten</span>
+                  </div>
+                  <p className="text-3xl font-semibold text-white font-mono">{projecten.length}</p>
+                </div>
+
+                <div className="bg-white/[0.05] backdrop-blur-sm rounded-xl border border-white/[0.08] px-5 py-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06]">
+                      <CreditCard className="h-4 w-4 text-[#9b9b9b]" />
+                    </div>
+                    <span className="text-xs text-[#666] uppercase tracking-wider">Kosten</span>
+                  </div>
+                  <p className="text-3xl font-semibold text-white font-mono">${kostenMaand.toFixed(2)}</p>
+                </div>
               </div>
 
-              {/* Recente ideeën */}
-              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Recente ideeën</h2>
-                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
-                    Bekijk alles <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-                {ideeen.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#666]">Geen ideeën</p>
-                ) : (
-                  <div className="divide-y divide-white/[0.04]">
-                    {ideeen.map((idee, i) => (
-                      <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm text-[#ececec]">{idee.titel}</p>
-                          <span className="text-[10px] text-[#666]">{idee.status}</span>
-                        </div>
-                      </div>
-                    ))}
+              {/* Content Grid */}
+              <div className="grid grid-cols-2 gap-5">
+                {/* Openstaande taken */}
+                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
+                    <h2 className="text-sm font-medium text-[#ececec]">Openstaande taken</h2>
+                    <Link href="/taken" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
+                      Bekijk alles <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
-                )}
-              </div>
+                  {openTaken.length === 0 ? (
+                    <p className="px-5 py-4 text-sm text-[#666]">Geen openstaande taken</p>
+                  ) : (
+                    <div className="divide-y divide-white/[0.05]">
+                      {openTaken.map((t, i) => (
+                        <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
+                          <p className="text-sm text-[#ececec]">{t.tekst}</p>
+                          <p className="text-[10px] text-[#666] mt-0.5">{t.project}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-              {/* Logboek */}
-              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Logboek</h2>
-                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
-                    Bekijk alles <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-                {logboek.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#666]">Geen logboek entries</p>
-                ) : (
-                  <div className="divide-y divide-white/[0.04]">
-                    {logboek.map((entry, i) => {
-                      const eersteRegel = entry.inhoud.split("\n").find((r: string) => r.trim() && !r.startsWith("#")) || entry.datum;
-                      return (
-                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                          <p className="text-sm text-[#ececec] truncate flex-1 min-w-0">{eersteRegel.replace(/^[-*]\s*/, "").trim()}</p>
-                          <span className="text-xs text-[#666] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
-                        </div>
-                      );
-                    })}
+                {/* Recente ideeën */}
+                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
+                    <h2 className="text-sm font-medium text-[#ececec]">Recente ideeën</h2>
+                    <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
+                      Bekijk alles <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
-                )}
-              </div>
+                  {ideeen.length === 0 ? (
+                    <p className="px-5 py-4 text-sm text-[#666]">Geen ideeën</p>
+                  ) : (
+                    <div className="divide-y divide-white/[0.05]">
+                      {ideeen.map((idee, i) => (
+                        <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm text-[#ececec]">{idee.titel}</p>
+                            <span className="text-[10px] text-[#666]">{idee.status}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-              {/* Projecten */}
-              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Projecten</h2>
-                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
-                    Bekijk alles <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-                {projecten.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#666]">Geen projecten</p>
-                ) : (
-                  <div className="divide-y divide-white/[0.04]">
-                    {projecten.map((p, i) => {
-                      const open = getOpenTaken(p.naam);
-                      return (
-                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                          <p className="text-sm text-[#ececec]">{p.naam}</p>
-                          <span className="text-xs text-[#666] font-mono">{open}</span>
-                        </div>
-                      );
-                    })}
+                {/* Logboek */}
+                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
+                    <h2 className="text-sm font-medium text-[#ececec]">Logboek</h2>
+                    <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
+                      Bekijk alles <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
-                )}
+                  {logboek.length === 0 ? (
+                    <p className="px-5 py-4 text-sm text-[#666]">Geen logboek entries</p>
+                  ) : (
+                    <div className="divide-y divide-white/[0.05]">
+                      {logboek.map((entry, i) => {
+                        const eersteRegel = entry.inhoud.split("\n").find((r: string) => r.trim() && !r.startsWith("#")) || entry.datum;
+                        return (
+                          <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
+                            <p className="text-sm text-[#ececec] truncate flex-1 min-w-0">{eersteRegel.replace(/^[-*]\s*/, "").trim()}</p>
+                            <span className="text-xs text-[#666] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Projecten */}
+                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
+                    <h2 className="text-sm font-medium text-[#ececec]">Projecten</h2>
+                    <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
+                      Bekijk alles <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                  {projecten.length === 0 ? (
+                    <p className="px-5 py-4 text-sm text-[#666]">Geen projecten</p>
+                  ) : (
+                    <div className="divide-y divide-white/[0.05]">
+                      {projecten.map((p, i) => {
+                        const open = getOpenTaken(p.naam);
+                        return (
+                          <Link key={i} href={`/projecten/${encodeURIComponent(p.naam)}`} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors block">
+                            <p className="text-sm text-[#ececec]">{p.naam}</p>
+                            <span className="text-xs text-[#666] font-mono">{open} open</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </main>

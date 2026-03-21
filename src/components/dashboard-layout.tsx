@@ -116,10 +116,7 @@ export default function DashboardLayout({
           <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/[0.08]">
             <LayoutDashboard className="h-4 w-4 text-white" />
           </div>
-          <div>
-            <span className="text-base font-semibold tracking-tight text-white">{APP_NAME}</span>
-            <p className="text-[10px] text-[#666]">Dashboard</p>
-          </div>
+          <span className="text-base font-semibold tracking-tight text-white">{APP_NAME}</span>
         </div>
 
         {/* Navigatie */}

@@ -1,7 +1,6 @@
 // Centrale configuratie — alle hardcoded waarden op één plek
 
-export const APP_NAME = "Agents";
-export const APP_SUBTITLE = "Dashboard";
+export const APP_NAME = "Dashboard";
 
 export const AGENT_NAME = "Mattie";
 export const AGENT_ROLE = "Manager Agent";
@@ -18,3 +17,9 @@ export const SYSTEM_PROMPT = `Je bent ${AGENT_NAME}, de ${AGENT_ROLE} van ${USER
 
 export const LOGBOEK_PATH =
   process.env.LOGBOEK_PATH || "/Users/doerak/.claude/logboek";
+
+export const MEMORY_PATH =
+  process.env.MEMORY_PATH || "/Users/doerak/.claude/projects/-Users-doerak/memory/";
+
+export const IDEEEN_PATH =
+  process.env.IDEEEN_PATH || "/Users/doerak/.claude/projects/-Users-doerak/memory/ideeen.md";
