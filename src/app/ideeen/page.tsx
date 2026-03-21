@@ -196,7 +196,7 @@ export default function IdeeenPage() {
                               </button>
                               <button
                                 onClick={() => setBewerkIndex(null)}
-                                className="px-3 py-1 text-xs rounded-lg text-[#666] hover:text-[#ececec] transition-colors"
+                                className="px-3 py-1 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                               >
                                 Annuleren
                               </button>
@@ -250,7 +250,7 @@ export default function IdeeenPage() {
                               </button>
                               <button
                                 onClick={() => { setFeedbackIndex(null); setFeedbackTekst(""); }}
-                                className="px-3 py-1 text-xs rounded-lg text-[#666] hover:text-[#ececec] transition-colors"
+                                className="px-3 py-1 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                               >
                                 Annuleren
                               </button>
@@ -267,13 +267,13 @@ export default function IdeeenPage() {
                             <>
                               <button
                                 onClick={() => handleActie(idee, "uitwerken")}
-                                className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                                className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                               >
                                 Uitwerken
                               </button>
                               <button
                                 onClick={() => startBewerken(i, idee)}
-                                className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                                className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                               >
                                 Bewerken
                               </button>
@@ -282,13 +282,13 @@ export default function IdeeenPage() {
                             <>
                               <button
                                 onClick={() => { setFeedbackIndex(i); setFeedbackTekst(""); }}
-                                className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                                className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                               >
                                 Feedback
                               </button>
                               <button
                                 onClick={() => startBewerken(i, idee)}
-                                className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                                className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                               >
                                 Bewerken
                               </button>

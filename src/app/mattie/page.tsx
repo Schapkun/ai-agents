@@ -212,7 +212,7 @@ export default function ChatPage() {
         )}
         <button
           onClick={nieuwGesprek}
-          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-[#666] hover:text-[#ececec] hover:bg-white/[0.03] transition-colors"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-[#171717] bg-white hover:bg-white/90 font-medium transition-colors"
         >
           <Plus className="h-3.5 w-3.5" />
           Nieuw
@@ -343,7 +343,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="border-t border-white/[0.06] px-6 py-3 bg-[#2f2f2f] shrink-0">
+      <div className="border-t border-white/[0.06] px-6 py-3 bg-[#212121] shrink-0">
         <form
           onSubmit={(e) => { e.preventDefault(); verstuur(); }}
           className="mx-auto flex max-w-2xl items-center gap-3"

@@ -104,7 +104,7 @@ export default function DashboardPage() {
         <div className="px-6 py-6">
           {/* Header met inline metrics */}
           <div className="flex items-center justify-between mb-5">
-            <h1 className="text-xl font-semibold tracking-tight text-[#ececec]">Dashboard</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
             <div className="flex items-center gap-4 text-xs font-mono text-[#9b9b9b]">
               <span>{totaalOpen} open</span>
               <span className="text-white/[0.1]">|</span>

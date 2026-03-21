@@ -184,7 +184,7 @@ export default function TakenPage() {
                           </button>
                           <button
                             onClick={() => setBevestigIndex(null)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Nee
                           </button>
@@ -193,19 +193,19 @@ export default function TakenPage() {
                         <>
                           <button
                             onClick={() => handleActie(taak, "uitvoeren")}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Uitvoeren
                           </button>
                           <button
                             onClick={() => startBewerken(i, taak.tekst)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Bewerken
                           </button>
                           <button
                             onClick={() => setBevestigIndex(i)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-red-400 bg-red-500/10 hover:bg-red-500/20 transition-colors"
                           >
                             Annuleren
                           </button>
@@ -214,13 +214,13 @@ export default function TakenPage() {
                         <>
                           <button
                             onClick={() => handleActie(taak, "heropenen")}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Heropenen
                           </button>
                           <button
                             onClick={() => startBewerken(i, taak.tekst)}
-                            className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] hover:bg-white/[0.04] transition-colors"
+                            className="px-3 py-1.5 text-xs rounded-lg text-[#ececec] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
                           >
                             Bewerken
                           </button>
