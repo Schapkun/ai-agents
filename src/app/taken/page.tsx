@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckSquare, Loader2 } from "lucide-react";
+import { CheckSquare, Loader2, Check } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
 
 type Taak = {
@@ -21,6 +21,7 @@ type TakenData = {
 export default function TakenPage() {
   const [data, setData] = useState<TakenData | null>(null);
   const [laden, setLaden] = useState(true);
+  const [activeTab, setActiveTab] = useState<"open" | "klaar">("open");
 
   useEffect(() => {
     fetch("/api/taken")
@@ -33,67 +34,114 @@ export default function TakenPage() {
   }, []);
 
   const projects = data?.projects ?? [];
-  const totaalOpen = projects.reduce((s, p) => s + p.taken.filter((t) => !t.klaar).length, 0);
-  const totaalKlaar = projects.reduce((s, p) => s + p.taken.filter((t) => t.klaar).length, 0);
 
-  const takenHeader = (
-    <div>
-      <h1 className="text-base font-semibold tracking-tight">Taken</h1>
-      <p className="text-[10px] text-[#acacbe]">
-        {totaalOpen} open \u00b7 {totaalKlaar} afgerond
-      </p>
-    </div>
-  );
+  // Flatten taken with project name
+  const alleTaken: { tekst: string; project: string; klaar: boolean }[] = [];
+  for (const p of projects) {
+    for (const t of p.taken) {
+      alleTaken.push({ tekst: t.tekst, project: p.naam, klaar: t.klaar });
+    }
+  }
+
+  const openTaken = alleTaken.filter((t) => !t.klaar);
+  const klaarTaken = alleTaken.filter((t) => t.klaar);
+  const getoondeTaken = activeTab === "open" ? openTaken : klaarTaken;
 
   return (
-    <DashboardLayout header={takenHeader}>
+    <DashboardLayout>
       <main className="flex-1">
         <div className="max-w-4xl mx-auto px-8 py-8">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Taken</h1>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-1 mb-6 bg-[#171717] rounded-lg p-1 w-fit">
+            <button
+              onClick={() => setActiveTab("klaar")}
+              className={`px-4 py-2 text-sm rounded-md transition-all ${
+                activeTab === "klaar"
+                  ? "bg-[#2f2f2f] text-white font-medium"
+                  : "text-[#9b9b9b] hover:text-white"
+              }`}
+            >
+              Uitgevoerd ({klaarTaken.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("open")}
+              className={`px-4 py-2 text-sm rounded-md transition-all ${
+                activeTab === "open"
+                  ? "bg-[#2f2f2f] text-white font-medium"
+                  : "text-[#9b9b9b] hover:text-white"
+              }`}
+            >
+              Openstaand ({openTaken.length})
+            </button>
+          </div>
+
           {laden ? (
             <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-5 w-5 text-[#acacbe] animate-spin" />
+              <Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" />
             </div>
-          ) : projects.length === 0 ? (
+          ) : getoondeTaken.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 mb-3">
-                <CheckSquare className="h-5 w-5 text-[#acacbe]" />
+                <CheckSquare className="h-5 w-5 text-[#9b9b9b]" />
               </div>
-              <p className="text-sm text-[#acacbe]">Geen taken gevonden</p>
+              <p className="text-sm text-[#9b9b9b]">
+                {activeTab === "open" ? "Geen openstaande taken" : "Geen uitgevoerde taken"}
+              </p>
             </div>
           ) : (
-            <div className="space-y-6">
-              {projects.map((project) => {
-                const open = project.taken.filter((t) => !t.klaar).length;
-                const klaar = project.taken.filter((t) => t.klaar).length;
-                return (
-                  <div key={project.naam} className="bg-[#40414f] rounded-2xl border border-[#4d4d4f] overflow-hidden">
-                    <div className="flex items-center justify-between px-5 py-4 border-b border-[#4d4d4f]">
-                      <h3 className="text-sm font-medium text-white">{project.naam}</h3>
-                      <span className="text-xs text-[#acacbe]">{open} open \u00b7 {klaar} klaar</span>
+            <div className="bg-[#2f2f2f] rounded-xl border border-[#383838] overflow-hidden">
+              <div className="divide-y divide-[#383838]/50">
+                {getoondeTaken.map((taak, i) => (
+                  <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-[#383838]/30 transition-colors">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
+                        taak.klaar
+                          ? "bg-white border-white"
+                          : "border-[#9b9b9b]/40"
+                      }`}>
+                        {taak.klaar && (
+                          <Check className="h-3 w-3 text-[#171717]" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm ${taak.klaar ? "text-[#9b9b9b] line-through" : "text-[#ececec]"}`}>
+                          {taak.tekst}
+                        </p>
+                        <p className="text-xs text-[#9b9b9b] mt-0.5">{taak.project}</p>
+                      </div>
                     </div>
-                    <div className="divide-y divide-[#4d4d4f]/50">
-                      {project.taken.map((taak, i) => (
-                        <div key={i} className="flex items-center gap-3 px-5 py-3 hover:bg-[#4d4d4f]/30 transition-colors">
-                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
-                            taak.klaar
-                              ? "bg-white border-white"
-                              : "border-[#acacbe]/40"
-                          }`}>
-                            {taak.klaar && (
-                              <svg className="h-3 w-3 text-[#202123]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                              </svg>
-                            )}
-                          </div>
-                          <span className={`text-sm ${taak.klaar ? "text-[#acacbe] line-through" : "text-white"}`}>
-                            {taak.tekst}
-                          </span>
-                        </div>
-                      ))}
+                    <div className="flex items-center gap-2 shrink-0 ml-4">
+                      {activeTab === "open" ? (
+                        <>
+                          <button className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white text-black hover:bg-white/90 transition-colors">
+                            Voer uit
+                          </button>
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                            Bewerken
+                          </button>
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                            Annuleren
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white text-black hover:bg-white/90 transition-colors">
+                            Goedkeuren
+                          </button>
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                            Wijziging aanvragen
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
-                );
-              })}
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -1,10 +1,12 @@
 "use client";
 
 import {
-  Activity,
+  LayoutDashboard,
   MessageSquare,
   CheckSquare,
   Lightbulb,
+  BookOpen,
+  FolderOpen,
   CreditCard,
 } from "lucide-react";
 import Link from "next/link";
@@ -37,14 +39,17 @@ function formatTokensCompact(n: number): string {
 }
 
 const navItems = [
-  { href: "/", label: "Overzicht", icon: Activity },
+  { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/mattie", label: "Chat met Mattie", icon: MessageSquare },
   { href: "/taken", label: "Taken", icon: CheckSquare },
   { href: "/ideeen", label: "Idee\u00ebn", icon: Lightbulb },
+  { href: "/logboek", label: "Logboek", icon: BookOpen },
+  { href: "/projecten", label: "Projecten", icon: FolderOpen },
 ];
 
 function UsageWidget() {
   const [usage, setUsage] = useState<UsageSummary | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     fetch("/api/usage")
@@ -65,14 +70,20 @@ function UsageWidget() {
 
   if (!usage) return null;
 
+  const active = pathname === "/usage";
+
   return (
     <Link
       href="/usage"
-      className="flex items-center gap-2.5 mx-3 px-3 py-2 rounded-xl text-[#acacbe] hover:text-white hover:bg-[#40414f] transition-all"
+      className={`flex items-center gap-2.5 mx-3 px-3 py-2 rounded-lg text-sm transition-all ${
+        active
+          ? "bg-[#2f2f2f] text-white"
+          : "text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f]"
+      }`}
     >
       <CreditCard className="h-4 w-4 shrink-0" />
       <span className="text-xs font-mono">
-        ${usage.totaalKosten.toFixed(2)} \u00b7 {formatTokensCompact(usage.totaalTokens)}
+        ${usage.totaalKosten.toFixed(2)} · {formatTokensCompact(usage.totaalTokens)}
       </span>
     </Link>
   );
@@ -97,22 +108,22 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#343541] text-white">
+    <div className="flex h-screen overflow-hidden bg-[#212121] text-[#ececec]">
       {/* Sidebar */}
-      <aside className="flex w-64 flex-col bg-[#202123] shrink-0">
+      <aside className="flex w-64 flex-col bg-[#171717] shrink-0">
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 h-16 shrink-0">
           <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/10">
-            <Activity className="h-4 w-4 text-white" />
+            <LayoutDashboard className="h-4 w-4 text-white" />
           </div>
           <div>
-            <span className="text-base font-semibold tracking-tight">{APP_NAME}</span>
-            <p className="text-[10px] text-[#acacbe]">Dashboard</p>
+            <span className="text-base font-semibold tracking-tight text-white">{APP_NAME}</span>
+            <p className="text-[10px] text-[#9b9b9b]">Dashboard</p>
           </div>
         </div>
 
         {/* Navigatie */}
-        <nav className="px-3 pt-4 space-y-1">
+        <nav className="px-3 pt-4 space-y-0.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
@@ -120,10 +131,10 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm transition-all ${
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-all ${
                   active
-                    ? "font-medium text-white bg-[#40414f]"
-                    : "text-[#acacbe] hover:text-white hover:bg-[#40414f]/50"
+                    ? "font-medium text-white bg-[#2f2f2f]"
+                    : "text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -148,7 +159,7 @@ export default function DashboardLayout({
       {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
         {header && (
-          <div className="flex items-center gap-3 border-b border-[#4d4d4f] px-6 h-14 shrink-0 bg-[#343541]">
+          <div className="flex items-center gap-3 border-b border-[#383838] px-6 h-14 shrink-0 bg-[#212121]">
             {header}
           </div>
         )}

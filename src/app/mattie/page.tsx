@@ -160,12 +160,12 @@ export default function ChatPage() {
       {gesprekken.length > 0 && (
         <div className="px-3 pt-4 flex-1 overflow-y-auto">
           <div className="flex items-center justify-between px-3 pb-1.5">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-[#acacbe]/60">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-[#9b9b9b]/60">
               Gesprekken
             </p>
             <button
               onClick={nieuwGesprek}
-              className="flex items-center gap-0.5 text-[10px] text-[#acacbe] hover:text-white transition-colors"
+              className="flex items-center gap-0.5 text-[10px] text-[#9b9b9b] hover:text-white transition-colors"
             >
               <Plus className="h-3 w-3" />
             </button>
@@ -175,10 +175,10 @@ export default function ChatPage() {
               <button
                 key={gesprek.id}
                 onClick={() => setActiefGesprekId(gesprek.id)}
-                className={`flex w-full items-center gap-2 rounded-xl px-3 py-1.5 text-left transition-all ${
+                className={`flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-left transition-all ${
                   actiefGesprekId === gesprek.id
-                    ? "bg-[#40414f] text-white"
-                    : "text-[#acacbe] hover:bg-[#40414f]/50 hover:text-white"
+                    ? "bg-[#2f2f2f] text-white"
+                    : "text-[#9b9b9b] hover:bg-[#2f2f2f] hover:text-white"
                 }`}
               >
                 <MessageSquare className="h-3 w-3 shrink-0" />
@@ -198,21 +198,21 @@ export default function ChatPage() {
         <Bot className="h-4 w-4 text-white" />
       </div>
       <div className="flex-1 min-w-0">
-        <h1 className="text-base font-semibold">{AGENT_NAME}</h1>
-        <p className="text-[10px] text-[#acacbe]">{AGENT_ROLE}</p>
+        <h1 className="text-base font-semibold text-white">{AGENT_NAME}</h1>
+        <p className="text-[10px] text-[#9b9b9b]">{AGENT_ROLE}</p>
       </div>
       <div className="flex items-center gap-1.5">
         {berichten.length > 0 && (
           <button
             onClick={wisGesprek}
-            className="flex items-center justify-center rounded-xl p-2 text-[#acacbe] hover:text-white hover:bg-[#40414f] transition-colors"
+            className="flex items-center justify-center rounded-lg p-2 text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f] transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5" />
           </button>
         )}
         <button
           onClick={nieuwGesprek}
-          className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[10px] text-[#acacbe] hover:text-white hover:bg-[#40414f] transition-colors"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] text-[#9b9b9b] hover:text-white hover:bg-[#2f2f2f] transition-colors"
         >
           <Plus className="h-3.5 w-3.5" />
           Nieuw
@@ -232,7 +232,7 @@ export default function ChatPage() {
                 <Bot className="h-7 w-7 text-white" />
               </div>
               <h2 className="text-base font-semibold text-white">{AGENT_NAME}</h2>
-              <p className="mt-1.5 text-sm text-[#acacbe] max-w-sm leading-relaxed">
+              <p className="mt-1.5 text-sm text-[#9b9b9b] max-w-sm leading-relaxed">
                 {AGENT_DESCRIPTION}
               </p>
             </div>
@@ -252,8 +252,8 @@ export default function ChatPage() {
                 <div
                   className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                     bericht.rol === "user"
-                      ? "bg-white text-[#202123] rounded-br-md"
-                      : "bg-[#40414f] text-white rounded-bl-md border border-[#4d4d4f]"
+                      ? "bg-[#2f2f2f] text-[#ececec] rounded-br-md"
+                      : "text-[#ececec] rounded-bl-md"
                   }`}
                 >
                   {bericht.rol === "user" ? (
@@ -268,12 +268,12 @@ export default function ChatPage() {
                             const codeString = String(children).replace(/\n$/, "");
                             if (match) {
                               return (
-                                <div className="relative my-2 rounded-xl overflow-hidden border border-[#4d4d4f]">
-                                  <div className="flex items-center justify-between px-3 py-1 bg-[#202123] border-b border-[#4d4d4f]">
-                                    <span className="text-[10px] text-[#acacbe]">{match[1]}</span>
+                                <div className="relative my-2 rounded-xl overflow-hidden border border-[#383838]">
+                                  <div className="flex items-center justify-between px-3 py-1 bg-[#171717] border-b border-[#383838]">
+                                    <span className="text-[10px] text-[#9b9b9b]">{match[1]}</span>
                                     <button
                                       onClick={() => kopieer(codeString, i * 1000 + 1)}
-                                      className="flex items-center gap-1 text-[10px] text-[#acacbe] hover:text-white transition-colors"
+                                      className="flex items-center gap-1 text-[10px] text-[#9b9b9b] hover:text-white transition-colors"
                                     >
                                       {gekopieerd === i * 1000 + 1 ? (
                                         <><Check className="h-3 w-3" /> Gekopieerd</>
@@ -286,7 +286,7 @@ export default function ChatPage() {
                                     style={oneDark}
                                     language={match[1]}
                                     PreTag="div"
-                                    customStyle={{ margin: 0, background: "#202123" }}
+                                    customStyle={{ margin: 0, background: "#171717" }}
                                   >
                                     {codeString}
                                   </SyntaxHighlighter>
@@ -294,7 +294,7 @@ export default function ChatPage() {
                               );
                             }
                             return (
-                              <code className="rounded-lg bg-[#202123] px-1.5 py-0.5 text-xs text-[#acacbe]" {...props}>
+                              <code className="rounded-lg bg-[#171717] px-1.5 py-0.5 text-xs text-[#9b9b9b]" {...props}>
                                 {children}
                               </code>
                             );
@@ -306,7 +306,7 @@ export default function ChatPage() {
                 </div>
                 <button
                   onClick={() => kopieer(bericht.tekst, i)}
-                  className="absolute -bottom-5 right-1 flex items-center gap-1 text-[10px] text-[#acacbe]/60 hover:text-[#acacbe] opacity-0 group-hover/msg:opacity-100 transition-opacity"
+                  className="absolute -bottom-5 right-1 flex items-center gap-1 text-[10px] text-[#9b9b9b]/60 hover:text-[#9b9b9b] opacity-0 group-hover/msg:opacity-100 transition-opacity"
                 >
                   {gekopieerd === i ? (
                     <><Check className="h-3 w-3" /> Gekopieerd</>
@@ -316,7 +316,7 @@ export default function ChatPage() {
                 </button>
               </div>
               {bericht.rol === "user" && (
-                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[#202123] text-[10px] font-bold">
+                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[#171717] text-[10px] font-bold">
                   M
                 </div>
               )}
@@ -328,11 +328,11 @@ export default function ChatPage() {
               <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-white/10">
                 <Bot className="h-3.5 w-3.5 text-white" />
               </div>
-              <div className="rounded-2xl rounded-bl-md bg-[#40414f] border border-[#4d4d4f] px-4 py-3">
+              <div className="rounded-2xl rounded-bl-md px-4 py-3">
                 <div className="flex items-center gap-1.5">
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#acacbe] animate-bounce [animation-duration:0.6s]" />
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#acacbe] animate-bounce [animation-delay:0.15s] [animation-duration:0.6s]" />
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#acacbe] animate-bounce [animation-delay:0.3s] [animation-duration:0.6s]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#9b9b9b] animate-bounce [animation-duration:0.6s]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#9b9b9b] animate-bounce [animation-delay:0.15s] [animation-duration:0.6s]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#9b9b9b] animate-bounce [animation-delay:0.3s] [animation-duration:0.6s]" />
                 </div>
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="border-t border-[#4d4d4f] px-6 py-3 bg-[#343541] shrink-0">
+      <div className="border-t border-[#383838] px-6 py-3 bg-[#212121] shrink-0">
         <form
           onSubmit={(e) => { e.preventDefault(); verstuur(); }}
           className="mx-auto flex max-w-2xl items-center gap-3"
@@ -354,12 +354,12 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={CHAT_PLACEHOLDER}
-            className="flex-1 rounded-full border border-[#4d4d4f] bg-[#40414f] px-5 py-2.5 text-sm text-white placeholder:text-[#acacbe] focus:border-[#acacbe] focus:outline-none focus:ring-1 focus:ring-[#acacbe]/50 transition-colors"
+            className="flex-1 rounded-xl border border-[#383838] bg-[#2f2f2f] px-5 py-2.5 text-sm text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
           />
           <button
             type="submit"
             disabled={!input.trim() || loading}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#202123] transition-all hover:bg-white/90 disabled:opacity-30 active:scale-95"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#171717] transition-all hover:bg-white/90 disabled:opacity-30 active:scale-95"
           >
             <Send className="h-4 w-4" />
           </button>
