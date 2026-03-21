@@ -3,20 +3,9 @@
 import { useEffect, useState } from "react";
 import { CreditCard, Coins, ArrowUpRight, ArrowDownRight, Hash, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
-import { PageHeader, SectionCard, Tabs, ActionButton, EmptyState, colors } from "@/components/ui/design";
-import { PageHeader, SectionCard, Th, Td, Tr, EmptyState } from "@/components/ui/design";
+import { PageHeader, SectionCard, Th, Td, Tr, EmptyState, colors } from "@/components/ui/design";
 
-type UsageEntry = {
-  datum: string;
-  model: string;
-  input_tokens: number;
-  output_tokens: number;
-  requests: number;
-};
-
-type UsageData = {
-  entries: UsageEntry[];
-};
+type UsageEntry = { datum: string; model: string; input_tokens: number; output_tokens: number; requests: number };
 
 const PRIJZEN: Record<string, { input: number; output: number }> = {
   "claude-sonnet-4-6": { input: 3, output: 15 },
@@ -25,23 +14,21 @@ const PRIJZEN: Record<string, { input: number; output: number }> = {
   "claude-opus-4-6": { input: 15, output: 75 },
 };
 
-function berekenKosten(model: string, inputTokens: number, outputTokens: number): number {
-  const key = Object.keys(PRIJZEN).find((k) => model.includes(k) || k.includes(model));
-  const prijs = key ? PRIJZEN[key] : { input: 3, output: 15 };
-  return (inputTokens / 1_000_000) * prijs.input + (outputTokens / 1_000_000) * prijs.output;
+function berekenKosten(model: string, it: number, ot: number): number {
+  const k = Object.keys(PRIJZEN).find(k => model.includes(k) || k.includes(model));
+  const p = k ? PRIJZEN[k] : { input: 3, output: 15 };
+  return (it / 1e6) * p.input + (ot / 1e6) * p.output;
 }
 
-function formatTokens(n: number): string {
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + "M";
-  if (n >= 1_000) return (n / 1_000).toFixed(1) + "K";
+function fmtTokens(n: number): string {
+  if (n >= 1e6) return (n / 1e6).toFixed(2) + "M";
+  if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
   return n.toString();
 }
 
-function formatKosten(n: number): string {
-  return "$" + n.toFixed(4);
-}
+function fmtKosten(n: number): string { return "$" + n.toFixed(4); }
 
-function formatDatum(datum: string): string {
+function fmtDatum(datum: string): string {
   const d = new Date(datum + "T00:00:00");
   const dagen = ["zo", "ma", "di", "wo", "do", "vr", "za"];
   const maanden = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
@@ -49,38 +36,23 @@ function formatDatum(datum: string): string {
 }
 
 export default function UsagePage() {
-  const [data, setData] = useState<UsageData | null>(null);
+  const [entries, setEntries] = useState<UsageEntry[]>([]);
   const [laden, setLaden] = useState(true);
 
   useEffect(() => {
-    fetch("/api/usage")
-      .then((r) => r.json())
-      .then((d: UsageData) => {
-        setData(d);
-        setLaden(false);
-      })
-      .catch(() => setLaden(false));
+    fetch("/api/usage").then(r => r.json()).then(d => { setEntries(d.entries ?? []); setLaden(false); }).catch(() => setLaden(false));
   }, []);
 
-  const entries = data?.entries ?? [];
-
-  const nu = new Date();
-  const huidigeMaand = `${nu.getFullYear()}-${String(nu.getMonth() + 1).padStart(2, "0")}`;
-  const maandEntries = entries.filter((e) => e.datum.startsWith(huidigeMaand));
-
-  const totaalInput = maandEntries.reduce((s, e) => s + e.input_tokens, 0);
-  const totaalOutput = maandEntries.reduce((s, e) => s + e.output_tokens, 0);
-  const totaalRequests = maandEntries.reduce((s, e) => s + e.requests, 0);
-  const totaalKosten = maandEntries.reduce(
-    (s, e) => s + berekenKosten(e.model, e.input_tokens, e.output_tokens),
-    0
-  );
+  const hm = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`;
+  const me = entries.filter(e => e.datum.startsWith(hm));
+  const totI = me.reduce((s, e) => s + e.input_tokens, 0);
+  const totO = me.reduce((s, e) => s + e.output_tokens, 0);
+  const totR = me.reduce((s, e) => s + e.requests, 0);
+  const totK = me.reduce((s, e) => s + berekenKosten(e.model, e.input_tokens, e.output_tokens), 0);
 
   const perModel: Record<string, { input: number; output: number; requests: number; kosten: number }> = {};
-  for (const e of maandEntries) {
-    if (!perModel[e.model]) {
-      perModel[e.model] = { input: 0, output: 0, requests: 0, kosten: 0 };
-    }
+  for (const e of me) {
+    if (!perModel[e.model]) perModel[e.model] = { input: 0, output: 0, requests: 0, kosten: 0 };
     perModel[e.model].input += e.input_tokens;
     perModel[e.model].output += e.output_tokens;
     perModel[e.model].requests += e.requests;
@@ -88,135 +60,91 @@ export default function UsagePage() {
   }
 
   const perDag: Record<string, { input: number; output: number; requests: number; kosten: number }> = {};
-  for (const e of maandEntries) {
-    if (!perDag[e.datum]) {
-      perDag[e.datum] = { input: 0, output: 0, requests: 0, kosten: 0 };
-    }
+  for (const e of me) {
+    if (!perDag[e.datum]) perDag[e.datum] = { input: 0, output: 0, requests: 0, kosten: 0 };
     perDag[e.datum].input += e.input_tokens;
     perDag[e.datum].output += e.output_tokens;
     perDag[e.datum].requests += e.requests;
     perDag[e.datum].kosten += berekenKosten(e.model, e.input_tokens, e.output_tokens);
   }
-  const dagLijst = Object.entries(perDag)
-    .sort(([a], [b]) => b.localeCompare(a))
-    .slice(0, 14);
+  const dagLijst = Object.entries(perDag).sort(([a], [b]) => b.localeCompare(a)).slice(0, 14);
+
+  const stats = [
+    { label: "Geschatte kosten", value: fmtKosten(totK), icon: Coins },
+    { label: "Input tokens", value: fmtTokens(totI), icon: ArrowUpRight },
+    { label: "Output tokens", value: fmtTokens(totO), icon: ArrowDownRight },
+    { label: "Requests", value: totR.toString(), icon: Hash },
+  ];
 
   return (
     <DashboardLayout>
       <main className="flex-1">
-        <div className="px-8 py-8">
-          {/* Header */}
-          <div className="mb-6">
-            <PageHeader title="Usage" subtitle="API gebruik &amp; geschatte kosten" />
-            
-          </div>
-
+        <div className="px-6 py-6">
+          <PageHeader title="Usage" subtitle="API gebruik & geschatte kosten" />
           {laden ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" />
-            </div>
+            <div className="flex items-center justify-center py-20"><Loader2 className="h-5 w-5 animate-spin text-[#9b9b9b]" /></div>
           ) : entries.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.04] mb-3">
-                <CreditCard className="h-5 w-5 text-[#666]" />
-              </div>
-              <p className="text-sm text-[#666]">Nog geen usage data</p>
-              <p className="text-xs text-[#666] mt-1">
-                Token gebruik wordt automatisch bijgehouden bij elk chatgesprek
-              </p>
-            </div>
+            <EmptyState icon={CreditCard} message="Nog geen usage data" sub="Token gebruik wordt automatisch bijgehouden" />
           ) : (
             <>
-              {/* Statistieken kaarten */}
-              <div className="grid grid-cols-4 gap-4 mb-8">
-                {[
-                  { label: "Geschatte kosten", waarde: formatKosten(totaalKosten), icon: Coins },
-                  { label: "Input tokens", waarde: formatTokens(totaalInput), icon: ArrowUpRight },
-                  { label: "Output tokens", waarde: formatTokens(totaalOutput), icon: ArrowDownRight },
-                  { label: "Requests", waarde: totaalRequests.toString(), icon: Hash },
-                ].map((stat) => {
-                  const Icon = stat.icon;
+              {/* Stats */}
+              <div className="grid grid-cols-4 gap-4 mb-6">
+                {stats.map(s => {
+                  const Icon = s.icon;
                   return (
-                    <div
-                      key={stat.label}
-                      className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] px-5 py-4"
-                    >
+                    <SectionCard key={s.label} className="px-4 py-3">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/[0.04]">
-                          <Icon className="h-3.5 w-3.5 text-[#666]" />
-                        </div>
-                        <span className="text-[10px] text-[#666] uppercase tracking-wider">
-                          {stat.label}
-                        </span>
+                        <Icon className={`h-3.5 w-3.5 ${colors.textMuted}`} />
+                        <span className={`text-[10px] ${colors.textMuted} uppercase tracking-wider`}>{s.label}</span>
                       </div>
-                      <p className="text-xl font-semibold text-white font-mono">
-                        {stat.waarde}
-                      </p>
-                    </div>
+                      <p className={`text-xl font-semibold ${colors.textTitle} font-mono`}>{s.value}</p>
+                    </SectionCard>
                   );
                 })}
               </div>
 
-              {/* Per model breakdown */}
+              {/* Per model */}
               {Object.keys(perModel).length > 0 && (
-                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden mb-8">
-                  <div className="px-5 py-4 border-b border-white/[0.06]">
-                    <h2 className="text-sm font-medium text-white">Per model</h2>
+                <SectionCard className="mb-6">
+                  <div className={`px-4 py-2.5 border-b ${colors.borderSubtle}`}>
+                    <h2 className={`text-sm font-medium ${colors.textTitle}`}>Per model</h2>
                   </div>
                   <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-white/[0.06]">
-                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Model</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Input</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Output</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Requests</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Kosten</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/[0.05]">
-                      {Object.entries(perModel).map(([model, stats]) => (
-                        <tr key={model} className="hover:bg-white/[0.03] transition-colors">
-                          <td className="px-5 py-3 text-sm text-[#9b9b9b] font-mono">{model}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.input)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.output)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatKosten(stats.kosten)}</td>
-                        </tr>
+                    <thead><tr className={`border-b ${colors.borderSubtle}`}>
+                      <Th>Model</Th><Th align="right">Input</Th><Th align="right">Output</Th><Th align="right">Requests</Th><Th align="right">Kosten</Th>
+                    </tr></thead>
+                    <tbody className={`${colors.divider}`}>
+                      {Object.entries(perModel).map(([model, s]) => (
+                        <Tr key={model}>
+                          <Td mono>{model}</Td><Td align="right" mono>{fmtTokens(s.input)}</Td><Td align="right" mono>{fmtTokens(s.output)}</Td>
+                          <Td align="right" mono>{s.requests}</Td><Td align="right" mono>{fmtKosten(s.kosten)}</Td>
+                        </Tr>
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </SectionCard>
               )}
 
-              {/* Dagelijks overzicht */}
+              {/* Dagelijks */}
               {dagLijst.length > 0 && (
-                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
-                  <div className="px-5 py-4 border-b border-white/[0.06]">
-                    <h2 className="text-sm font-medium text-white">Dagelijks overzicht</h2>
+                <SectionCard>
+                  <div className={`px-4 py-2.5 border-b ${colors.borderSubtle}`}>
+                    <h2 className={`text-sm font-medium ${colors.textTitle}`}>Dagelijks overzicht</h2>
                   </div>
                   <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-white/[0.06]">
-                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Datum</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Input</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Output</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Requests</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Kosten</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/[0.05]">
-                      {dagLijst.map(([datum, stats]) => (
-                        <tr key={datum} className="hover:bg-white/[0.03] transition-colors">
-                          <td className="px-5 py-3 text-sm text-[#9b9b9b]">{formatDatum(datum)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.input)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.output)}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatKosten(stats.kosten)}</td>
-                        </tr>
+                    <thead><tr className={`border-b ${colors.borderSubtle}`}>
+                      <Th>Datum</Th><Th align="right">Input</Th><Th align="right">Output</Th><Th align="right">Requests</Th><Th align="right">Kosten</Th>
+                    </tr></thead>
+                    <tbody className={`${colors.divider}`}>
+                      {dagLijst.map(([datum, s]) => (
+                        <Tr key={datum}>
+                          <Td>{fmtDatum(datum)}</Td><Td align="right" mono>{fmtTokens(s.input)}</Td><Td align="right" mono>{fmtTokens(s.output)}</Td>
+                          <Td align="right" mono>{s.requests}</Td><Td align="right" mono>{fmtKosten(s.kosten)}</Td>
+                        </Tr>
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </SectionCard>
               )}
             </>
           )}
