@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { MODEL, MAX_TOKENS, SYSTEM_PROMPT } from "@/lib/config";
+import { registreerGebruik } from "@/lib/usage-tracker";
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -54,6 +55,17 @@ export async function POST(request: NextRequest) {
 
     const antwoord =
       response.content[0].type === "text" ? response.content[0].text : "";
+
+    // Token usage bijhouden
+    try {
+      await registreerGebruik(
+        response.model,
+        response.usage.input_tokens,
+        response.usage.output_tokens
+      );
+    } catch (e) {
+      console.error("Usage tracking fout:", e);
+    }
 
     return NextResponse.json({ antwoord });
   } catch (error) {

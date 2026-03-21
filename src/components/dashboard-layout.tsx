@@ -5,17 +5,19 @@ import {
   MessageSquare,
   BookOpen,
   Activity,
+  CreditCard,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { APP_NAME, APP_SUBTITLE } from "@/lib/config";
 
-type ActivePage = "overzicht" | "mattie" | "logboek";
+type ActivePage = "overzicht" | "mattie" | "logboek" | "usage";
 
 const navItems: { href: string; label: string; icon: typeof Activity; page: ActivePage }[] = [
   { href: "/", label: "Overzicht", icon: Activity, page: "overzicht" },
   { href: "/mattie", label: "Mattie", icon: MessageSquare, page: "mattie" },
   { href: "/logboek", label: "Logboek", icon: BookOpen, page: "logboek" },
+  { href: "/usage", label: "Usage", icon: CreditCard, page: "usage" },
 ];
 
 interface DashboardLayoutProps {
