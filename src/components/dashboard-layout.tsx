@@ -108,7 +108,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#2f2f2f] text-[#ececec]">
+    <div className="flex h-screen overflow-hidden bg-[#212121] text-[#ececec]">
       {/* Sidebar */}
       <aside className="flex w-64 flex-col bg-[#171717] shrink-0 border-r border-white/[0.06]">
         {/* Logo */}
@@ -156,7 +156,7 @@ export default function DashboardLayout({
       {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
         {header && (
-          <div className="flex items-center gap-3 border-b border-white/[0.06] px-6 h-14 shrink-0 bg-[#2f2f2f]">
+          <div className="flex items-center gap-3 border-b border-white/[0.06] px-6 h-14 shrink-0 bg-[#212121]">
             {header}
           </div>
         )}
