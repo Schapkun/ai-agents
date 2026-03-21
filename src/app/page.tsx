@@ -118,7 +118,7 @@ export default function DashboardPage() {
                     {openTaken.map((t, i) => (
                       <div key={i} className="py-2">
                         <p className="text-sm text-muted-foreground leading-snug">{t.tekst}</p>
-                        <p className="text-[10px] text-muted-foreground/60 mt-0.5">{t.project}</p>
+                        <p className="text-xs text-muted-foreground/60 mt-0.5">{t.project}</p>
                       </div>
                     ))}
                     {openTaken.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen taken</p>}
@@ -136,7 +136,7 @@ export default function DashboardPage() {
                     {ideeen.map((idee, i) => (
                       <div key={i} className="py-2 flex items-center justify-between">
                         <p className="text-sm text-muted-foreground">{idee.titel}</p>
-                        <span className="text-[10px] text-muted-foreground/60">{idee.status}</span>
+                        <span className="text-xs text-muted-foreground/60">{idee.status}</span>
                       </div>
                     ))}
                     {ideeen.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen idee\u00EBn</p>}
@@ -156,7 +156,7 @@ export default function DashboardPage() {
                       return (
                         <div key={i} className="py-2 flex items-center justify-between">
                           <p className="text-sm text-muted-foreground truncate flex-1 min-w-0">{r.replace(/^[-*]\s*/, "").trim()}</p>
-                          <span className="text-[10px] text-muted-foreground/60 shrink-0 ml-3">{formatDatum(entry.datum)}</span>
+                          <span className="text-xs text-muted-foreground/60 shrink-0 ml-3">{formatDatum(entry.datum)}</span>
                         </div>
                       );
                     })}
@@ -176,7 +176,7 @@ export default function DashboardPage() {
                       <Link key={i} href={`/projecten/${encodeURIComponent(p.naam)}`} className="block">
                         <div className="py-2 flex items-center justify-between hover:bg-muted/50 transition-colors -mx-4 px-4">
                           <p className="text-sm text-muted-foreground">{p.naam}</p>
-                          <span className="text-[10px] text-muted-foreground/60 font-mono">{getOpen(p.naam)} open</span>
+                          <span className="text-xs text-muted-foreground/60 font-mono">{getOpen(p.naam)} open</span>
                         </div>
                       </Link>
                     ))}

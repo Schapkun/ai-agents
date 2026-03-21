@@ -98,8 +98,8 @@ export default function IdeeenPage() {
                       </div>
                       {idee.beschrijving && <p className="text-xs text-muted-foreground/60 mt-1 leading-relaxed">{idee.beschrijving}</p>}
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-[10px] text-muted-foreground/60">{idee.status}</span>
-                        {idee.datum && <span className="text-[10px] text-muted-foreground/60">{idee.datum}</span>}
+                        <span className="text-xs text-muted-foreground/60">{idee.status}</span>
+                        {idee.datum && <span className="text-xs text-muted-foreground/60">{idee.datum}</span>}
                       </div>
                     </>
                   )}

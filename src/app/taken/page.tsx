@@ -80,7 +80,7 @@ export default function TakenPage() {
                   ) : (
                     <>
                       <p className={`text-sm ${taak.klaar ? "text-muted-foreground/60 line-through" : "text-muted-foreground"}`}>{taak.tekst}</p>
-                      <p className="text-[10px] text-muted-foreground/60 mt-0.5">{taak.project}</p>
+                      <p className="text-xs text-muted-foreground/60 mt-0.5">{taak.project}</p>
                     </>
                   )}
                 </div>

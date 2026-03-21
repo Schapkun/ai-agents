@@ -54,7 +54,7 @@ export default function ProjectDetailPage() {
           {/* Back link */}
           <Link
             href="/projecten"
-            className="inline-flex items-center gap-1.5 text-sm text-[#666] hover:text-[#9b9b9b] transition-colors mb-6"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-muted-foreground transition-colors mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
             Terug naar projecten
@@ -62,17 +62,17 @@ export default function ProjectDetailPage() {
 
           {laden ? (
             <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" />
+              <Loader2 className="h-5 w-5 text-muted-foreground animate-spin" />
             </div>
           ) : !data ? (
-            <p className="text-sm text-[#666]">Project niet gevonden</p>
+            <p className="text-sm text-muted-foreground">Project niet gevonden</p>
           ) : (
             <>
               {/* Header */}
               <div className="mb-8">
                 <h1 className="text-2xl font-semibold tracking-tight text-white">{data.naam}</h1>
                 {data.beschrijving && (
-                  <p className="text-sm text-[#9b9b9b] mt-1">{data.beschrijving}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{data.beschrijving}</p>
                 )}
               </div>
 
@@ -84,7 +84,7 @@ export default function ProjectDetailPage() {
                       href={data.devServer}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-white/[0.05] border border-white/[0.08] text-[#9b9b9b] hover:text-[#ececec] hover:bg-white/[0.08] transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-accent border border-border text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                     >
                       Dev server <ArrowUpRight className="h-3.5 w-3.5" />
                     </a>
@@ -94,7 +94,7 @@ export default function ProjectDetailPage() {
                       href={data.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-white/[0.05] border border-white/[0.08] text-[#9b9b9b] hover:text-[#ececec] hover:bg-white/[0.08] transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-accent border border-border text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                     >
                       {data.liveDomein || "Live"} <ArrowUpRight className="h-3.5 w-3.5" />
                     </a>
@@ -104,7 +104,7 @@ export default function ProjectDetailPage() {
                       href={data.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-white/[0.05] border border-white/[0.08] text-[#9b9b9b] hover:text-[#ececec] hover:bg-white/[0.08] transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-accent border border-border text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                     >
                       GitHub <ArrowUpRight className="h-3.5 w-3.5" />
                     </a>
@@ -114,21 +114,21 @@ export default function ProjectDetailPage() {
 
               <div className="grid grid-cols-2 gap-5">
                 {/* Open taken */}
-                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                <div className="bg-card backdrop-blur-sm rounded-xl border border-border overflow-hidden">
                   <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                    <h2 className="text-sm font-medium text-[#ececec]">Openstaande taken</h2>
-                    <span className="text-xs text-[#666] font-mono">{openTaken.length}</span>
+                    <h2 className="text-sm font-medium text-foreground">Openstaande taken</h2>
+                    <span className="text-xs text-muted-foreground font-mono">{openTaken.length}</span>
                   </div>
                   {openTaken.length === 0 ? (
                     <div className="flex flex-col items-center py-8">
-                      <CheckSquare className="h-5 w-5 text-[#666] mb-2" />
-                      <p className="text-sm text-[#666]">Geen openstaande taken</p>
+                      <CheckSquare className="h-5 w-5 text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground">Geen openstaande taken</p>
                     </div>
                   ) : (
                     <div className="divide-y divide-white/[0.05]">
                       {openTaken.map((t, i) => (
-                        <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                          <p className="text-sm text-[#ececec]">{t.tekst}</p>
+                        <div key={i} className="px-5 py-2.5 hover:bg-accent/50 transition-colors">
+                          <p className="text-sm text-foreground">{t.tekst}</p>
                         </div>
                       ))}
                     </div>
@@ -136,18 +136,18 @@ export default function ProjectDetailPage() {
                 </div>
 
                 {/* Afgeronde taken */}
-                <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                <div className="bg-card backdrop-blur-sm rounded-xl border border-border overflow-hidden">
                   <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                    <h2 className="text-sm font-medium text-[#ececec]">Afgeronde taken</h2>
-                    <span className="text-xs text-[#666] font-mono">{klaarTaken.length}</span>
+                    <h2 className="text-sm font-medium text-foreground">Afgeronde taken</h2>
+                    <span className="text-xs text-muted-foreground font-mono">{klaarTaken.length}</span>
                   </div>
                   {klaarTaken.length === 0 ? (
-                    <p className="px-5 py-4 text-sm text-[#666]">Geen afgeronde taken</p>
+                    <p className="px-5 py-4 text-sm text-muted-foreground">Geen afgeronde taken</p>
                   ) : (
                     <div className="divide-y divide-white/[0.05]">
                       {klaarTaken.map((t, i) => (
-                        <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                          <p className="text-sm text-[#666] line-through">{t.tekst}</p>
+                        <div key={i} className="px-5 py-2.5 hover:bg-accent/50 transition-colors">
+                          <p className="text-sm text-muted-foreground line-through">{t.tekst}</p>
                         </div>
                       ))}
                     </div>
@@ -156,15 +156,15 @@ export default function ProjectDetailPage() {
 
                 {/* Logboek */}
                 {data.logboek.length > 0 && (
-                  <div className="col-span-2 bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
+                  <div className="col-span-2 bg-card backdrop-blur-sm rounded-xl border border-border overflow-hidden">
                     <div className="px-5 py-3 border-b border-white/[0.06]">
-                      <h2 className="text-sm font-medium text-[#ececec]">Recente logboek entries</h2>
+                      <h2 className="text-sm font-medium text-foreground">Recente logboek entries</h2>
                     </div>
                     <div className="divide-y divide-white/[0.05]">
                       {data.logboek.map((entry, i) => (
-                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
-                          <p className="text-sm text-[#ececec] truncate flex-1 min-w-0">{entry.inhoud}</p>
-                          <span className="text-xs text-[#666] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
+                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-accent/50 transition-colors">
+                          <p className="text-sm text-foreground truncate flex-1 min-w-0">{entry.inhoud}</p>
+                          <span className="text-xs text-muted-foreground shrink-0 ml-3">{formatDatum(entry.datum)}</span>
                         </div>
                       ))}
                     </div>

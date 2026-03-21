@@ -162,12 +162,12 @@ export default function ChatPage() {
       {gesprekken.length > 0 && (
         <div className="px-3 pt-4 flex-1 overflow-y-auto">
           <div className="flex items-center justify-between px-3 pb-1.5">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-sidebar-foreground">
+            <p className="text-xs font-medium uppercase tracking-wider text-sidebar-foreground">
               Gesprekken
             </p>
             <button
               onClick={nieuwGesprek}
-              className="flex items-center gap-0.5 text-[10px] text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
+              className="flex items-center gap-0.5 text-xs text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
             >
               <Plus className="h-3 w-3" />
             </button>
@@ -184,7 +184,7 @@ export default function ChatPage() {
                 }`}
               >
                 <MessageSquare className="h-3 w-3 shrink-0" />
-                <span className="text-[10px] truncate">{gesprek.titel}</span>
+                <span className="text-xs truncate">{gesprek.titel}</span>
               </button>
             ))}
           </div>
@@ -201,7 +201,7 @@ export default function ChatPage() {
       </div>
       <div className="flex-1 min-w-0">
         <h1 className="text-base font-semibold text-foreground">{AGENT_NAME}</h1>
-        <p className="text-[10px] text-muted-foreground">{AGENT_ROLE}</p>
+        <p className="text-xs text-muted-foreground">{AGENT_ROLE}</p>
       </div>
       <div className="flex items-center gap-1.5">
         {berichten.length > 0 && (
@@ -270,10 +270,10 @@ export default function ChatPage() {
                               return (
                                 <div className="relative my-2 rounded-xl overflow-hidden border border-border">
                                   <div className="flex items-center justify-between px-3 py-1 bg-sidebar border-b border-sidebar-border">
-                                    <span className="text-[10px] text-muted-foreground">{match[1]}</span>
+                                    <span className="text-xs text-muted-foreground">{match[1]}</span>
                                     <button
                                       onClick={() => kopieer(codeString, i * 1000 + 1)}
-                                      className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                                     >
                                       {gekopieerd === i * 1000 + 1 ? (
                                         <><Check className="h-3 w-3" /> Gekopieerd</>
@@ -306,7 +306,7 @@ export default function ChatPage() {
                 </div>
                 <button
                   onClick={() => kopieer(bericht.tekst, i)}
-                  className="absolute -bottom-5 right-1 flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground opacity-0 group-hover/msg:opacity-100 transition-opacity"
+                  className="absolute -bottom-5 right-1 flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground opacity-0 group-hover/msg:opacity-100 transition-opacity"
                 >
                   {gekopieerd === i ? (
                     <><Check className="h-3 w-3" /> Gekopieerd</>
@@ -316,7 +316,7 @@ export default function ChatPage() {
                 </button>
               </div>
               {bericht.rol === "user" && (
-                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">
                   M
                 </div>
               )}

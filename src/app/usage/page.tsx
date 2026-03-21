@@ -106,7 +106,7 @@ export default function UsagePage() {
                       <CardContent className="pt-3 pb-3">
                         <div className="flex items-center gap-2 mb-2">
                           <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</span>
+                          <span className="text-xs text-muted-foreground uppercase tracking-wider">{s.label}</span>
                         </div>
                         <p className="text-xl font-semibold text-foreground font-mono">{s.value}</p>
                       </CardContent>
