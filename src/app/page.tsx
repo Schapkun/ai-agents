@@ -126,7 +126,7 @@ export default function DashboardPage() {
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
                   <h2 className="text-sm font-medium text-white">Openstaande taken</h2>
-                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
+                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -145,7 +145,7 @@ export default function DashboardPage() {
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
                   <h2 className="text-sm font-medium text-white">Idee{"ë"}n</h2>
-                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
+                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
                   <h2 className="text-sm font-medium text-white">Logboek</h2>
-                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
+                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -186,7 +186,7 @@ export default function DashboardPage() {
               <div className="bg-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
                   <h2 className="text-sm font-medium text-white">Projecten</h2>
-                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#ececec] hover:text-white transition-colors">
+                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
                     Alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
