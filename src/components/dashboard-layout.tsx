@@ -70,8 +70,8 @@ export default function DashboardLayout({
         {/* Extra sidebar content */}
         {sidebarExtra}
 
-        {/* Spacer als er geen extra content is */}
-        {!sidebarExtra && <div className="flex-1" />}
+        {/* Spacer — laat navigatie bovenaan en sidebar ademen zonder onderste lijn (Apple-stijl) */}
+        <div className="flex-1" />
 
       </aside>
 
