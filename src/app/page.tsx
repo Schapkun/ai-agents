@@ -128,7 +128,7 @@ export default function DashboardPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-sm">Idee\u00EBn</CardTitle>
+                  <CardTitle className="text-sm">Ideeën</CardTitle>
                   <CardAction><SectionLink href="/ideeen" /></CardAction>
                 </CardHeader>
                 <CardContent className="pt-0">
@@ -139,7 +139,7 @@ export default function DashboardPage() {
                         <span className="text-xs text-muted-foreground/60">{idee.status}</span>
                       </div>
                     ))}
-                    {ideeen.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen idee\u00EBn</p>}
+                    {ideeen.length === 0 && <p className="py-3 text-sm text-muted-foreground/60">Geen ideeën</p>}
                   </div>
                 </CardContent>
               </Card>

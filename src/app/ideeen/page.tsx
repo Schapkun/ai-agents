@@ -59,7 +59,7 @@ export default function IdeeenPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent mb-3">
             <Lightbulb className="h-5 w-5 text-muted-foreground" />
           </div>
-          <p className="text-sm text-muted-foreground">{isOpen ? "Geen openstaande idee\u00EBn" : "Geen uitgevoerde idee\u00EBn"}</p>
+          <p className="text-sm text-muted-foreground">{isOpen ? "Geen openstaande ideeën" : "Geen uitgevoerde ideeën"}</p>
         </div>
       );
     }
@@ -132,7 +132,7 @@ export default function IdeeenPage() {
     <DashboardLayout>
       <main className="flex-1">
         <div className="px-6 py-6">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-6">Idee\u00EBn</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-6">Ideeën</h1>
           <Tabs defaultValue="open" onValueChange={(v: string | number | null) => { if (typeof v === "string") setActiveTab(v); }}>
             <TabsList className="mb-6">
               <TabsTrigger value="open">Openstaand ({openIdeeen.length})</TabsTrigger>

@@ -61,7 +61,7 @@ export default function LogboekPage() {
             {categorieen.length > 0 && (
               <select value={categorie} onChange={e => setCategorie(e.target.value)}
                 className="px-3 py-2 text-sm rounded-lg border border-input bg-transparent text-foreground focus:border-ring focus:outline-none transition-colors appearance-none cursor-pointer">
-                <option value="alle">Alle categorie\u00EBn</option>
+                <option value="alle">Alle categorieën</option>
                 {categorieen.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             )}
