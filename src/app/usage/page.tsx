@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { CreditCard, Coins, ArrowUpRight, ArrowDownRight, Hash, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
+import { PageHeader, SectionCard, Tabs, ActionButton, EmptyState, colors } from "@/components/ui/design";
+import { PageHeader, SectionCard, Th, Td, Tr, EmptyState } from "@/components/ui/design";
 
 type UsageEntry = {
   datum: string;
@@ -105,8 +107,8 @@ export default function UsagePage() {
         <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Usage</h1>
-            <p className="text-sm text-[#666] mt-1">API gebruik &amp; geschatte kosten</p>
+            <PageHeader title="Usage" subtitle="API gebruik &amp; geschatte kosten" />
+            
           </div>
 
           {laden ? (

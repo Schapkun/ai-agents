@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Lightbulb, Loader2, ExternalLink } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
+import { PageHeader, SectionCard, Tabs, ActionButton, EmptyState, colors } from "@/components/ui/design";
 
 type Idee = {
   titel: string;
@@ -116,7 +117,7 @@ export default function IdeeenPage() {
         <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Ideeën</h1>
+            <h1 className={`text-2xl font-semibold tracking-tight ${colors.textTitle}`}>Ideeën</h1>
           </div>
 
           {/* Tabs */}

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { CheckSquare, Loader2 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
+import { PageHeader, SectionCard, Tabs, ActionButton, EmptyState, colors } from "@/components/ui/design";
 
 type Taak = {
   tekst: string;
@@ -102,7 +103,7 @@ export default function TakenPage() {
         <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Taken</h1>
+            <h1 className={`text-2xl font-semibold tracking-tight ${colors.textTitle}`}>Taken</h1>
           </div>
 
           {/* Tabs */}

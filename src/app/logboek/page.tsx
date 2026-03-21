@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { BookOpen, Loader2, ChevronDown, ChevronUp, Search } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
+import { PageHeader, SectionCard, Tabs, ActionButton, EmptyState, colors } from "@/components/ui/design";
 
 type LogboekEntry = {
   datum: string;
@@ -83,7 +84,7 @@ export default function LogboekPage() {
         <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Logboek</h1>
+            <h1 className={`text-2xl font-semibold tracking-tight ${colors.textTitle}`}>Logboek</h1>
             <p className="text-sm text-[#666] mt-1">{entries.length} entries</p>
           </div>
 
