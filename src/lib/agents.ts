@@ -72,6 +72,18 @@ export const agents: Agent[] = [
     geslaagd: 0,
     trend: "stable",
   },
+  {
+    id: "review",
+    naam: "Review Agent",
+    beschrijving: "Onafhankelijke controle van werk door andere agents",
+    kleur: "text-green-400",
+    bgKleur: "bg-green-400/10",
+    borderKleur: "border-green-400/20",
+    accentHex: "#4ade80",
+    gebruikt: 0,
+    geslaagd: 0,
+    trend: "stable",
+  },
 ];
 
 export function getAgent(id: string): Agent | undefined {

@@ -43,7 +43,7 @@ export default function DashboardLayout({
           </div>
           <div>
             <span className="text-sm font-semibold tracking-tight">Mattie</span>
-            <p className="text-[10px] text-zinc-500">Dashboard</p>
+            <p className="text-[11px] text-zinc-500">Dashboard</p>
           </div>
         </div>
 

@@ -9,6 +9,7 @@ import {
   Palette,
   RefreshCw,
   FolderPlus,
+  Shield,
   type LucideIcon,
 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard-layout";
@@ -32,6 +33,7 @@ const agentData: AgentInfo[] = [
   { id: "design-agent", naam: "Design Agent", beschrijving: "UI/UX aanpassingen, visuele verbeteringen en layout wijzigingen", icon: Palette, kleur: "text-pink-400", bgKleur: "bg-pink-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
   { id: "refactor-agent", naam: "Refactor Agent", beschrijving: "Code herstructureren voor betere leesbaarheid en onderhoudbaarheid", icon: RefreshCw, kleur: "text-cyan-400", bgKleur: "bg-cyan-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
   { id: "setup-agent", naam: "Setup Agent", beschrijving: "Nieuw project initialiseren met tooling, configuratie en structuur", icon: FolderPlus, kleur: "text-teal-400", bgKleur: "bg-teal-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
+  { id: "review", naam: "Review Agent", beschrijving: "Onafhankelijke controle van werk door andere agents", icon: Shield, kleur: "text-green-400", bgKleur: "bg-green-400/10", gebruikt: 0, geslaagd: 0, trend: "stable", laatsteActiviteit: "-" },
 ];
 
 function TrendIcon({ trend }: { trend: "up" | "down" | "stable" }) {
@@ -59,7 +61,7 @@ const agentsHeader = (
   <div>
     <h1 className="text-sm font-semibold tracking-tight">Agents</h1>
     <p className="text-[11px] text-zinc-500">
-      {agentData.length} agents &middot; slagingspercentages
+      {agentData.length} agents &middot; {agentData.reduce((s, a) => s + a.gebruikt, 0)} gebruikt &middot; {agentData.reduce((s, a) => s + a.geslaagd, 0)} geslaagd
     </p>
   </div>
 );
@@ -69,22 +71,6 @@ export default function AgentsPage() {
     <DashboardLayout activePage="agents" header={agentsHeader}>
       <main className="flex-1">
         <div className="max-w-4xl mx-auto px-8 py-8">
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Agents</p>
-              <p className="text-2xl font-semibold mt-1">{agentData.length}</p>
-            </div>
-            <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Totaal gebruikt</p>
-              <p className="text-2xl font-semibold mt-1">{agentData.reduce((s, a) => s + a.gebruikt, 0)}</p>
-            </div>
-            <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/40 px-5 py-4">
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider">Totaal geslaagd</p>
-              <p className="text-2xl font-semibold mt-1 text-emerald-400">{agentData.reduce((s, a) => s + a.geslaagd, 0)}</p>
-            </div>
-          </div>
-
           {/* Tabel */}
           <div className="rounded-xl border border-zinc-800/40 overflow-hidden">
             <table className="w-full">
