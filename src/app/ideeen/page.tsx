@@ -47,7 +47,7 @@ export default function IdeeenPage() {
         <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Idee\u00EBn</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Ideeën</h1>
           </div>
 
           {/* Tabs */}
@@ -84,7 +84,7 @@ export default function IdeeenPage() {
                 <Lightbulb className="h-5 w-5 text-[#666]" />
               </div>
               <p className="text-sm text-[#666]">
-                {activeTab === "open" ? "Geen openstaande idee\u00EBn" : "Geen uitgevoerde idee\u00EBn"}
+                {activeTab === "open" ? "Geen openstaande ideeën" : "Geen uitgevoerde ideeën"}
               </p>
             </div>
           ) : (

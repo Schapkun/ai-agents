@@ -149,13 +149,13 @@ export default function DashboardPage() {
               {/* Recente ideeën */}
               <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
-                  <h2 className="text-sm font-medium text-[#ececec]">Recente idee\u00EBn</h2>
+                  <h2 className="text-sm font-medium text-[#ececec]">Recente ideeën</h2>
                   <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
                     Bekijk alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
                 {ideeen.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#666]">Geen idee\u00EBn</p>
+                  <p className="px-5 py-4 text-sm text-[#666]">Geen ideeën</p>
                 ) : (
                   <div className="divide-y divide-white/[0.04]">
                     {ideeen.map((idee, i) => (

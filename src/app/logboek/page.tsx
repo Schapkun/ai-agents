@@ -105,7 +105,7 @@ export default function LogboekPage() {
                 onChange={(e) => setFilterCategorie(e.target.value)}
                 className="px-3 py-2 text-sm rounded-lg border border-white/[0.06] bg-white/[0.03] text-[#ececec] focus:border-white/[0.12] focus:outline-none transition-colors appearance-none cursor-pointer"
               >
-                <option value="alle">Alle categorie\u00EBn</option>
+                <option value="alle">Alle categorieën</option>
                 {categorieen.map((cat) => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}

@@ -42,7 +42,7 @@ const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/mattie", label: "Chat met Mattie", icon: MessageSquare },
   { href: "/taken", label: "Taken", icon: CheckSquare },
-  { href: "/ideeen", label: "Idee\u00EBn", icon: Lightbulb },
+  { href: "/ideeen", label: "Ideeën", icon: Lightbulb },
   { href: "/logboek", label: "Logboek", icon: BookOpen },
   { href: "/projecten", label: "Projecten", icon: FolderOpen },
 ];
