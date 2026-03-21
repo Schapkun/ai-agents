@@ -112,9 +112,9 @@ export default function DashboardPage() {
       <main className="flex-1">
         <div className="px-8 py-8">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
-            <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-mono text-[#9b9b9b] bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] shadow-lg shadow-black/20">
+            <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-mono text-[#9b9b9b] bg-white/[0.04] border border-white/[0.08]">
               ${kostenMaand.toFixed(2)} deze maand
             </span>
           </div>
@@ -124,21 +124,21 @@ export default function DashboardPage() {
               <Loader2 className="h-5 w-5 text-[#9b9b9b] animate-spin" />
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
               {/* Openstaande taken */}
-              <div className="bg-white/[0.03] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-lg shadow-black/20 overflow-hidden border-l-2 border-l-amber-500/30">
-                <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-white">Openstaande taken</h2>
-                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
+              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
+                  <h2 className="text-sm font-medium text-[#ececec]">Openstaande taken</h2>
+                  <Link href="/taken" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
                     Bekijk alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
                 {openTaken.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#9b9b9b]">Geen openstaande taken</p>
+                  <p className="px-5 py-4 text-sm text-[#666]">Geen openstaande taken</p>
                 ) : (
                   <div className="divide-y divide-white/[0.04]">
                     {openTaken.map((t, i) => (
-                      <div key={i} className="px-5 py-2.5 hover:bg-white/[0.03] transition-colors">
+                      <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
                         <p className="text-sm text-[#ececec]">{t.tekst}</p>
                       </div>
                     ))}
@@ -147,22 +147,22 @@ export default function DashboardPage() {
               </div>
 
               {/* Recente ideeën */}
-              <div className="bg-white/[0.03] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-lg shadow-black/20 overflow-hidden border-l-2 border-l-blue-500/30">
-                <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-white">Recente ideeën</h2>
-                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
+              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
+                  <h2 className="text-sm font-medium text-[#ececec]">Recente idee\u00EBn</h2>
+                  <Link href="/ideeen" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
                     Bekijk alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
                 {ideeen.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#9b9b9b]">Geen ideeën</p>
+                  <p className="px-5 py-4 text-sm text-[#666]">Geen idee\u00EBn</p>
                 ) : (
                   <div className="divide-y divide-white/[0.04]">
                     {ideeen.map((idee, i) => (
-                      <div key={i} className="px-5 py-2.5 hover:bg-white/[0.03] transition-colors">
+                      <div key={i} className="px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
                         <div className="flex items-center justify-between">
                           <p className="text-sm text-[#ececec]">{idee.titel}</p>
-                          <span className="text-[10px] text-[#9b9b9b]">{idee.status}</span>
+                          <span className="text-[10px] text-[#666]">{idee.status}</span>
                         </div>
                       </div>
                     ))}
@@ -171,23 +171,23 @@ export default function DashboardPage() {
               </div>
 
               {/* Logboek */}
-              <div className="bg-white/[0.03] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-lg shadow-black/20 overflow-hidden border-l-2 border-l-emerald-500/30">
-                <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-white">Logboek</h2>
-                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
+              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
+                  <h2 className="text-sm font-medium text-[#ececec]">Logboek</h2>
+                  <Link href="/logboek" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
                     Bekijk alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
                 {logboek.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#9b9b9b]">Geen logboek entries</p>
+                  <p className="px-5 py-4 text-sm text-[#666]">Geen logboek entries</p>
                 ) : (
                   <div className="divide-y divide-white/[0.04]">
                     {logboek.map((entry, i) => {
                       const eersteRegel = entry.inhoud.split("\n").find((r: string) => r.trim() && !r.startsWith("#")) || entry.datum;
                       return (
-                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.03] transition-colors">
+                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
                           <p className="text-sm text-[#ececec] truncate flex-1 min-w-0">{eersteRegel.replace(/^[-*]\s*/, "").trim()}</p>
-                          <span className="text-xs text-[#9b9b9b] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
+                          <span className="text-xs text-[#666] shrink-0 ml-3">{formatDatum(entry.datum)}</span>
                         </div>
                       );
                     })}
@@ -196,23 +196,23 @@ export default function DashboardPage() {
               </div>
 
               {/* Projecten */}
-              <div className="bg-white/[0.03] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-lg shadow-black/20 overflow-hidden border-l-2 border-l-violet-500/30">
-                <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                  <h2 className="text-sm font-medium text-white">Projecten</h2>
-                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#9b9b9b] hover:text-white transition-colors">
+              <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.05]">
+                  <h2 className="text-sm font-medium text-[#ececec]">Projecten</h2>
+                  <Link href="/projecten" className="flex items-center gap-1 text-xs text-[#666] hover:text-[#999] transition-colors">
                     Bekijk alles <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
                 {projecten.length === 0 ? (
-                  <p className="px-5 py-4 text-sm text-[#9b9b9b]">Geen projecten</p>
+                  <p className="px-5 py-4 text-sm text-[#666]">Geen projecten</p>
                 ) : (
                   <div className="divide-y divide-white/[0.04]">
                     {projecten.map((p, i) => {
                       const open = getOpenTaken(p.naam);
                       return (
-                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.03] transition-colors">
+                        <div key={i} className="flex items-center justify-between px-5 py-2.5 hover:bg-white/[0.02] transition-colors">
                           <p className="text-sm text-[#ececec]">{p.naam}</p>
-                          <span className="text-xs text-[#9b9b9b] font-mono">{open}</span>
+                          <span className="text-xs text-[#666] font-mono">{open}</span>
                         </div>
                       );
                     })}

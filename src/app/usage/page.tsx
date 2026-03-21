@@ -106,7 +106,7 @@ export default function UsagePage() {
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Usage</h1>
-            <p className="text-sm text-[#9b9b9b] mt-1">API gebruik &amp; geschatte kosten</p>
+            <p className="text-sm text-[#666] mt-1">API gebruik &amp; geschatte kosten</p>
           </div>
 
           {laden ? (
@@ -115,11 +115,11 @@ export default function UsagePage() {
             </div>
           ) : entries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 mb-3">
-                <CreditCard className="h-5 w-5 text-[#9b9b9b]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.04] mb-3">
+                <CreditCard className="h-5 w-5 text-[#666]" />
               </div>
-              <p className="text-sm text-[#9b9b9b]">Nog geen usage data</p>
-              <p className="text-xs text-[#9b9b9b]/60 mt-1">
+              <p className="text-sm text-[#666]">Nog geen usage data</p>
+              <p className="text-xs text-[#666] mt-1">
                 Token gebruik wordt automatisch bijgehouden bij elk chatgesprek
               </p>
             </div>
@@ -137,13 +137,13 @@ export default function UsagePage() {
                   return (
                     <div
                       key={stat.label}
-                      className="bg-[#212121] rounded-xl border border-[#383838] px-5 py-4"
+                      className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] px-5 py-4"
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/5">
-                          <Icon className="h-3.5 w-3.5 text-[#9b9b9b]" />
+                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/[0.04]">
+                          <Icon className="h-3.5 w-3.5 text-[#666]" />
                         </div>
-                        <span className="text-[10px] text-[#9b9b9b] uppercase tracking-wider">
+                        <span className="text-[10px] text-[#666] uppercase tracking-wider">
                           {stat.label}
                         </span>
                       </div>
@@ -157,28 +157,28 @@ export default function UsagePage() {
 
               {/* Per model breakdown */}
               {Object.keys(perModel).length > 0 && (
-                <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden mb-8">
-                  <div className="px-5 py-4 border-b border-[#383838]">
-                    <h2 className="text-sm font-medium text-white">Per model</h2>
+                <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden mb-8">
+                  <div className="px-5 py-4 border-b border-white/[0.05]">
+                    <h2 className="text-sm font-medium text-[#ececec]">Per model</h2>
                   </div>
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-[#383838]">
-                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Model</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Input</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Output</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Requests</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Kosten</th>
+                      <tr className="border-b border-white/[0.05]">
+                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Model</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Input</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Output</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Requests</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Kosten</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-white/[0.04]">
                       {Object.entries(perModel).map(([model, stats]) => (
-                        <tr key={model} className="border-b border-[#383838]/50 hover:bg-[#383838]/30 transition-colors">
-                          <td className="px-5 py-3 text-sm text-white font-mono">{model}</td>
+                        <tr key={model} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="px-5 py-3 text-sm text-[#ececec] font-mono">{model}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.input)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.output)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-white font-mono">{formatKosten(stats.kosten)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#ececec] font-mono">{formatKosten(stats.kosten)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -188,28 +188,28 @@ export default function UsagePage() {
 
               {/* Dagelijks overzicht */}
               {dagLijst.length > 0 && (
-                <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
-                  <div className="px-5 py-4 border-b border-[#383838]">
-                    <h2 className="text-sm font-medium text-white">Dagelijks overzicht</h2>
+                <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+                  <div className="px-5 py-4 border-b border-white/[0.05]">
+                    <h2 className="text-sm font-medium text-[#ececec]">Dagelijks overzicht</h2>
                   </div>
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-[#383838]">
-                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Datum</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Input</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Output</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Requests</th>
-                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#9b9b9b] uppercase tracking-wider">Kosten</th>
+                      <tr className="border-b border-white/[0.05]">
+                        <th className="text-left px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Datum</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Input</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Output</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Requests</th>
+                        <th className="text-right px-5 py-3 text-[10px] font-medium text-[#666] uppercase tracking-wider">Kosten</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-white/[0.04]">
                       {dagLijst.map(([datum, stats]) => (
-                        <tr key={datum} className="border-b border-[#383838]/50 hover:bg-[#383838]/30 transition-colors">
-                          <td className="px-5 py-3 text-sm text-white">{formatDatum(datum)}</td>
+                        <tr key={datum} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="px-5 py-3 text-sm text-[#ececec]">{formatDatum(datum)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.input)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{formatTokens(stats.output)}</td>
                           <td className="px-5 py-3 text-right text-sm text-[#9b9b9b] font-mono">{stats.requests}</td>
-                          <td className="px-5 py-3 text-right text-sm text-white font-mono">{formatKosten(stats.kosten)}</td>
+                          <td className="px-5 py-3 text-right text-sm text-[#ececec] font-mono">{formatKosten(stats.kosten)}</td>
                         </tr>
                       ))}
                     </tbody>

@@ -47,27 +47,27 @@ export default function IdeeenPage() {
         <div className="px-8 py-8">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Idee{"ë"}n</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Idee\u00EBn</h1>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-1 mb-6 bg-[#171717] rounded-lg p-1 w-fit">
+          <div className="flex gap-1 mb-6 bg-white/[0.03] rounded-lg p-1 w-fit border border-white/[0.05]">
             <button
               onClick={() => setActiveTab("open")}
-              className={`px-4 py-2 text-sm rounded-md transition-all ${
+              className={`px-4 py-2 text-sm rounded-md transition-colors ${
                 activeTab === "open"
-                  ? "bg-[#212121] text-white font-medium"
-                  : "text-[#9b9b9b] hover:text-white"
+                  ? "bg-white/[0.08] text-white font-medium"
+                  : "text-[#666] hover:text-[#999]"
               }`}
             >
               Openstaand ({openIdeeen.length})
             </button>
             <button
               onClick={() => setActiveTab("uitgevoerd")}
-              className={`px-4 py-2 text-sm rounded-md transition-all ${
+              className={`px-4 py-2 text-sm rounded-md transition-colors ${
                 activeTab === "uitgevoerd"
-                  ? "bg-[#212121] text-white font-medium"
-                  : "text-[#9b9b9b] hover:text-white"
+                  ? "bg-white/[0.08] text-white font-medium"
+                  : "text-[#666] hover:text-[#999]"
               }`}
             >
               Uitgevoerd ({uitgevoerdeIdeeen.length})
@@ -80,18 +80,18 @@ export default function IdeeenPage() {
             </div>
           ) : getoondeIdeeen.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 mb-3">
-                <Lightbulb className="h-5 w-5 text-[#9b9b9b]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.04] mb-3">
+                <Lightbulb className="h-5 w-5 text-[#666]" />
               </div>
-              <p className="text-sm text-[#9b9b9b]">
-                {activeTab === "open" ? "Geen openstaande ideeën" : "Geen uitgevoerde ideeën"}
+              <p className="text-sm text-[#666]">
+                {activeTab === "open" ? "Geen openstaande idee\u00EBn" : "Geen uitgevoerde idee\u00EBn"}
               </p>
             </div>
           ) : (
-            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
-              <div className="divide-y divide-[#383838]/50">
+            <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+              <div className="divide-y divide-white/[0.04]">
                 {getoondeIdeeen.map((idee, i) => (
-                  <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-[#383838]/30 transition-colors">
+                  <div key={i} className="flex items-center justify-between px-5 py-3.5 hover:bg-white/[0.02] transition-colors">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-sm text-[#ececec]">{idee.titel}</p>
@@ -100,32 +100,32 @@ export default function IdeeenPage() {
                             href={idee.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#9b9b9b] hover:text-white transition-colors"
+                            className="text-[#666] hover:text-[#ececec] transition-colors"
                           >
                             <ExternalLink className="h-3.5 w-3.5" />
                           </a>
                         )}
                       </div>
                       {idee.beschrijving && (
-                        <p className="text-xs text-[#9b9b9b] mt-1 leading-relaxed">{idee.beschrijving}</p>
+                        <p className="text-xs text-[#666] mt-1 leading-relaxed">{idee.beschrijving}</p>
                       )}
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-[10px] text-[#9b9b9b]/60">{idee.status}</span>
-                        {idee.datum && <span className="text-[10px] text-[#9b9b9b]/60">{idee.datum}</span>}
+                        <span className="text-[10px] text-[#666]">{idee.status}</span>
+                        {idee.datum && <span className="text-[10px] text-[#666]">{idee.datum}</span>}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0 ml-4">
                       {activeTab === "open" ? (
                         <>
-                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] transition-colors">
                             Uitwerken
                           </button>
-                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                          <button className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] transition-colors">
                             Bewerken
                           </button>
                         </>
                       ) : (
-                        <button className="px-3 py-1.5 text-xs rounded-lg text-[#9b9b9b] hover:text-white hover:bg-[#383838] transition-colors">
+                        <button className="px-3 py-1.5 text-xs rounded-lg text-[#666] hover:text-[#ececec] transition-colors">
                           Feedback
                         </button>
                       )}

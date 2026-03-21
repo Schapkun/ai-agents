@@ -42,7 +42,7 @@ const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/mattie", label: "Chat met Mattie", icon: MessageSquare },
   { href: "/taken", label: "Taken", icon: CheckSquare },
-  { href: "/ideeen", label: "Ideeën", icon: Lightbulb },
+  { href: "/ideeen", label: "Idee\u00EBn", icon: Lightbulb },
   { href: "/logboek", label: "Logboek", icon: BookOpen },
   { href: "/projecten", label: "Projecten", icon: FolderOpen },
 ];
@@ -75,10 +75,10 @@ function UsageWidget() {
   return (
     <Link
       href="/usage"
-      className={`flex items-center gap-2.5 mx-3 px-3 py-2 rounded-lg text-sm transition-all ${
+      className={`flex items-center gap-2.5 mx-3 px-3 py-2 rounded-lg text-sm transition-colors ${
         active
-          ? "bg-[#212121] text-white"
-          : "text-[#9b9b9b] hover:text-white hover:bg-[#212121]"
+          ? "bg-white/[0.06] text-white"
+          : "text-[#666] hover:text-[#999] hover:bg-white/[0.03]"
       }`}
     >
       <CreditCard className="h-4 w-4 shrink-0" />
@@ -110,15 +110,15 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen overflow-hidden bg-[#2f2f2f] text-[#ececec]">
       {/* Sidebar */}
-      <aside className="flex w-64 flex-col bg-[#171717] shrink-0">
+      <aside className="flex w-64 flex-col bg-[#171717] shrink-0 border-r border-white/[0.06]">
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 h-16 shrink-0">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/10">
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/[0.08]">
             <LayoutDashboard className="h-4 w-4 text-white" />
           </div>
           <div>
             <span className="text-base font-semibold tracking-tight text-white">{APP_NAME}</span>
-            <p className="text-[10px] text-[#9b9b9b]">Dashboard</p>
+            <p className="text-[10px] text-[#666]">Dashboard</p>
           </div>
         </div>
 
@@ -131,10 +131,10 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-all ${
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                   active
-                    ? "font-medium text-white bg-[#212121]"
-                    : "text-[#9b9b9b] hover:text-white hover:bg-[#212121]"
+                    ? "font-medium text-white bg-white/[0.06]"
+                    : "text-[#666] hover:text-[#999] hover:bg-white/[0.03]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -159,7 +159,7 @@ export default function DashboardLayout({
       {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
         {header && (
-          <div className="flex items-center gap-3 border-b border-[#383838] px-6 h-14 shrink-0 bg-[#2f2f2f]">
+          <div className="flex items-center gap-3 border-b border-white/[0.06] px-6 h-14 shrink-0 bg-[#2f2f2f]">
             {header}
           </div>
         )}

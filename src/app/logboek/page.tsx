@@ -28,7 +28,6 @@ function extractCategorieen(entries: LogboekEntry[]): string[] {
   const cats = new Set<string>();
   for (const e of entries) {
     if (e.categorie) cats.add(e.categorie);
-    // Probeer ook project/categorie uit de inhoud te halen
     const match = e.inhoud.match(/^#\s+(.+)/m);
     if (match) cats.add(match[1].trim());
   }
@@ -85,28 +84,28 @@ export default function LogboekPage() {
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-semibold tracking-tight text-white">Logboek</h1>
-            <p className="text-sm text-[#9b9b9b] mt-1">{entries.length} entries</p>
+            <p className="text-sm text-[#666] mt-1">{entries.length} entries</p>
           </div>
 
           {/* Zoek + Filter balk */}
           <div className="flex items-center gap-3 mb-6">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9b9b9b]" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#666]" />
               <input
                 type="text"
                 value={zoekterm}
                 onChange={(e) => setZoekterm(e.target.value)}
                 placeholder="Zoeken in logboek..."
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-[#383838] bg-[#212121] text-[#ececec] placeholder:text-[#9b9b9b] focus:border-[#9b9b9b] focus:outline-none transition-colors"
+                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-white/[0.06] bg-white/[0.03] text-[#ececec] placeholder:text-[#666] focus:border-white/[0.12] focus:outline-none transition-colors"
               />
             </div>
             {categorieen.length > 0 && (
               <select
                 value={filterCategorie}
                 onChange={(e) => setFilterCategorie(e.target.value)}
-                className="px-3 py-2 text-sm rounded-lg border border-[#383838] bg-[#212121] text-[#ececec] focus:border-[#9b9b9b] focus:outline-none transition-colors appearance-none cursor-pointer"
+                className="px-3 py-2 text-sm rounded-lg border border-white/[0.06] bg-white/[0.03] text-[#ececec] focus:border-white/[0.12] focus:outline-none transition-colors appearance-none cursor-pointer"
               >
-                <option value="alle">Alle categorie{"ë"}n</option>
+                <option value="alle">Alle categorie\u00EBn</option>
                 {categorieen.map((cat) => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
@@ -120,39 +119,39 @@ export default function LogboekPage() {
             </div>
           ) : gefilterdeEntries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 mb-3">
-                <BookOpen className="h-5 w-5 text-[#9b9b9b]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.04] mb-3">
+                <BookOpen className="h-5 w-5 text-[#666]" />
               </div>
-              <p className="text-sm text-[#9b9b9b]">
+              <p className="text-sm text-[#666]">
                 {zoekterm || filterCategorie !== "alle"
                   ? "Geen resultaten gevonden"
                   : "Geen logboek entries gevonden"}
               </p>
             </div>
           ) : (
-            <div className="bg-[#212121] rounded-xl border border-[#383838] overflow-hidden">
-              <div className="divide-y divide-[#383838]/50">
+            <div className="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden">
+              <div className="divide-y divide-white/[0.04]">
                 {gefilterdeEntries.map((entry) => {
                   const isOpen = openEntry === entry.datum;
                   return (
                     <div key={entry.datum}>
                       <button
                         onClick={() => setOpenEntry(isOpen ? null : entry.datum)}
-                        className="flex items-center justify-between w-full px-5 py-4 hover:bg-[#383838]/30 transition-colors text-left"
+                        className="flex items-center justify-between w-full px-5 py-4 hover:bg-white/[0.02] transition-colors text-left"
                       >
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-[#ececec] truncate">{getSamenvatting(entry.inhoud)}</p>
-                          <p className="text-xs text-[#9b9b9b] mt-0.5">{formatDatum(entry.datum)}</p>
+                          <p className="text-xs text-[#666] mt-0.5">{formatDatum(entry.datum)}</p>
                         </div>
                         {isOpen ? (
-                          <ChevronUp className="h-4 w-4 text-[#9b9b9b] shrink-0 ml-3" />
+                          <ChevronUp className="h-4 w-4 text-[#666] shrink-0 ml-3" />
                         ) : (
-                          <ChevronDown className="h-4 w-4 text-[#9b9b9b] shrink-0 ml-3" />
+                          <ChevronDown className="h-4 w-4 text-[#666] shrink-0 ml-3" />
                         )}
                       </button>
                       {isOpen && (
                         <div className="px-5 pb-4">
-                          <div className="bg-[#2f2f2f] rounded-lg p-4 border border-[#383838]">
+                          <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.05]">
                             <pre className="text-sm text-[#ececec] whitespace-pre-wrap font-sans leading-relaxed">{entry.inhoud}</pre>
                           </div>
                         </div>
